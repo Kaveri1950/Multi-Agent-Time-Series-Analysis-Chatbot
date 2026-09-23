@@ -1,0 +1,35 @@
+# ---- environments and caches -------------------------------------------
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# ---- downloaded data ----------------------------------------------------
+# 358 MB of Kepler light curves plus the price panel. All of it is
+# reproducible with `python -m astronomy.bulk_download` and
+# `python -m quant.data`, so it does not belong in version control.
+data/cache/
+benchmarks/results/
+rag/index/
+
+# ---- secrets and local config -------------------------------------------
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# ---- unrelated work -----------------------------------------------------
+# A separate project that happens to live in this directory. It contains
+# third-party brokerage research PDFs and vendor-API code, neither of which
+# is mine to publish.
+github_arihant_bot/
+
+# ---- large working files ------------------------------------------------
+*.pptx
+*.docx
+*~
+.DS_Store
+Thumbs.db

@@ -1,0 +1,53 @@
+# Core data / ML (CPU-only, all free & open-source)
+numpy
+pandas
+scikit-learn
+statsmodels
+xgboost
+matplotlib
+
+# Financial data + sentiment
+yfinance
+feedparser
+praw
+requests  # NSE index constituent CSVs + api.mfapi.in mutual fund data (finance/india_universe.py, finance/mutual_funds.py)
+
+# Astronomy
+lightkurve
+astropy
+
+# Embeddings / NLP
+# NOTE: install torch separately first for the CPU-only build (much smaller download):
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch
+transformers
+sentence-transformers
+
+# Vector store
+faiss-cpu
+
+# Multi-agent orchestration
+langgraph
+langchain-core
+
+# Local LLM client (talks to the Ollama server already installed on this machine)
+ollama
+
+# Front-end
+streamlit
+plotly
+
+# Testing
+pytest
+
+# Added for the anomaly / quant work
+hmmlearn          # Gaussian HMM for market regimes (quant/regimes.py)
+arch              # GARCH, for volatility-standardised residuals
+stumpy            # matrix profile: discord and motif discovery
+joblib            # parallel grid runs and on-disk regime cache
+pymongo           # precomputed astronomy results, chat history, forecast log
+scipy             # Kupiec / Christoffersen tests, KS audit
+pyarrow           # parquet caches
+reportlab         # local PDF build of the report (evaluation/build_report_pdf.py)
+pypdf             # PDF verification
+pillow            # figure embedding

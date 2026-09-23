@@ -1,0 +1,1462 @@
+{
+  "query_set": {
+    "n_queries": 123,
+    "by_category": {
+      "canonical": 9,
+      "paraphrase": 89,
+      "adversarial": 15,
+      "general": 10
+    },
+    "by_domain": {
+      "finance": 67,
+      "solar": 27,
+      "astronomy": 29
+    },
+    "by_expected": {
+      "finance.gpr_logged_forecast": 15,
+      "finance.arima_backtest": 15,
+      "finance.xgboost_sentiment": 7,
+      "finance.anomaly_detectors": 17,
+      "finance.finbert_sentiment": 9,
+      "solar.hawkes_probability": 15,
+      "solar.hawkes_expected_count": 9,
+      "astronomy.isolation_forest": 14,
+      "astronomy.koi_lookup": 12,
+      "None": 10
+    },
+    "n_no_model_expected": 10
+  },
+  "results": [
+    {
+      "strategy": "filter_only",
+      "n": 123,
+      "elapsed_seconds": 0.0,
+      "accuracy": 0.9431,
+      "by_category": {
+        "adversarial": {
+          "n": 15,
+          "accuracy": 0.7333
+        },
+        "canonical": {
+          "n": 9,
+          "accuracy": 1.0
+        },
+        "general": {
+          "n": 10,
+          "accuracy": 1.0
+        },
+        "paraphrase": {
+          "n": 89,
+          "accuracy": 0.9663
+        }
+      },
+      "by_domain": {
+        "astronomy": {
+          "n": 29,
+          "accuracy": 0.931
+        },
+        "finance": {
+          "n": 67,
+          "accuracy": 0.9254
+        },
+        "solar": {
+          "n": 27,
+          "accuracy": 1.0
+        }
+      },
+      "fallback_rate": 0.0,
+      "mean_seconds": 0.0
+    }
+  ],
+  "confusions": {
+    "filter_only": [
+      {
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.gpr_logged_forecast",
+        "count": 2,
+        "example": "can I trust this prediction"
+      },
+      {
+        "expected": "astronomy.koi_lookup",
+        "chosen": "astronomy.isolation_forest",
+        "count": 2,
+        "example": "KIC 5358624 planets?"
+      },
+      {
+        "expected": "finance.xgboost_sentiment",
+        "chosen": "finance.finbert_sentiment",
+        "count": 1,
+        "example": "what difference does sentiment make to accuracy"
+      },
+      {
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.gpr_logged_forecast",
+        "count": 1,
+        "example": "was there a flare up in TCS volatility"
+      },
+      {
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.arima_backtest",
+        "count": 1,
+        "example": "how good will RELIANCE do next month"
+      }
+    ]
+  },
+  "rows": {
+    "filter_only": [
+      {
+        "query": "what will RELIANCE close at in 30 days",
+        "domain": "finance",
+        "category": "canonical",
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": true,
+        "task": "forecast_value",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "predict the price of TCS for the next month",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": true,
+        "task": "forecast_value",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "where is INFY headed over the next 60 days",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": true,
+        "task": "forecast_value",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "forecast HDFCBANK share price",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": true,
+        "task": "forecast_value",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what's the price target for WIPRO in two weeks",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": true,
+        "task": "forecast_value",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "project ITC forward ninety days",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": true,
+        "task": "forecast_value",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "give me a price prediction for SBIN",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how much will TATAMOTORS be worth next month",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "future price of ONGC please",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "estimate RELIANCE price 45 days out",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how accurate is your price model",
+        "domain": "finance",
+        "category": "canonical",
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.arima_backtest",
+        "correct": true,
+        "task": "evaluate_model",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how reliable are these forecasts",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.arima_backtest",
+        "correct": true,
+        "task": "evaluate_model",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what's the RMSE on TCS",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.arima_backtest",
+        "correct": true,
+        "task": "evaluate_model",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how well does the model actually do",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.arima_backtest",
+        "correct": true,
+        "task": "evaluate_model",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "can I trust this prediction",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": false,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what's your error rate for INFY",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.arima_backtest",
+        "correct": true,
+        "task": "evaluate_model",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how good is the ARIMA fit",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.arima_backtest",
+        "correct": true,
+        "task": "evaluate_model",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "show me the backtest results",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.arima_backtest",
+        "correct": true,
+        "task": "evaluate_model",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how accurate were your past predictions for RELIANCE",
+        "domain": "finance",
+        "category": "adversarial",
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.arima_backtest",
+        "correct": true,
+        "task": "evaluate_model",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how much error does the price forecast have",
+        "domain": "finance",
+        "category": "adversarial",
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": false,
+        "task": "forecast_value",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "does news sentiment actually help prediction",
+        "domain": "finance",
+        "category": "canonical",
+        "expected": "finance.xgboost_sentiment",
+        "chosen": "finance.xgboost_sentiment",
+        "correct": true,
+        "task": "compare_models",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "is the model better with or without sentiment",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.xgboost_sentiment",
+        "chosen": "finance.xgboost_sentiment",
+        "correct": true,
+        "task": "compare_models",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "compare the models with and without news",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.xgboost_sentiment",
+        "chosen": "finance.xgboost_sentiment",
+        "correct": true,
+        "task": "compare_models",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "does adding sentiment improve RMSE",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.xgboost_sentiment",
+        "chosen": "finance.xgboost_sentiment",
+        "correct": true,
+        "task": "compare_models",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "is XGBoost better than ARIMA here",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.xgboost_sentiment",
+        "chosen": "finance.xgboost_sentiment",
+        "correct": true,
+        "task": "compare_models",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what difference does sentiment make to accuracy",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.xgboost_sentiment",
+        "chosen": "finance.finbert_sentiment",
+        "correct": false,
+        "task": "score_sentiment",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "does sentiment matter for forecasting TCS",
+        "domain": "finance",
+        "category": "adversarial",
+        "expected": "finance.xgboost_sentiment",
+        "chosen": "finance.xgboost_sentiment",
+        "correct": true,
+        "task": "compare_models",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "any anomalies in RELIANCE",
+        "domain": "finance",
+        "category": "canonical",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "anything unusual about TCS recently",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "were there outliers in INFY",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "show me suspicious trading days for HDFCBANK",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what was weird about SBIN this year",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "find irregular days in WIPRO",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "any abnormal price movement in ITC",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "which days were strange for TATAMOTORS",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "detect outliers for ONGC",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "spot anything odd in RELIANCE volume",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "unusual volatility in the Nifty",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what's the news sentiment on RELIANCE",
+        "domain": "finance",
+        "category": "canonical",
+        "expected": "finance.finbert_sentiment",
+        "chosen": "finance.finbert_sentiment",
+        "correct": true,
+        "task": "score_sentiment",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how is the market feeling about TCS",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.finbert_sentiment",
+        "chosen": "finance.finbert_sentiment",
+        "correct": true,
+        "task": "score_sentiment",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "show me recent headlines for INFY",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.finbert_sentiment",
+        "chosen": "finance.finbert_sentiment",
+        "correct": true,
+        "task": "score_sentiment",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "is the news positive or negative for HDFCBANK",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.finbert_sentiment",
+        "chosen": "finance.finbert_sentiment",
+        "correct": true,
+        "task": "score_sentiment",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what are people saying about SBIN",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.finbert_sentiment",
+        "chosen": "finance.finbert_sentiment",
+        "correct": true,
+        "task": "score_sentiment",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "sentiment score for WIPRO",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.finbert_sentiment",
+        "chosen": "finance.finbert_sentiment",
+        "correct": true,
+        "task": "score_sentiment",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what is the chance of a solar flare tomorrow",
+        "domain": "solar",
+        "category": "canonical",
+        "expected": "solar.hawkes_probability",
+        "chosen": "solar.hawkes_probability",
+        "correct": true,
+        "task": "forecast_event_prob",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "will there be a solar flare in the next 24 hours",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_probability",
+        "chosen": "solar.hawkes_probability",
+        "correct": true,
+        "task": "forecast_event_prob",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how likely is an M-class flare today",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_probability",
+        "chosen": "solar.hawkes_probability",
+        "correct": true,
+        "task": "forecast_event_prob",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what's the probability of solar activity tomorrow",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_probability",
+        "chosen": "solar.hawkes_probability",
+        "correct": true,
+        "task": "forecast_event_prob",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "odds of a flare today",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_probability",
+        "chosen": "solar.hawkes_probability",
+        "correct": true,
+        "task": "forecast_event_prob",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "risk of a geomagnetic storm",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_probability",
+        "chosen": "solar.hawkes_probability",
+        "correct": true,
+        "task": "forecast_event_prob",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "should I expect space weather disruption tomorrow",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_probability",
+        "chosen": "solar.hawkes_probability",
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "chance of an X-class event",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_probability",
+        "chosen": "solar.hawkes_probability",
+        "correct": true,
+        "task": "forecast_event_prob",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how likely is a coronal mass ejection",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_probability",
+        "chosen": "solar.hawkes_probability",
+        "correct": true,
+        "task": "forecast_event_prob",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "give me the flare forecast",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_probability",
+        "chosen": "solar.hawkes_probability",
+        "correct": true,
+        "task": "forecast_value",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how many solar flares should I expect this week",
+        "domain": "solar",
+        "category": "canonical",
+        "expected": "solar.hawkes_expected_count",
+        "chosen": "solar.hawkes_expected_count",
+        "correct": true,
+        "task": "forecast_event_count",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how many flares in the next 3 days",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_expected_count",
+        "chosen": "solar.hawkes_expected_count",
+        "correct": true,
+        "task": "forecast_event_count",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what number of flares are likely this month",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_expected_count",
+        "chosen": "solar.hawkes_expected_count",
+        "correct": true,
+        "task": "forecast_event_count",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "count of expected solar events this week",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_expected_count",
+        "chosen": "solar.hawkes_expected_count",
+        "correct": true,
+        "task": "forecast_event_count",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how many M-class flares will there be",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_expected_count",
+        "chosen": "solar.hawkes_expected_count",
+        "correct": true,
+        "task": "forecast_event_count",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how many flares should I expect, and what are the chances",
+        "domain": "solar",
+        "category": "adversarial",
+        "expected": "solar.hawkes_expected_count",
+        "chosen": "solar.hawkes_expected_count",
+        "correct": true,
+        "task": "forecast_event_count",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "anything unusual in KIC 5358624",
+        "domain": "astronomy",
+        "category": "canonical",
+        "expected": "astronomy.isolation_forest",
+        "chosen": "astronomy.isolation_forest",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "any anomalies in KIC 10619192",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.isolation_forest",
+        "chosen": "astronomy.isolation_forest",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "are there outliers in the light curve of KIC 8544996",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.isolation_forest",
+        "chosen": "astronomy.isolation_forest",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "find irregular windows in KIC 11359879",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.isolation_forest",
+        "chosen": "astronomy.isolation_forest",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what looks strange in KIC 6922244",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.isolation_forest",
+        "chosen": "astronomy.isolation_forest",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "detect anomalies for KIC 8191672",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.isolation_forest",
+        "chosen": "astronomy.isolation_forest",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "is there anything abnormal in this light curve",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.isolation_forest",
+        "chosen": "astronomy.isolation_forest",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "show me suspicious dips in KIC 5358624",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.isolation_forest",
+        "chosen": "astronomy.isolation_forest",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "does KIC 5358624 have any confirmed planets",
+        "domain": "astronomy",
+        "category": "canonical",
+        "expected": "astronomy.koi_lookup",
+        "chosen": "astronomy.koi_lookup",
+        "correct": true,
+        "task": "lookup_fact",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how many planets does KIC 10619192 have",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.koi_lookup",
+        "chosen": "astronomy.koi_lookup",
+        "correct": true,
+        "task": "lookup_fact",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what is the orbital period of KIC 8544996",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.koi_lookup",
+        "chosen": "astronomy.koi_lookup",
+        "correct": true,
+        "task": "lookup_fact",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "is KIC 10079481 a false positive",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.koi_lookup",
+        "chosen": "astronomy.koi_lookup",
+        "correct": true,
+        "task": "lookup_fact",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what planets are known around KIC 11359879",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.koi_lookup",
+        "chosen": "astronomy.koi_lookup",
+        "correct": true,
+        "task": "lookup_fact",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "has KIC 6922244 got a confirmed planet",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.koi_lookup",
+        "chosen": "astronomy.koi_lookup",
+        "correct": true,
+        "task": "lookup_fact",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "tell me the known planets for KIC 8191672",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.koi_lookup",
+        "chosen": "astronomy.koi_lookup",
+        "correct": true,
+        "task": "lookup_fact",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "did anyone find a planet at KIC 5358624",
+        "domain": "astronomy",
+        "category": "adversarial",
+        "expected": "astronomy.koi_lookup",
+        "chosen": "astronomy.koi_lookup",
+        "correct": true,
+        "task": "lookup_fact",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what does RSI mean",
+        "domain": "finance",
+        "category": "general",
+        "expected": null,
+        "chosen": null,
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what is a moving average",
+        "domain": "finance",
+        "category": "general",
+        "expected": null,
+        "chosen": null,
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "explain what volatility is",
+        "domain": "finance",
+        "category": "general",
+        "expected": null,
+        "chosen": null,
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what is MACD",
+        "domain": "finance",
+        "category": "general",
+        "expected": null,
+        "chosen": null,
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what is a light curve",
+        "domain": "astronomy",
+        "category": "general",
+        "expected": null,
+        "chosen": null,
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how does the transit method work",
+        "domain": "astronomy",
+        "category": "general",
+        "expected": null,
+        "chosen": null,
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what is a solar flare",
+        "domain": "solar",
+        "category": "general",
+        "expected": null,
+        "chosen": null,
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "why do flares matter for satellites",
+        "domain": "solar",
+        "category": "general",
+        "expected": null,
+        "chosen": null,
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what does M-class mean",
+        "domain": "solar",
+        "category": "general",
+        "expected": null,
+        "chosen": null,
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what is an exoplanet",
+        "domain": "astronomy",
+        "category": "general",
+        "expected": null,
+        "chosen": null,
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "RELIANCE 30 day forecast",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": true,
+        "task": "forecast_value",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "TCS price next month?",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "predict INFY",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": true,
+        "task": "forecast_value",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "forecast SBIN 60 days",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": true,
+        "task": "forecast_value",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "RELIANCE model accuracy",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.arima_backtest",
+        "correct": true,
+        "task": "evaluate_model",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how accurate?",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.arima_backtest",
+        "correct": true,
+        "task": "evaluate_model",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "TCS rmse",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.arima_backtest",
+        "correct": true,
+        "task": "evaluate_model",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "backtest INFY",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.arima_backtest",
+        "correct": true,
+        "task": "evaluate_model",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "RELIANCE anomalies",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "TCS outliers",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "anything odd INFY",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "weird days SBIN",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "RELIANCE news",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.finbert_sentiment",
+        "chosen": "finance.finbert_sentiment",
+        "correct": true,
+        "task": "score_sentiment",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "TCS sentiment",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.finbert_sentiment",
+        "chosen": "finance.finbert_sentiment",
+        "correct": true,
+        "task": "score_sentiment",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "INFY headlines",
+        "domain": "finance",
+        "category": "paraphrase",
+        "expected": "finance.finbert_sentiment",
+        "chosen": "finance.finbert_sentiment",
+        "correct": true,
+        "task": "score_sentiment",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "flare chance",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_probability",
+        "chosen": "solar.hawkes_probability",
+        "correct": true,
+        "task": "forecast_event_prob",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "solar flare probability",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_probability",
+        "chosen": "solar.hawkes_probability",
+        "correct": true,
+        "task": "forecast_event_prob",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "flare risk today",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_probability",
+        "chosen": "solar.hawkes_probability",
+        "correct": true,
+        "task": "forecast_event_prob",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "space weather odds",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_probability",
+        "chosen": "solar.hawkes_probability",
+        "correct": true,
+        "task": "forecast_event_prob",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how many flares this week",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_expected_count",
+        "chosen": "solar.hawkes_expected_count",
+        "correct": true,
+        "task": "forecast_event_count",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "number of flares next 5 days",
+        "domain": "solar",
+        "category": "paraphrase",
+        "expected": "solar.hawkes_expected_count",
+        "chosen": "solar.hawkes_expected_count",
+        "correct": true,
+        "task": "forecast_event_count",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "KIC 5358624 anomalies",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.isolation_forest",
+        "chosen": "astronomy.isolation_forest",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "outliers KIC 10619192",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.isolation_forest",
+        "chosen": "astronomy.isolation_forest",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "anything unusual KIC 8544996",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.isolation_forest",
+        "chosen": "astronomy.isolation_forest",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "KIC 5358624 planets?",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.koi_lookup",
+        "chosen": "astronomy.isolation_forest",
+        "correct": false,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "confirmed planets KIC 10619192",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.koi_lookup",
+        "chosen": "astronomy.koi_lookup",
+        "correct": true,
+        "task": "lookup_fact",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "KIC 8544996 orbital period",
+        "domain": "astronomy",
+        "category": "paraphrase",
+        "expected": "astronomy.koi_lookup",
+        "chosen": "astronomy.koi_lookup",
+        "correct": true,
+        "task": "lookup_fact",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "compare the sun to KIC 8462852",
+        "domain": "astronomy",
+        "category": "adversarial",
+        "expected": "astronomy.isolation_forest",
+        "chosen": "astronomy.isolation_forest",
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "are there flares on KIC 5358624",
+        "domain": "astronomy",
+        "category": "adversarial",
+        "expected": "astronomy.isolation_forest",
+        "chosen": "astronomy.isolation_forest",
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "does KIC 8544996 show solar-like activity",
+        "domain": "astronomy",
+        "category": "adversarial",
+        "expected": "astronomy.isolation_forest",
+        "chosen": "astronomy.isolation_forest",
+        "correct": true,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "RELIANCE volatility spiked, any anomalies",
+        "domain": "finance",
+        "category": "adversarial",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.anomaly_detectors",
+        "correct": true,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "was there a flare up in TCS volatility",
+        "domain": "finance",
+        "category": "adversarial",
+        "expected": "finance.anomaly_detectors",
+        "chosen": "finance.gpr_logged_forecast",
+        "correct": false,
+        "task": null,
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how many flares are likely tomorrow",
+        "domain": "solar",
+        "category": "adversarial",
+        "expected": "solar.hawkes_expected_count",
+        "chosen": "solar.hawkes_expected_count",
+        "correct": true,
+        "task": "forecast_event_count",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what are the odds of several flares",
+        "domain": "solar",
+        "category": "adversarial",
+        "expected": "solar.hawkes_probability",
+        "chosen": "solar.hawkes_probability",
+        "correct": true,
+        "task": "forecast_event_prob",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how good will RELIANCE do next month",
+        "domain": "finance",
+        "category": "adversarial",
+        "expected": "finance.gpr_logged_forecast",
+        "chosen": "finance.arima_backtest",
+        "correct": false,
+        "task": "evaluate_model",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "how good is the model at RELIANCE",
+        "domain": "finance",
+        "category": "adversarial",
+        "expected": "finance.arima_backtest",
+        "chosen": "finance.arima_backtest",
+        "correct": true,
+        "task": "evaluate_model",
+        "fallback_used": false,
+        "seconds": 0.0
+      },
+      {
+        "query": "what's unusual about KIC 5358624's planets",
+        "domain": "astronomy",
+        "category": "adversarial",
+        "expected": "astronomy.koi_lookup",
+        "chosen": "astronomy.isolation_forest",
+        "correct": false,
+        "task": "detect_anomaly",
+        "fallback_used": false,
+        "seconds": 0.0
+      }
+    ]
+  }
+}
