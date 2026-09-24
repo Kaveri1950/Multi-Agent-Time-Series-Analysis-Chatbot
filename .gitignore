@@ -33,3 +33,14 @@ github_arihant_bot/
 *~
 .DS_Store
 Thumbs.db
+
+# Coursework deliverables -- kept locally, not part of the codebase
+report/
+*_PLAN.md
+*_PLAN.pdf
+PROFESSOR_PROPOSAL.*
+README_original_plan.md
+evaluation/build_report_pdf.py
+
+# LaTeX vector copies of figures; PNGs are tracked for the README
+evaluation/results/**/*.pdf
