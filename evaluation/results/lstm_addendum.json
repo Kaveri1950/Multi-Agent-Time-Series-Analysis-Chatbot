@@ -1,0 +1,56 @@
+{
+  "note": "LSTM autoencoder scored on the committed Kepler split (40 targets, make_split seed=0). Produced by evaluation/lstm_addendum.py, which mirrors grid.run_domain's evaluate_one for a single detector. anomaly_grid.json is deliberately not modified. Ensemble selection is not redone.",
+  "kepler_limit": 40,
+  "seed": 0,
+  "split": {
+    "train_windows": 259499,
+    "test_windows": 124782,
+    "test_positive": 29168,
+    "test_positive_rate": 0.23375166290009777,
+    "test_groups": 13
+  },
+  "detector_config": {
+    "hidden": 16,
+    "epochs": 30,
+    "batch": 256,
+    "lr": 0.01,
+    "seed": 0,
+    "max_train": 20000
+  },
+  "row": {
+    "domain": "kepler",
+    "detector": "lstm_autoencoder",
+    "group": "reconstruction",
+    "is_floor": false,
+    "is_ceiling": false,
+    "roc_auc": 0.5242,
+    "pr_auc": 0.2591,
+    "lift": 1.11,
+    "prevalence": 0.23375,
+    "n": 124782,
+    "n_positive": 29168,
+    "n_constant_score": 0,
+    "n_configs_tried": 1,
+    "precision_at_50": 0.38,
+    "in_sample_pr_auc": 0.2893,
+    "in_sample_lift": 1.19,
+    "seconds": 908.75
+  },
+  "verdict": {
+    "vs_floor_raw_input": {
+      "floor_pr_auc": 0.2528,
+      "lstm_pr_auc": 0.2591,
+      "margin": 0.006299999999999972,
+      "beats_floor": true
+    },
+    "vs_supervised_ceiling": {
+      "ceiling_pr_auc": 0.2555,
+      "margin": 0.003599999999999992
+    },
+    "vs_best_committed": {
+      "detector": "matrix_profile_discord_raw",
+      "pr_auc": 0.263,
+      "margin": -0.0039000000000000146
+    }
+  }
+}
