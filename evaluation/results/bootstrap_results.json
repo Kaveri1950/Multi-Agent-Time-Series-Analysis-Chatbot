@@ -1,0 +1,89 @@
+{
+  "n_resamples": 2000,
+  "seed": 0,
+  "confidence": 0.95,
+  "domains": [
+    {
+      "domain": "equity",
+      "detector": "spectral_pca",
+      "floor": "raw_input",
+      "n_held_out": 568,
+      "n_positive": 8,
+      "prevalence": 0.01408,
+      "pr_auc_detector": 0.0355,
+      "pr_auc_floor": 0.0325,
+      "observed_margin": 0.003049,
+      "tests": [
+        {
+          "method": "iid window bootstrap (anti-conservative: windows overlap)",
+          "n_resamples_requested": 2000,
+          "n_resamples_used": 2000,
+          "n_resamples_skipped_no_positives": 0,
+          "resampling_unit": "568 windows",
+          "observed_difference": 0.003049,
+          "bootstrap_mean_difference": 0.008779,
+          "bootstrap_std": 0.023019,
+          "ci95_low": -0.021637,
+          "ci95_high": 0.070954,
+          "ci95_excludes_zero": false,
+          "p_difference_gt_zero": 0.5745
+        },
+        {
+          "method": "moving-block bootstrap, block=21 (respects serial dependence)",
+          "n_resamples_requested": 2000,
+          "n_resamples_used": 1980,
+          "n_resamples_skipped_no_positives": 20,
+          "resampling_unit": "568 windows in 28 blocks of 21",
+          "observed_difference": 0.003049,
+          "bootstrap_mean_difference": 0.014001,
+          "bootstrap_std": 0.054078,
+          "ci95_low": -0.04009,
+          "ci95_high": 0.136891,
+          "ci95_excludes_zero": false,
+          "p_difference_gt_zero": 0.5227
+        }
+      ]
+    },
+    {
+      "domain": "kepler",
+      "detector": "matrix_profile_discord_raw",
+      "floor": "raw_input",
+      "n_held_out": 124782,
+      "n_positive": 29168,
+      "prevalence": 0.23375,
+      "pr_auc_detector": 0.263,
+      "pr_auc_floor": 0.2528,
+      "observed_margin": 0.010128,
+      "tests": [
+        {
+          "method": "iid window bootstrap (anti-conservative: windows overlap)",
+          "n_resamples_requested": 2000,
+          "n_resamples_used": 2000,
+          "n_resamples_skipped_no_positives": 0,
+          "resampling_unit": "124782 windows",
+          "observed_difference": 0.010128,
+          "bootstrap_mean_difference": 0.010151,
+          "bootstrap_std": 0.001168,
+          "ci95_low": 0.007921,
+          "ci95_high": 0.012448,
+          "ci95_excludes_zero": true,
+          "p_difference_gt_zero": 1.0
+        },
+        {
+          "method": "cluster bootstrap over targets (respects within-target dependence)",
+          "n_resamples_requested": 2000,
+          "n_resamples_used": 2000,
+          "n_resamples_skipped_no_positives": 0,
+          "resampling_unit": "13 targets",
+          "observed_difference": 0.010128,
+          "bootstrap_mean_difference": 0.01075,
+          "bootstrap_std": 0.006793,
+          "ci95_low": -0.000514,
+          "ci95_high": 0.025918,
+          "ci95_excludes_zero": false,
+          "p_difference_gt_zero": 0.9685
+        }
+      ]
+    }
+  ]
+}
