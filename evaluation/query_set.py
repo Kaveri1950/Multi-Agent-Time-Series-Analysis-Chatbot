@@ -167,6 +167,25 @@ QUERIES = [
     q("did anyone find a planet at KIC 5358624", "astronomy", AST,
       "astronomy.koi_lookup", ADVERSARIAL),
 
+    # ================= FINANCE : assess risk =================
+    # Distinct from detect_anomaly, which looks BACKWARDS at which days were
+    # odd, and from forecast_event_prob, which asks whether an EVENT will
+    # occur. These ask how much could be lost holding the thing. The last two
+    # are adversarial: both carry vocabulary the probability pattern claims
+    # ("chances", "safe"), and must still land on the risk model.
+    q("how risky is TCS", "finance", FIN, "finance.risk_profile", CANONICAL),
+    q("how risky is it to hold RELIANCE", "finance", FIN, "finance.risk_profile"),
+    q("what could I lose holding INFY", "finance", FIN, "finance.risk_profile"),
+    q("how much could I lose on HDFCBANK", "finance", FIN, "finance.risk_profile"),
+    q("show me the downside for SBIN", "finance", FIN, "finance.risk_profile"),
+    q("what is the maximum drawdown on WIPRO", "finance", FIN, "finance.risk_profile"),
+    q("value at risk for ITC", "finance", FIN, "finance.risk_profile"),
+    q("give me a risk profile for RELIANCE", "finance", FIN, "finance.risk_profile"),
+    q("is RELIANCE a safe stock to hold", "finance", FIN,
+      "finance.risk_profile", ADVERSARIAL),
+    q("what are the chances I lose money on TCS", "finance", FIN,
+      "finance.risk_profile", ADVERSARIAL),
+
     # ================= GENERAL : nothing should run =================
     q("what does RSI mean", "finance", FIN, None, GENERAL),
     q("what is a moving average", "finance", FIN, None, GENERAL),

@@ -47,7 +47,7 @@ ASSESS_RISK = "assess_risk"                          # how much could this lose
 TASKS = [
     FORECAST_VALUE, FORECAST_EVENT_PROBABILITY, FORECAST_EVENT_COUNT,
     DETECT_ANOMALY, EVALUATE_MODEL, COMPARE_MODELS, SCORE_SENTIMENT,
-    LOOKUP_FACT, EXTRACT_SERIES,
+    LOOKUP_FACT, EXTRACT_SERIES, ASSESS_RISK,
 ]
 
 TASK_DESCRIPTIONS = {
@@ -60,6 +60,7 @@ TASK_DESCRIPTIONS = {
     SCORE_SENTIMENT: "score text as positive/negative",
     LOOKUP_FACT: "retrieve an authoritative recorded fact, no modelling",
     EXTRACT_SERIES: "recover a time series from a plot image",
+    ASSESS_RISK: "how much could be lost holding this, and where that risk comes from",
 }
 
 

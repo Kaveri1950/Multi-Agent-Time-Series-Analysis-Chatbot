@@ -30,8 +30,8 @@ shortlist is built deterministically and the LLM only ever orders it.
 import json
 import re
 
-from agents.model_registry import (COMPARE_MODELS, DETECT_ANOMALY, EVALUATE_MODEL,
-                                   EXTRACT_SERIES, FORECAST_EVENT_COUNT,
+from agents.model_registry import (ASSESS_RISK, COMPARE_MODELS, DETECT_ANOMALY,
+                                   EVALUATE_MODEL, EXTRACT_SERIES, FORECAST_EVENT_COUNT,
                                    FORECAST_EVENT_PROBABILITY, FORECAST_VALUE,
                                    LOOKUP_FACT, REGISTRY, SCORE_SENTIMENT,
                                    TASK_DESCRIPTIONS, by_id, describe_for_prompt, feasible)
@@ -70,6 +70,42 @@ _TASK_PATTERNS: list[tuple[str, re.Pattern]] = [
     (DETECT_ANOMALY, re.compile(
         r"\b(anomal\w*|unusual|abnormal\w*|outliers?|suspicious|irregular\w*"
         r"|weird|strange|odd)\b", re.IGNORECASE)),
+
+    # ASSESS_RISK must be tested BEFORE forecast_event_prob, because that
+    # pattern claims the bare word "risk" and would otherwise swallow every
+    # risk-assessment query. The two are genuinely different questions:
+    #
+    #     forecast_event_prob : "risk of a geomagnetic storm"  -- will an
+    #                           EVENT occur?
+    #     assess_risk         : "how risky is TCS"             -- how much
+    #                           could I LOSE holding this?
+    #
+    # So this pattern deliberately never matches a bare "<noun> risk" or
+    # "risk of <event>". It requires either an explicit risk-assessment term
+    # (downside, drawdown, value at risk, expected shortfall), a "how
+    # risky/safe" construction, or risk paired with a holding/investing verb.
+    # Checked against the whole labelled set: it steals none of the existing
+    # 123 queries, including "risk of a geomagnetic storm" and
+    # "flare risk today", which stay on forecast_event_prob.
+    #
+    # Every "lose" is anchored with \b -- an unanchored one matches the "lose"
+    # inside "close", which would hijack "what will RELIANCE close at in
+    # 30 days" away from forecast_value.
+    (ASSESS_RISK, re.compile(
+        r"\bhow\s+risky\b|\briskiness\b"
+        r"|\bhow\s+(?:safe|dangerous)\s+is\b"
+        r"|\brisk\s+(?:profile|metrics?|assessment|exposure)\b"
+        r"|\brisk\s+of\s+(?:invest\w*|buy\w*|hold\w*|own\w*|putting)\b"
+        r"|\b(?:how\s+much|what)\s+(?:can|could|might)\s+i\s+lose\b"
+        r"|\bcould\s+i\s+lose\b|\bhow\s+much\s+.{0,20}\blose\b"
+        r"|\bdownside\b|\bdrawdown\b"
+        r"|\bvalue\s+at\s+risk\b|\bVaR\b|\bexpected\s+shortfall\b"
+        r"|\bworst[-\s]case\s+(?:loss|scenario)\b"
+        # up to two words between the adjective and the verb, so "a safe
+        # stock to hold" is caught as well as the bare "safe to hold"
+        r"|\b(?:safe|risky)\s+(?:\w+\s+){0,2}to\s+(?:hold|buy|invest|own)\b"
+        r"|\blos(?:e|ing)\s+money\b"
+        r"|\bhow\s+much\s+(?:risk|downside)\b", re.IGNORECASE)),
 
     (FORECAST_EVENT_PROBABILITY, re.compile(
         r"\b(chance|probability|likelihood|odds|risk)\b"
