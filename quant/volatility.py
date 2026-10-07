@@ -65,6 +65,9 @@ HAR_LAGS = (1, 5, 22)
 MIN_TRAIN = 500
 REFIT_EVERY = 21
 
+#: Every model scored in the comparison, naive first.
+MODELS = ("naive", "har", "log_har", "linear_ar")
+
 
 # ------------------------------------------------------------------ data
 def download_ohlc(top_n: int = DEFAULT_TOP_N, start: str = DEFAULT_START,
@@ -259,10 +262,66 @@ def diebold_mariano(loss_a: np.ndarray, loss_b: np.ndarray, h: int = 1) -> dict:
 
 
 __all__ = ["download_ohlc", "realized_vol", "walk_forward_ticker",
+           "forecast_frame", "qlike_series",
            "qlike", "mse", "diebold_mariano", "ESTIMATORS"]
 
 
 # ----------------------------------------------------------- evaluation
+def forecast_frame(estimator: str = "parkinson", top_n: int = DEFAULT_TOP_N,
+                   verbose: bool = False):
+    """Per-observation walk-forward forecasts for every ticker.
+
+    Returns (all_forecasts, per_ticker_losses). Kept separate from `run` so
+    the Model Confidence Set can work from the per-OBSERVATION loss series;
+    aggregated per-ticker numbers cannot support a bootstrap.
+    """
+    df = download_ohlc(top_n=top_n, verbose=verbose)
+    rv_all = realized_vol(df, estimator, verbose=verbose)
+
+    rows, per_ticker = [], []
+    for ticker, g in rv_all.groupby("ticker"):
+        series = g.set_index("date")["rv"].dropna()
+        har = walk_forward_ticker(series, log_space=False)
+        if har.empty:
+            continue
+        log_har = walk_forward_ticker(series, log_space=True)
+        if log_har.empty or len(log_har) != len(har):
+            continue
+        lin = walk_forward_linear(series)
+        if lin.empty:
+            continue
+        rec = har[["date", "actual", "naive"]].copy()
+        rec["har"] = har["pred"].to_numpy()
+        rec["log_har"] = log_har["pred"].to_numpy()
+        rec["ticker"] = ticker
+        # linear_ar needs `lookback` observations before its first forecast,
+        # so it starts later; inner-join on date keeps every model scored on
+        # exactly the same days, which the MCS requires.
+        rec = rec.merge(lin[["date", "pred"]].rename(columns={"pred": "linear_ar"}),
+                        on="date", how="inner")
+        if rec.empty:
+            continue
+        rows.append(rec)
+        per_ticker.append({
+            "ticker": ticker, "n": int(len(rec)),
+            **{f"qlike_{m}": qlike(rec["actual"].to_numpy(), rec[m].to_numpy())
+               for m in MODELS},
+            **{f"mse_{m}": mse(rec["actual"].to_numpy(), rec[m].to_numpy())
+               for m in MODELS},
+        })
+    if not rows:
+        raise SystemExit("no ticker produced enough history to evaluate")
+    return pd.concat(rows, ignore_index=True), pd.DataFrame(per_ticker)
+
+
+def qlike_series(actual, pred):
+    """Per-observation QLIKE loss, for bootstrap-based tests."""
+    a = np.clip(np.asarray(actual, float), 1e-12, None) ** 2
+    p = np.clip(np.asarray(pred, float), 1e-12, None) ** 2
+    r = a / p
+    return r - np.log(r) - 1.0
+
+
 def run(estimator: str = "parkinson", top_n: int = DEFAULT_TOP_N,
         verbose: bool = True) -> dict:
     """Walk-forward HAR, Log-HAR and naive on every ticker, then compare.
@@ -272,36 +331,9 @@ def run(estimator: str = "parkinson", top_n: int = DEFAULT_TOP_N,
     days, so it answers "which model handled the outliers" rather than
     "which model is better", which is the question being asked.
     """
-    df = download_ohlc(top_n=top_n, verbose=verbose)
-    rv_all = realized_vol(df, estimator, verbose=verbose)
-
-    rows, per_ticker = [], []
-    for ticker, g in rv_all.groupby("ticker"):
-        s = g.set_index("date")["rv"].dropna()
-        har = walk_forward_ticker(s, log_space=False)
-        if har.empty:
-            continue
-        log_har = walk_forward_ticker(s, log_space=True)
-        if log_har.empty or len(log_har) != len(har):
-            continue
-        rec = har[["date", "actual", "naive"]].copy()
-        rec["har"] = har["pred"].to_numpy()
-        rec["log_har"] = log_har["pred"].to_numpy()
-        rec["ticker"] = ticker
-        rows.append(rec)
-        per_ticker.append({
-            "ticker": ticker, "n": int(len(rec)),
-            **{f"qlike_{m}": qlike(rec["actual"].to_numpy(), rec[m].to_numpy())
-               for m in ("naive", "har", "log_har")},
-            **{f"mse_{m}": mse(rec["actual"].to_numpy(), rec[m].to_numpy())
-               for m in ("naive", "har", "log_har")},
-        })
-
-    if not rows:
-        raise SystemExit("no ticker produced enough history to evaluate")
-    allrec = pd.concat(rows, ignore_index=True)
-    pt = pd.DataFrame(per_ticker)
-    models = ("naive", "har", "log_har")
+    allrec, pt = forecast_frame(estimator=estimator, top_n=top_n, verbose=verbose)
+    per_ticker = pt.to_dict("records")
+    models = MODELS
 
     summary = {m: {
         "qlike_equal_weighted": float(pt[f"qlike_{m}"].mean()),
@@ -312,13 +344,11 @@ def run(estimator: str = "parkinson", top_n: int = DEFAULT_TOP_N,
 
     # Diebold-Mariano on the pooled per-observation QLIKE loss series.
     def loss(m):
-        a = np.clip(allrec["actual"].to_numpy(), 1e-12, None) ** 2
-        p = np.clip(allrec[m].to_numpy(), 1e-12, None) ** 2
-        r = a / p
-        return r - np.log(r) - 1.0
+        return qlike_series(allrec["actual"].to_numpy(), allrec[m].to_numpy())
 
     dm = {}
-    for a, b in (("har", "naive"), ("log_har", "naive"), ("log_har", "har")):
+    for a, b in (("har", "naive"), ("log_har", "naive"), ("log_har", "har"),
+                 ("linear_ar", "naive"), ("linear_ar", "har")):
         dm[f"{a}_vs_{b}"] = diebold_mariano(loss(a), loss(b))
 
     wins = {m: int((pt[f"qlike_{m}"] == pt[[f"qlike_{x}" for x in models]].min(axis=1)).sum())
@@ -374,6 +404,56 @@ def main():
     if args.refresh:
         download_ohlc(top_n=args.top_n, force=True)
     run(estimator=args.estimator, top_n=args.top_n)
+
+
+
+# ------------------------------------------------- unconstrained linear AR
+#: Lookback for the unconstrained linear model. 22 trading days matches HAR's
+#: longest component, so the two models see exactly the same history and
+#: differ only in how much freedom they have to use it.
+LINEAR_LOOKBACK = 22
+
+
+def walk_forward_linear(rv: pd.Series, lookback: int = LINEAR_LOOKBACK,
+                        min_train: int = MIN_TRAIN,
+                        refit_every: int = REFIT_EVERY) -> pd.DataFrame:
+    """OLS on the raw last-`lookback` values, refitted walk-forward.
+
+    This is HAR's constraint removed. HAR spends 3 parameters on fixed
+    daily/weekly/monthly averages; this spends `lookback` parameters and can
+    weight every individual lag however it likes, so it strictly contains HAR
+    as a special case and can only fit the training data better. Whether it
+    FORECASTS better is the question.
+
+    It also covers DLinear's function class. DLinear decomposes the window
+    into a moving-average trend plus a remainder and runs a linear layer over
+    each -- but both parts are fixed linear functions of the window, so the
+    sum of two linear heads over them is still a linear map of the raw
+    window. Fitted in closed form, as here, the decomposition is
+    algebraically redundant; it only changes anything once the optimiser is
+    gradient descent with regularisation, which at this sample size would add
+    tuning choices without adding evidence.
+    """
+    vals = rv.to_numpy(dtype=float)
+    idx = rv.index.to_numpy()
+    n = len(vals)
+    if n <= lookback + min_train + 1:
+        return pd.DataFrame()
+
+    X = np.column_stack([vals[lookback - 1 - k: n - 1 - k] for k in range(lookback)])
+    y = vals[lookback:]
+    dates = idx[lookback:]
+
+    preds = np.full(len(y), np.nan)
+    beta = None
+    for i in range(min_train, len(y)):
+        if beta is None or (i - min_train) % refit_every == 0:
+            beta = _ols(X[:i], y[:i])
+        preds[i] = float(_apply(beta, X[i:i + 1])[0])
+
+    out = pd.DataFrame({"date": dates, "actual": y, "pred": preds,
+                        "naive": X[:, 0]})
+    return out.dropna().reset_index(drop=True)
 
 
 if __name__ == "__main__":

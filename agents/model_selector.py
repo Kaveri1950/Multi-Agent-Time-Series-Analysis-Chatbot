@@ -243,9 +243,22 @@ Output strictly valid JSON and nothing else."""
 # Metrics where a HIGHER number is better. Anything else (RMSE, Brier, MAE)
 # is better when lower, and metrics from different families are not
 # comparable at all.
-_HIGHER_IS_BETTER = {"tss", "roc-auc", "auc", "interval coverage", "accuracy",
+_HIGHER_IS_BETTER = {"tss", "roc-auc", "auc", "accuracy",
                      "f1", "precision", "recall", "round-trip correlation"}
-_LOWER_IS_BETTER = {"rmse", "brier", "mae", "rmse delta"}
+_LOWER_IS_BETTER = {"rmse", "brier", "mae", "rmse delta", "qlike"}
+
+# Metrics that are neither. A CALIBRATION number is best when it sits ON its
+# target, not when it is large: 95% coverage of a nominal 80% interval is a
+# badly calibrated interval that is simply too wide, and ranking it above a
+# model sitting at 81% would pick the worse one.
+#
+# This class did not exist until two entries carried a coverage number at the
+# same time. While only the GP reported one, treating coverage as
+# higher-is-better was harmless; once ARIMA's measured coverage was also
+# registered, 0.8305 outranked 0.8250 and the selector switched 14 queries
+# to ARIMA -- even though 0.8250 is the CLOSER of the two to the 0.80 target
+# and therefore the better calibrated.
+_TARGET_METRICS = {"interval coverage": 0.80}
 
 
 def _skill_value(spec) -> float:
@@ -257,15 +270,19 @@ def _skill_value(spec) -> float:
     right model by luck; with a Brier score in the mix it would have chosen
     the worst one.
 
-    Lower-is-better metrics are negated so one sort works for both, and an
-    unmeasured or non-numeric entry sorts last rather than pretending to be
-    zero.
+    Three senses are handled, not two. Lower-is-better metrics are negated so
+    one sort works for both, calibration metrics are scored by DISTANCE FROM
+    THEIR TARGET, and an unmeasured or non-numeric entry sorts last rather
+    than pretending to be zero.
     """
     skill = spec.get("skill", {}) or {}
     value = skill.get("value")
     if not isinstance(value, (int, float)):
         return float("-inf")
     metric = str(skill.get("metric", "")).strip().lower()
+    if metric in _TARGET_METRICS:
+        # distance from target, negated so that nearer sorts higher
+        return -abs(float(value) - _TARGET_METRICS[metric])
     if metric in _LOWER_IS_BETTER:
         return -float(value)
     if metric in _HIGHER_IS_BETTER:

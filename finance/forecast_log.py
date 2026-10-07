@@ -45,8 +45,18 @@ LOG_PATH = CACHE_DIR / "forecast_log.parquet"
 
 # The universe logged daily. Small on purpose -- a GP fit is O(n^3) and this
 # runs once a day, so the cost is roughly a minute per ticker.
-DEFAULT_TICKERS = ["RELIANCE.NS", "TCS.NS", "INFY.NS", "HDFCBANK.NS",
-                   "SBIN.NS", "ITC.NS", "^NSEI"]
+#: The 20 most liquid names by trailing traded value, plus the index. Widened
+#: from 3 because coverage precision scales with sqrt(n): at 3 tickers the
+#: 95% interval on an 80% coverage rate is +/-7.2 points and reaching +/-3.5
+#: takes about eight months, whereas at 20 tickers it takes about five weeks.
+#: The universe is the same liquidity ranking the rest of the project uses,
+#: so this introduces no new selection choice.
+DEFAULT_TICKERS = ["RELIANCE.NS", "HDFCBANK.NS", "ICICIBANK.NS", "SBIN.NS",
+                   "BAJFINANCE.NS", "INFY.NS", "AXISBANK.NS", "BHARTIARTL.NS",
+                   "TCS.NS", "KOTAKBANK.NS", "TATASTEEL.NS", "MARUTI.NS",
+                   "INDUSINDBK.NS", "LT.NS", "ADANIENT.NS", "ITC.NS",
+                   "HINDUNILVR.NS", "SUNPHARMA.NS", "TITAN.NS", "NESTLEIND.NS",
+                   "^NSEI"]
 
 # GP training window. 500 points took ~44s to fit; the cubic cost means 2000
 # would take nearly an hour, and older data describes a different market

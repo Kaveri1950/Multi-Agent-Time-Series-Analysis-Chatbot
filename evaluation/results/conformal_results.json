@@ -1,0 +1,37 @@
+{
+  "generated_at": "2026-10-07T01:24:12+00:00",
+  "method": {
+    "alpha_target": 0.2,
+    "gamma": 0.02,
+    "warmup": 15,
+    "reference": "Gibbs & Candes 2021, adaptive conformal inference"
+  },
+  "models": {
+    "gpr": {
+      "n": 75,
+      "conformal": {
+        "coverage": 0.84,
+        "mean_width": 72.14530033307916
+      },
+      "parametric": {
+        "coverage": 0.84,
+        "mean_width": 75.4228013643324
+      },
+      "target_coverage": 0.8,
+      "width_ratio_conformal_over_parametric": 0.9565449575994777
+    },
+    "arima": {
+      "n": 73,
+      "conformal": {
+        "coverage": 0.7945205479452054,
+        "mean_width": 69.64785639152663
+      },
+      "parametric": {
+        "coverage": 0.863013698630137,
+        "mean_width": 71.77749229106047
+      },
+      "target_coverage": 0.8,
+      "width_ratio_conformal_over_parametric": 0.9703300319980798
+    }
+  }
+}

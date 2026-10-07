@@ -186,6 +186,26 @@ QUERIES = [
     q("what are the chances I lose money on TCS", "finance", FIN,
       "finance.risk_profile", ADVERSARIAL),
 
+    # ================= FINANCE : forecast volatility =================
+    # Distinct from forecast_value, which wants a PRICE, and from
+    # assess_risk, which looks at what could be lost holding a position.
+    # These ask how big the moves will be. The last two are adversarial:
+    # "unusual volatility" belongs to detect_anomaly and "what is volatility"
+    # is definitional, so the pattern has to want a forward-looking cue
+    # rather than the bare word.
+    q("how volatile will TCS be tomorrow", "finance", FIN,
+      "finance.har_volatility", CANONICAL),
+    q("forecast the volatility of RELIANCE", "finance", FIN, "finance.har_volatility"),
+    q("volatility forecast for INFY", "finance", FIN, "finance.har_volatility"),
+    q("what is the expected volatility of HDFCBANK", "finance", FIN,
+      "finance.har_volatility"),
+    q("predict volatility for SBIN", "finance", FIN, "finance.har_volatility"),
+    q("how volatile is WIPRO going to be", "finance", FIN, "finance.har_volatility"),
+    q("give me the realized volatility outlook for ITC", "finance", FIN,
+      "finance.har_volatility"),
+    q("how big are the moves going to be in TCS", "finance", FIN,
+      "finance.har_volatility", ADVERSARIAL),
+
     # ================= GENERAL : nothing should run =================
     q("what does RSI mean", "finance", FIN, None, GENERAL),
     q("what is a moving average", "finance", FIN, None, GENERAL),

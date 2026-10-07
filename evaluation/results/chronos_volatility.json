@@ -1,0 +1,68 @@
+{
+  "generated_at": "2026-10-07T01:34:49+00:00",
+  "model": "amazon/chronos-bolt-small",
+  "context_length": 64,
+  "zero_shot": true,
+  "estimator": "parkinson",
+  "n_tickers": 12,
+  "n_forecasts": 16080,
+  "seconds_total": 73.5,
+  "seconds_per_1000_forecasts": 4.57,
+  "summary": {
+    "naive": {
+      "qlike_pooled": 0.8365135842667532
+    },
+    "har": {
+      "qlike_pooled": 0.43061284030741637
+    },
+    "log_har": {
+      "qlike_pooled": 0.43369212753442643
+    },
+    "linear_ar": {
+      "qlike_pooled": 0.5025457320120938
+    },
+    "chronos": {
+      "qlike_pooled": 0.6445085561240385
+    }
+  },
+  "mcs": {
+    "mcs": [
+      "har",
+      "log_har"
+    ],
+    "eliminated": [
+      {
+        "model": "naive",
+        "t_stat": 14.534424539870468,
+        "p_value": 0.0,
+        "n_alive_before": 5
+      },
+      {
+        "model": "chronos",
+        "t_stat": 5.966079624791527,
+        "p_value": 0.0,
+        "n_alive_before": 4
+      },
+      {
+        "model": "linear_ar",
+        "t_stat": 7.28781968884889,
+        "p_value": 0.0,
+        "n_alive_before": 3
+      }
+    ],
+    "alpha": 0.05,
+    "n_obs": 16080,
+    "n_models": 5,
+    "block_length": 22,
+    "n_bootstrap": 2000,
+    "seed": 0,
+    "mean_loss": {
+      "naive": 0.8365135842667532,
+      "har": 0.43061284030741637,
+      "log_har": 0.43369212753442643,
+      "linear_ar": 0.5025457320120938,
+      "chronos": 0.6445085561240385
+    },
+    "best_by_mean_loss": "har"
+  }
+}

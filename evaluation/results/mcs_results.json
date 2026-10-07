@@ -1,0 +1,77 @@
+{
+  "generated_at": "2026-10-07T01:27:50+00:00",
+  "targets": {
+    "volatility": {
+      "mcs": [
+        "har",
+        "log_har"
+      ],
+      "eliminated": [
+        {
+          "model": "naive",
+          "t_stat": 32.91426634995451,
+          "p_value": 0.0,
+          "n_alive_before": 4
+        },
+        {
+          "model": "linear_ar",
+          "t_stat": 5.241242649067525,
+          "p_value": 0.0,
+          "n_alive_before": 3
+        }
+      ],
+      "alpha": 0.05,
+      "n_obs": 59661,
+      "n_models": 4,
+      "block_length": 22,
+      "n_bootstrap": 2000,
+      "seed": 0,
+      "mean_loss": {
+        "naive": 0.779466845533482,
+        "har": 0.4037040686456713,
+        "log_har": 0.4051261832155938,
+        "linear_ar": 0.48739872006890683
+      },
+      "best_by_mean_loss": "har",
+      "loss": "QLIKE",
+      "n_tickers": 48,
+      "span": [
+        "2021-02-11",
+        "2026-10-05"
+      ]
+    },
+    "price": {
+      "mcs": [
+        "naive",
+        "arima"
+      ],
+      "eliminated": [
+        {
+          "model": "gpr",
+          "t_stat": 3.311138583386686,
+          "p_value": 0.001,
+          "n_alive_before": 3
+        }
+      ],
+      "alpha": 0.05,
+      "n_obs": 118,
+      "n_models": 3,
+      "block_length": 5,
+      "n_bootstrap": 2000,
+      "seed": 0,
+      "mean_loss": {
+        "naive": 20.970335879568328,
+        "gpr": 25.73397212896285,
+        "arima": 20.941766559572635
+      },
+      "best_by_mean_loss": "arima",
+      "loss": "absolute error",
+      "n_tickers": 3,
+      "span": [
+        "2026-07-23",
+        "2026-09-16"
+      ],
+      "n_dropped_arima_failed": 2
+    }
+  }
+}
