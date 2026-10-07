@@ -1,0 +1,129 @@
+{
+  "generated_at": "2026-10-07T15:39:07+00:00",
+  "estimator": "parkinson",
+  "seq_len": 22,
+  "hidden": 32,
+  "epochs": 15,
+  "refit_days": 252,
+  "pooled": true,
+  "n_forecasts": 58874,
+  "n_models": 11,
+  "summary": {
+    "naive": {
+      "qlike": 0.7812816081984997,
+      "mse": 0.02838735058996582
+    },
+    "har": {
+      "qlike": 0.4049730805293141,
+      "mse": 0.019335559205649194
+    },
+    "har_l": {
+      "qlike": 0.40786845609896827,
+      "mse": 0.01939162597377702
+    },
+    "har_iv": {
+      "qlike": 0.4091580905521572,
+      "mse": 0.019254035932058995
+    },
+    "har_iv_l": {
+      "qlike": 0.4115669045013716,
+      "mse": 0.01931286174211424
+    },
+    "har_ovn": {
+      "qlike": 0.40424663848172704,
+      "mse": 0.01960337353899368
+    },
+    "spline_har": {
+      "qlike": 0.4114492808466181,
+      "mse": 0.019516129963511035
+    },
+    "pooled_har": {
+      "qlike": 0.4149642366977457,
+      "mse": 0.019233601858705547
+    },
+    "gbm": {
+      "qlike": 0.41905297949207687,
+      "mse": 0.01934931157208685
+    },
+    "lstm": {
+      "qlike": 0.4169612989484158,
+      "mse": 0.019054885255439944
+    },
+    "bilstm": {
+      "qlike": 0.41728931122191204,
+      "mse": 0.019072321504679853
+    }
+  },
+  "mcs": {
+    "mcs": [
+      "har",
+      "har_l",
+      "har_iv",
+      "har_ovn"
+    ],
+    "eliminated": [
+      {
+        "model": "naive",
+        "t_stat": 29.380592942950845,
+        "p_value": 0.0,
+        "n_alive_before": 11
+      },
+      {
+        "model": "gbm",
+        "t_stat": 4.73543558502166,
+        "p_value": 0.0005,
+        "n_alive_before": 10
+      },
+      {
+        "model": "bilstm",
+        "t_stat": 4.600342178108656,
+        "p_value": 0.0,
+        "n_alive_before": 9
+      },
+      {
+        "model": "lstm",
+        "t_stat": 3.927874091692152,
+        "p_value": 0.0015,
+        "n_alive_before": 8
+      },
+      {
+        "model": "pooled_har",
+        "t_stat": 3.862273184480106,
+        "p_value": 0.0015,
+        "n_alive_before": 7
+      },
+      {
+        "model": "har_iv_l",
+        "t_stat": 3.157465038194176,
+        "p_value": 0.004,
+        "n_alive_before": 6
+      },
+      {
+        "model": "spline_har",
+        "t_stat": 2.8801880471964667,
+        "p_value": 0.012,
+        "n_alive_before": 5
+      }
+    ],
+    "alpha": 0.05,
+    "n_obs": 58874,
+    "n_models": 11,
+    "block_length": 22,
+    "n_bootstrap": 2000,
+    "seed": 0,
+    "mean_loss": {
+      "naive": 0.7812816081984997,
+      "har": 0.4049730805293141,
+      "har_l": 0.40786845609896827,
+      "har_iv": 0.4091580905521572,
+      "har_iv_l": 0.4115669045013716,
+      "har_ovn": 0.40424663848172704,
+      "spline_har": 0.4114492808466181,
+      "pooled_har": 0.4149642366977457,
+      "gbm": 0.41905297949207687,
+      "lstm": 0.4169612989484158,
+      "bilstm": 0.41728931122191204
+    },
+    "best_by_mean_loss": "har_ovn"
+  }
+}

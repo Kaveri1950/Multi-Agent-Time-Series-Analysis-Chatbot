@@ -161,6 +161,54 @@ class HampelMAD(Detector):
         return np.abs(windows - self._med).max(axis=1) / self._scale
 
 
+class CusumDetector(Detector):
+    """Cumulative sum control chart (Page 1954), the classical change detector.
+
+    Every other threshold detector here asks whether any SINGLE point is far
+    from normal. CUSUM asks a different question: has a run of small
+    deviations, none alarming on its own, accumulated into evidence that the
+    level has shifted? That is the regime-change case, and a per-point
+    threshold is blind to it by construction -- twenty days each 0.4 sigma
+    high trip nothing, while their cumulative sum is unmistakable.
+
+    Two one-sided sums are tracked, so an upward and a downward shift are
+    both caught:
+
+        S+ = max(0, S+ + (x - mu) / sigma - k)
+        S- = max(0, S- - (x - mu) / sigma - k)
+
+    `k` is the slack, in standard deviations. It is the drift the chart is
+    willing to ignore, and the conventional choice is half the shift you want
+    to detect; 0.5 therefore targets a one-sigma move. The window's score is
+    the largest value either sum reaches.
+
+    mu and sigma come from the TRAINING windows, not from the window being
+    scored -- a chart calibrated on the data it is judging would absorb the
+    shift into its own reference level and report nothing.
+    """
+
+    name, group = "cusum", "threshold"
+
+    def __init__(self, k: float = 0.5):
+        self.k = k
+
+    def _fit(self, windows, y=None):
+        flat = windows.ravel()
+        self._mu = float(np.mean(flat))
+        self._sigma = float(np.std(flat)) or 1.0
+
+    def _score(self, windows):
+        z = (windows - self._mu) / self._sigma
+        pos = np.zeros(len(windows))
+        neg = np.zeros(len(windows))
+        worst = np.zeros(len(windows))
+        for j in range(z.shape[1]):
+            pos = np.maximum(0.0, pos + z[:, j] - self.k)
+            neg = np.maximum(0.0, neg - z[:, j] - self.k)
+            worst = np.maximum(worst, np.maximum(pos, neg))
+        return worst
+
+
 # ---------------------------------------------------------------- density
 
 
@@ -453,7 +501,7 @@ def default_detectors(include_finance_only: bool = False,
     dets: list[Detector] = [
         RawInput(), UntrainedAutoencoder(),
         MovingVariance(), SquaredDifference(),
-        RollingZScore(), HampelMAD(),
+        RollingZScore(), HampelMAD(), CusumDetector(),
         IsolationForestDetector(), MahalanobisDetector(),
         LocalOutlierFactorDetector(), EllipticEnvelopeDetector(), OneClassSVMDetector(),
         LinearAutoencoder(), LatentIsolationForest(), SpectralPCADetector(),
