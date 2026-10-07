@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-07T03:39:19+00:00",
+  "generated_at": "2026-10-07T13:01:42+00:00",
   "estimator": "parkinson",
   "overnight_in_target": false,
   "protocol": {
@@ -38,6 +38,10 @@
       "qlike": 0.403304426473616,
       "mse": 0.01962849501828918
     },
+    "spline_har": {
+      "qlike": 0.4101509836500865,
+      "mse": 0.01953250150024036
+    },
     "pooled_har": {
       "qlike": 0.413640620344511,
       "mse": 0.01925206015421052
@@ -57,32 +61,38 @@
     "eliminated": [
       {
         "model": "naive",
-        "t_stat": 30.04846948988288,
+        "t_stat": 29.99543698819492,
+        "p_value": 0.0,
+        "n_alive_before": 9
+      },
+      {
+        "model": "gbm",
+        "t_stat": 4.7468609985692005,
         "p_value": 0.0,
         "n_alive_before": 8
       },
       {
-        "model": "gbm",
-        "t_stat": 4.8284806644243705,
-        "p_value": 0.0,
+        "model": "pooled_har",
+        "t_stat": 3.7633964406752005,
+        "p_value": 0.0025,
         "n_alive_before": 7
       },
       {
-        "model": "pooled_har",
-        "t_stat": 3.8808640397990564,
-        "p_value": 0.0005,
+        "model": "har_iv_l",
+        "t_stat": 3.035769299391833,
+        "p_value": 0.009,
         "n_alive_before": 6
       },
       {
-        "model": "har_iv_l",
-        "t_stat": 4.130418534232198,
-        "p_value": 0.0005,
+        "model": "spline_har",
+        "t_stat": 2.7756323533023113,
+        "p_value": 0.017,
         "n_alive_before": 5
       }
     ],
     "alpha": 0.05,
     "n_obs": 59709,
-    "n_models": 8,
+    "n_models": 9,
     "block_length": 22,
     "n_bootstrap": 2000,
     "seed": 0,
@@ -93,6 +103,7 @@
       "har_iv": 0.40792911865418824,
       "har_iv_l": 0.41044686855182955,
       "har_ovn": 0.403304426473616,
+      "spline_har": 0.4101509836500865,
       "pooled_har": 0.413640620344511,
       "gbm": 0.41763672220117104
     },

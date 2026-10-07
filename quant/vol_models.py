@@ -63,10 +63,15 @@ FEATURE_SETS = {
     "har_iv":     ["rv_1", "rv_5", "rv_22", "vix"],
     "har_iv_l":   ["rv_1", "rv_5", "rv_22", "vix", "lev"],
     "har_ovn":    ["rv_1", "rv_5", "rv_22", "ovn"],
+    "spline_har": ["rv_1", "rv_5", "rv_22"],
     "pooled_har": ["rv_1", "rv_5", "rv_22"],
     "gbm":        ["rv_1", "rv_5", "rv_22", "lev", "vix", "ovn"],
 }
 POOLED = {"pooled_har"}
+#: Fitted on a natural-cubic-spline expansion of the same three features.
+SPLINE = {"spline_har"}
+#: Internal knot positions, as quantiles of the TRAINING data only.
+SPLINE_KNOTS = (0.05, 0.275, 0.5, 0.725, 0.95)
 NONLINEAR = {"gbm"}
 
 
@@ -141,6 +146,55 @@ def build_features(estimator: str = "parkinson", top_n: int = DEFAULT_TOP_N,
 
 
 # ------------------------------------------------------------- estimation
+def _ncs_basis(x: np.ndarray, knots: np.ndarray) -> np.ndarray:
+    """Natural cubic spline basis for one column (Hastie & Tibshirani 5.2.1).
+
+    Natural rather than unrestricted cubic: the fit is forced linear beyond
+    the outer knots. Volatility is heavy-tailed, so an unrestricted cubic
+    would swing wildly on the handful of extreme days at the edges and those
+    days dominate the loss.
+
+    Returns len(knots) - 1 columns: the linear term plus the curvature terms.
+    """
+    k = np.asarray(knots, dtype=float)
+    K = len(k)
+    if K < 3:
+        return x.reshape(-1, 1)
+
+    def d(j):
+        denom = k[K - 1] - k[j]
+        if denom <= 0:
+            return np.zeros_like(x)
+        return (np.maximum(x - k[j], 0.0) ** 3
+                - np.maximum(x - k[K - 1], 0.0) ** 3) / denom
+
+    cols = [x]
+    dK = d(K - 2)
+    for j in range(K - 2):
+        cols.append(d(j) - dK)
+    return np.column_stack(cols)
+
+
+def _spline_design(X: np.ndarray, knot_sets: list) -> np.ndarray:
+    """Expand every feature column into its own spline basis, additively."""
+    return np.column_stack([_ncs_basis(X[:, j], knot_sets[j])
+                            for j in range(X.shape[1])])
+
+
+def _spline_knots(X: np.ndarray) -> list:
+    """Knots from the training sample only, de-duplicated.
+
+    Computed inside the walk-forward loop rather than once up front: knots
+    placed using the whole sample would be look-ahead bias, since where the
+    curve bends would then depend on days not yet observed.
+    """
+    sets = []
+    for j in range(X.shape[1]):
+        k = np.unique(np.quantile(X[:, j], SPLINE_KNOTS))
+        sets.append(k if len(k) >= 3 else np.unique(np.quantile(X[:, j], (0.1, 0.5, 0.9))))
+    return sets
+
+
 def _ols_fit(X: np.ndarray, y: np.ndarray) -> np.ndarray:
     A = np.column_stack([np.ones(len(X)), X])
     beta, *_ = np.linalg.lstsq(A, y, rcond=None)
@@ -191,16 +245,22 @@ def walk_forward(frame: pd.DataFrame, model: str, min_train: int = MIN_TRAIN,
                         else _ols_apply(fitted, Xte))
         return preds
 
+    is_spline = model in SPLINE
     for ticker, g in frame.groupby("ticker"):
         idx = g.index.to_numpy()
         X, y = g[feats].to_numpy(float), g["target"].to_numpy(float)
         if len(g) <= min_train:
             continue
-        beta = None
+        beta, knots = None, None
         for i in range(min_train, len(g)):
             if beta is None or (i - min_train) % refit_every == 0:
-                beta = _ols_fit(X[:i], y[:i])
-            preds[idx[i]] = float(_ols_apply(beta, X[i:i + 1])[0])
+                if is_spline:
+                    knots = _spline_knots(X[:i])
+                    beta = _ols_fit(_spline_design(X[:i], knots), y[:i])
+                else:
+                    beta = _ols_fit(X[:i], y[:i])
+            xi = _spline_design(X[i:i + 1], knots) if is_spline else X[i:i + 1]
+            preds[idx[i]] = float(_ols_apply(beta, xi)[0])
     return preds
 
 

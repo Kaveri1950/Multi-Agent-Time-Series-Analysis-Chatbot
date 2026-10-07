@@ -1,0 +1,130 @@
+{
+  "generated_at": "2026-10-07T12:36:06+00:00",
+  "estimator": "parkinson",
+  "n_forecasts": 59709,
+  "n_tickers": 48,
+  "n_models": 11,
+  "summary": {
+    "naive": {
+      "qlike": 0.7793548101017774,
+      "mse": 0.028453086139673036
+    },
+    "har": {
+      "qlike": 0.4037698242646239,
+      "mse": 0.019355295535528096
+    },
+    "har_l": {
+      "qlike": 0.4068059027469093,
+      "mse": 0.01942199871008816
+    },
+    "har_iv": {
+      "qlike": 0.40792911865418824,
+      "mse": 0.0192881342971476
+    },
+    "har_iv_l": {
+      "qlike": 0.41044686855182955,
+      "mse": 0.01935632377644285
+    },
+    "har_ovn": {
+      "qlike": 0.403304426473616,
+      "mse": 0.01962849501828918
+    },
+    "pooled_har": {
+      "qlike": 0.413640620344511,
+      "mse": 0.01925206015421052
+    },
+    "gbm": {
+      "qlike": 0.41763672220117104,
+      "mse": 0.019372457952748126
+    },
+    "garch": {
+      "qlike": 0.5460752566814823,
+      "mse": 0.040598006999202865
+    },
+    "gjr_garch": {
+      "qlike": 0.5452861052148867,
+      "mse": 0.042180626027048466
+    },
+    "carr": {
+      "qlike": 0.5193159024695893,
+      "mse": 0.0258096771685725
+    }
+  },
+  "mcs": {
+    "mcs": [
+      "har",
+      "har_l",
+      "har_iv",
+      "har_ovn"
+    ],
+    "eliminated": [
+      {
+        "model": "naive",
+        "t_stat": 25.585923018748716,
+        "p_value": 0.0,
+        "n_alive_before": 11
+      },
+      {
+        "model": "gjr_garch",
+        "t_stat": 21.745282996022862,
+        "p_value": 0.0,
+        "n_alive_before": 10
+      },
+      {
+        "model": "garch",
+        "t_stat": 21.078085578994784,
+        "p_value": 0.0,
+        "n_alive_before": 9
+      },
+      {
+        "model": "carr",
+        "t_stat": 10.49668603881076,
+        "p_value": 0.0,
+        "n_alive_before": 8
+      },
+      {
+        "model": "gbm",
+        "t_stat": 4.8284806644243705,
+        "p_value": 0.0,
+        "n_alive_before": 7
+      },
+      {
+        "model": "pooled_har",
+        "t_stat": 3.8808640397990564,
+        "p_value": 0.0005,
+        "n_alive_before": 6
+      },
+      {
+        "model": "har_iv_l",
+        "t_stat": 4.130418534232198,
+        "p_value": 0.0005,
+        "n_alive_before": 5
+      }
+    ],
+    "alpha": 0.05,
+    "n_obs": 59709,
+    "n_models": 11,
+    "block_length": 22,
+    "n_bootstrap": 2000,
+    "seed": 0,
+    "mean_loss": {
+      "naive": 0.7793548101017774,
+      "har": 0.4037698242646239,
+      "har_l": 0.4068059027469093,
+      "har_iv": 0.40792911865418824,
+      "har_iv_l": 0.41044686855182955,
+      "har_ovn": 0.403304426473616,
+      "pooled_har": 0.413640620344511,
+      "gbm": 0.41763672220117104,
+      "garch": 0.5460752566814823,
+      "gjr_garch": 0.5452861052148867,
+      "carr": 0.5193159024695893
+    },
+    "best_by_mean_loss": "har_ovn"
+  },
+  "garch_fallback_fits": {
+    "garch": 0,
+    "gjr_garch": 0
+  },
+  "note": "GARCH forecasts return variance while the target is a range-based realized volatility; both estimate the same latent quantity but GARCH is scored on a proxy it was not fitted to. CARR has no such mismatch, being fitted on the range itself."
+}
