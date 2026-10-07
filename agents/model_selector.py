@@ -31,6 +31,7 @@ import json
 import re
 
 from agents.model_registry import (ASSESS_RISK, COMPARE_MODELS, DETECT_ANOMALY,
+                                   FORECAST_VOLATILITY,
                                    EVALUATE_MODEL, EXTRACT_SERIES, FORECAST_EVENT_COUNT,
                                    FORECAST_EVENT_PROBABILITY, FORECAST_VALUE,
                                    LOOKUP_FACT, REGISTRY, SCORE_SENTIMENT,
@@ -114,6 +115,23 @@ _TASK_PATTERNS: list[tuple[str, re.Pattern]] = [
     (SCORE_SENTIMENT, re.compile(
         r"\b(sentiment|news|headlines?|mood|market\s+feeling)\b"
         r"|\bwhat\s+are\s+people\s+saying\b", re.IGNORECASE)),
+
+    # FORECAST_VOLATILITY sits immediately before forecast_value, because
+    # "forecast the volatility of TCS" is a forecast and would otherwise be
+    # answered with a PRICE model. It must never fire on the bare word
+    # "volatility": "unusual volatility in the Nifty" is an anomaly question
+    # (and detect_anomaly claims it earlier anyway), and "explain what
+    # volatility is" is definitional and must still reach no model at all.
+    # So every branch here pairs volatility with an explicit forward-looking
+    # cue, or uses the "how volatile" construction which is inherently one.
+    (FORECAST_VOLATILITY, re.compile(
+        r"\bhow\s+volatile\b"
+        r"|\bvolatility\s+(?:forecast|prediction|outlook)\b"
+        r"|\b(?:forecast|predict|project)\w*\s+(?:the\s+)?volatility\b"
+        r"|\bexpected\s+volatility\b"
+        r"|\bvolatility\s+(?:tomorrow|today|next\s+\w+)\b"
+        r"|\b(?:realized|realised)\s+volatility\b"
+        r"|\bhow\s+(?:big|large)\s+.{0,20}\bmoves?\b", re.IGNORECASE)),
 
     (FORECAST_VALUE, re.compile(
         # "close", "trade" and "open" belong here: "what will TCS close at

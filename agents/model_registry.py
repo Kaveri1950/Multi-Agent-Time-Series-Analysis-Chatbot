@@ -43,11 +43,12 @@ SCORE_SENTIMENT = "score_sentiment"                  # text -> score
 LOOKUP_FACT = "lookup_fact"                          # authoritative record
 EXTRACT_SERIES = "extract_series"                    # image -> time series
 ASSESS_RISK = "assess_risk"                          # how much could this lose
+FORECAST_VOLATILITY = "forecast_volatility"          # how big the moves will be
 
 TASKS = [
     FORECAST_VALUE, FORECAST_EVENT_PROBABILITY, FORECAST_EVENT_COUNT,
     DETECT_ANOMALY, EVALUATE_MODEL, COMPARE_MODELS, SCORE_SENTIMENT,
-    LOOKUP_FACT, EXTRACT_SERIES, ASSESS_RISK,
+    LOOKUP_FACT, EXTRACT_SERIES, ASSESS_RISK, FORECAST_VOLATILITY,
 ]
 
 TASK_DESCRIPTIONS = {
@@ -61,6 +62,7 @@ TASK_DESCRIPTIONS = {
     LOOKUP_FACT: "retrieve an authoritative recorded fact, no modelling",
     EXTRACT_SERIES: "recover a time series from a plot image",
     ASSESS_RISK: "how much could be lost holding this, and where that risk comes from",
+    FORECAST_VOLATILITY: "how big the moves will be, not which direction",
 }
 
 
@@ -96,10 +98,17 @@ REGISTRY: list[ModelSpec] = [
                        "Genuinely forward-looking, not a backtest.",
         "requires": ["ticker", "horizon_days"],
         "returns": "predicted prices + confidence interval + chart",
-        "skill": {"metric": "RMSE", "value": "per-ticker, reported at query time",
-                  "note": "no fixed score -- accuracy depends on the series"},
+        "skill": {"metric": "interval coverage", "value": 0.8305,
+                  "note": "the close fell inside the 80% interval 83.1% of the time over 118 "
+                          "walk-forward days (95% CI 0.750-0.893, p=0.49 against the 80% "
+                          "target) -- as well calibrated as the GP, which had this registered "
+                          "and ARIMA did not. On POINT accuracy it ties the naive baseline "
+                          "(MAE 20.94 vs 20.88, Wilcoxon p=0.79). Failed to fit on 2 of 120 "
+                          "days. Per-ticker RMSE is still reported at query time."},
         "when_to_use": "the user asks what a price WILL BE at some future date",
-        "when_not_to_use": "the user asks how accurate the model is, or about past behaviour",
+        "when_not_to_use": "the user asks how accurate the model is, or about past behaviour. "
+                           "Beyond a few days the horizon is UNEVIDENCED -- every measurement "
+                           "behind the skill value above is one step ahead",
         "cost": "medium",
         "entry_point": "finance.price_model.forecast_future",
     },
@@ -146,15 +155,43 @@ REGISTRY: list[ModelSpec] = [
         "returns": "point forecast + 80% interval + naive baseline + measured track record",
         "skill": {"metric": "interval coverage", "value": 0.825,
                   "note": "WELL CALIBRATED -- the actual close fell inside the 80% interval 82.5% "
-                          "of the time over 120 walk-forward days. But it does NOT beat the naive "
-                          "baseline on point accuracy (RMSE ratio 1.22) and its directional "
-                          "accuracy is 0.44, below chance. Use it for the interval, not the point."},
+                          "of the time over 120 walk-forward days (95% CI 0.745-0.888, p=0.57 against "
+                          "the 80% target). But it does NOT beat the naive baseline on point "
+                          "accuracy (RMSE ratio 1.22, Wilcoxon p=0.0001) and its directional "
+                          "accuracy of 0.44 is NOT distinguishable from chance (95% CI "
+                          "0.351-0.535, p=0.24). Use it for the interval, not the point."},
         "when_to_use": "the user wants a next-day price with an honest uncertainty range, or asks "
                        "how confident the forecast is",
         "when_not_to_use": "for a multi-day horizon (the log stores one step ahead), and never as "
                            "grounds for a trading decision -- it cannot beat assuming no change",
         "cost": "fast",
         "entry_point": "finance.forecast_log.latest",
+    },
+    {
+        "id": "finance.har_volatility",
+        "name": "HAR realized-volatility forecast",
+        "domain": "finance", "task": FORECAST_VOLATILITY,
+        "method_family": "statistical",
+        "description": "Next-day realized volatility from the daily, weekly and monthly "
+                       "averages of past volatility (Corsi's HAR), with volatility estimated "
+                       "from the daily high-low range so no paid intraday feed is needed. "
+                       "Reports the naive carry-forward baseline alongside it.",
+        "requires": ["ticker"],
+        "returns": "next-day annualised volatility + naive baseline + measured track record",
+        "skill": {"metric": "QLIKE", "value": 0.4105,
+                  "note": "BEATS ITS BASELINE, which nothing else in this registry does: naive "
+                          "carry-forward scores 0.7820, so HAR cuts the loss 47%, and naive is "
+                          "the best model on 0 of 48 tickers. Diebold-Mariano -38.69, p < 1e-16 "
+                          "over 59,709 strictly-causal walk-forward forecasts. Reproduces on all "
+                          "three range estimators (Garman-Klass 0.340, Rogers-Satchell 0.368). "
+                          "Log-HAR is statistically INDISTINGUISHABLE (p=0.12), so it is not "
+                          "registered separately."},
+        "when_to_use": "the user asks how volatile a stock will be, or wants a volatility or "
+                       "risk-of-movement forecast",
+        "when_not_to_use": "for a price or a direction -- volatility says how BIG the move will "
+                           "be, never which way. Returns themselves stay unforecastable here",
+        "cost": "fast",
+        "entry_point": "quant.volatility.walk_forward_ticker",
     },
     {
         "id": "finance.anomaly_detectors",
