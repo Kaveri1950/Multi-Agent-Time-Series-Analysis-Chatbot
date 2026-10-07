@@ -1,0 +1,106 @@
+{
+  "generated_at": "2026-10-07T03:42:19+00:00",
+  "estimator": "parkinson",
+  "overnight_in_target": true,
+  "protocol": {
+    "min_train": 500,
+    "refit_every": 21,
+    "walk_forward": "expanding, cut by date, strictly causal"
+  },
+  "n_forecasts": 59709,
+  "n_tickers": 48,
+  "span": [
+    "2021-02-10",
+    "2026-10-05"
+  ],
+  "summary": {
+    "naive": {
+      "qlike": 0.804530852216984,
+      "mse": 0.04681964128478179
+    },
+    "har": {
+      "qlike": 0.4647836043751959,
+      "mse": 0.031039436426183124
+    },
+    "har_l": {
+      "qlike": 0.466121011969692,
+      "mse": 0.031062672297664486
+    },
+    "har_iv": {
+      "qlike": 0.4772265790662707,
+      "mse": 0.030665964100782657
+    },
+    "har_iv_l": {
+      "qlike": 0.4780718520359471,
+      "mse": 0.030700294130492023
+    },
+    "har_ovn": {
+      "qlike": 0.46524684688664275,
+      "mse": 0.03105863059356447
+    },
+    "pooled_har": {
+      "qlike": 0.47420616168814067,
+      "mse": 0.031014133614887644
+    },
+    "gbm": {
+      "qlike": 0.4795290466821859,
+      "mse": 0.030298563381705987
+    }
+  },
+  "mcs": {
+    "mcs": [
+      "har",
+      "har_l",
+      "har_ovn"
+    ],
+    "eliminated": [
+      {
+        "model": "naive",
+        "t_stat": 22.902152893057945,
+        "p_value": 0.0,
+        "n_alive_before": 8
+      },
+      {
+        "model": "gbm",
+        "t_stat": 2.867581549337902,
+        "p_value": 0.0145,
+        "n_alive_before": 7
+      },
+      {
+        "model": "har_iv_l",
+        "t_stat": 3.6149053084644294,
+        "p_value": 0.0005,
+        "n_alive_before": 6
+      },
+      {
+        "model": "har_iv",
+        "t_stat": 3.3184816525413976,
+        "p_value": 0.0015,
+        "n_alive_before": 5
+      },
+      {
+        "model": "pooled_har",
+        "t_stat": 4.326992823100202,
+        "p_value": 0.0,
+        "n_alive_before": 4
+      }
+    ],
+    "alpha": 0.05,
+    "n_obs": 59709,
+    "n_models": 8,
+    "block_length": 22,
+    "n_bootstrap": 2000,
+    "seed": 0,
+    "mean_loss": {
+      "naive": 0.804530852216984,
+      "har": 0.4647836043751959,
+      "har_l": 0.466121011969692,
+      "har_iv": 0.4772265790662707,
+      "har_iv_l": 0.4780718520359471,
+      "har_ovn": 0.46524684688664275,
+      "pooled_har": 0.47420616168814067,
+      "gbm": 0.4795290466821859
+    },
+    "best_by_mean_loss": "har"
+  }
+}

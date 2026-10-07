@@ -1,0 +1,102 @@
+{
+  "grid": [
+    {
+      "min_train": 250,
+      "refit_every": 21,
+      "n_forecasts": 72111,
+      "har_qlike": 0.427042994230778,
+      "best_model": "har_iv",
+      "best_qlike": 0.4190817927857138,
+      "mcs": [
+        "har",
+        "har_l",
+        "har_iv",
+        "har_iv_l",
+        "har_ovn",
+        "pooled_har",
+        "gbm"
+      ]
+    },
+    {
+      "min_train": 500,
+      "refit_every": 21,
+      "n_forecasts": 59709,
+      "har_qlike": 0.4037698242646239,
+      "best_model": "har_ovn",
+      "best_qlike": 0.403304426473616,
+      "mcs": [
+        "har",
+        "har_l",
+        "har_iv",
+        "har_ovn"
+      ]
+    },
+    {
+      "min_train": 750,
+      "refit_every": 21,
+      "n_forecasts": 48029,
+      "har_qlike": 0.3987817187320177,
+      "best_model": "har_ovn",
+      "best_qlike": 0.39727218294555866,
+      "mcs": [
+        "har",
+        "har_l",
+        "har_iv",
+        "har_ovn"
+      ]
+    },
+    {
+      "min_train": 1000,
+      "refit_every": 21,
+      "n_forecasts": 37019,
+      "har_qlike": 0.4006922003688332,
+      "best_model": "har_ovn",
+      "best_qlike": 0.4001220445059702,
+      "mcs": [
+        "har",
+        "har_l",
+        "har_ovn"
+      ]
+    },
+    {
+      "min_train": 500,
+      "refit_every": 5,
+      "n_forecasts": 59709,
+      "har_qlike": 0.40388738137479413,
+      "best_model": "har_ovn",
+      "best_qlike": 0.4033164984412857,
+      "mcs": [
+        "har",
+        "har_l",
+        "har_iv",
+        "har_ovn"
+      ]
+    },
+    {
+      "min_train": 500,
+      "refit_every": 63,
+      "n_forecasts": 59709,
+      "har_qlike": 0.40350799145357824,
+      "best_model": "har_ovn",
+      "best_qlike": 0.403252381324878,
+      "mcs": [
+        "har",
+        "har_ovn"
+      ]
+    },
+    {
+      "min_train": 500,
+      "refit_every": 252,
+      "n_forecasts": 59709,
+      "har_qlike": 0.4026809433141385,
+      "best_model": "har",
+      "best_qlike": 0.4026809433141385,
+      "mcs": [
+        "har",
+        "har_l",
+        "har_ovn"
+      ]
+    }
+  ],
+  "har_qlike_spread_across_schemes": 0.02826127549876034
+}

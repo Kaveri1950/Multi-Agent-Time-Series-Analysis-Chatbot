@@ -1,0 +1,101 @@
+{
+  "generated_at": "2026-10-07T03:39:19+00:00",
+  "estimator": "parkinson",
+  "overnight_in_target": false,
+  "protocol": {
+    "min_train": 500,
+    "refit_every": 21,
+    "walk_forward": "expanding, cut by date, strictly causal"
+  },
+  "n_forecasts": 59709,
+  "n_tickers": 48,
+  "span": [
+    "2021-02-10",
+    "2026-10-05"
+  ],
+  "summary": {
+    "naive": {
+      "qlike": 0.7793548101017774,
+      "mse": 0.028453086139673036
+    },
+    "har": {
+      "qlike": 0.4037698242646239,
+      "mse": 0.019355295535528096
+    },
+    "har_l": {
+      "qlike": 0.4068059027469093,
+      "mse": 0.01942199871008816
+    },
+    "har_iv": {
+      "qlike": 0.40792911865418824,
+      "mse": 0.0192881342971476
+    },
+    "har_iv_l": {
+      "qlike": 0.41044686855182955,
+      "mse": 0.01935632377644285
+    },
+    "har_ovn": {
+      "qlike": 0.403304426473616,
+      "mse": 0.01962849501828918
+    },
+    "pooled_har": {
+      "qlike": 0.413640620344511,
+      "mse": 0.01925206015421052
+    },
+    "gbm": {
+      "qlike": 0.41763672220117104,
+      "mse": 0.019372457952748126
+    }
+  },
+  "mcs": {
+    "mcs": [
+      "har",
+      "har_l",
+      "har_iv",
+      "har_ovn"
+    ],
+    "eliminated": [
+      {
+        "model": "naive",
+        "t_stat": 30.04846948988288,
+        "p_value": 0.0,
+        "n_alive_before": 8
+      },
+      {
+        "model": "gbm",
+        "t_stat": 4.8284806644243705,
+        "p_value": 0.0,
+        "n_alive_before": 7
+      },
+      {
+        "model": "pooled_har",
+        "t_stat": 3.8808640397990564,
+        "p_value": 0.0005,
+        "n_alive_before": 6
+      },
+      {
+        "model": "har_iv_l",
+        "t_stat": 4.130418534232198,
+        "p_value": 0.0005,
+        "n_alive_before": 5
+      }
+    ],
+    "alpha": 0.05,
+    "n_obs": 59709,
+    "n_models": 8,
+    "block_length": 22,
+    "n_bootstrap": 2000,
+    "seed": 0,
+    "mean_loss": {
+      "naive": 0.7793548101017774,
+      "har": 0.4037698242646239,
+      "har_l": 0.4068059027469093,
+      "har_iv": 0.40792911865418824,
+      "har_iv_l": 0.41044686855182955,
+      "har_ovn": 0.403304426473616,
+      "pooled_har": 0.413640620344511,
+      "gbm": 0.41763672220117104
+    },
+    "best_by_mean_loss": "har_ovn"
+  }
+}
