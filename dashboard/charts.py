@@ -842,3 +842,31 @@ def volatility_forecast_chart(history: pd.DataFrame, forecast: float, naive: flo
         hovermode="x unified")
     fig.update_yaxes(tickformat=".0%")
     return fig
+
+
+def volatility_backtest_chart(bt: pd.DataFrame, ticker: str) -> go.Figure:
+    """Walk-forward backtest: what was actually realized, against both forecasts.
+
+    The actual series is drawn thin and grey because it is the noisy one --
+    a daily range estimate of a latent quantity -- and the forecast is drawn
+    bold because it is the claim being tested. Naive sits between them, and
+    is always present: the question a backtest answers is not "does the line
+    look close" but "is it closer than doing nothing".
+    """
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=bt["date"], y=bt["actual"], mode="lines",
+                             name="actual realized volatility",
+                             line=dict(color="#9AA3AF", width=1.2)))
+    fig.add_trace(go.Scatter(x=bt["date"], y=bt["naive"], mode="lines",
+                             name="naive (yesterday repeated)",
+                             line=dict(color="#6B7482", width=1.1, dash="dot")))
+    fig.add_trace(go.Scatter(x=bt["date"], y=bt["har_ovn"], mode="lines",
+                             name="HAR+overnight forecast",
+                             line=dict(color="#C8621E", width=2.4)))
+    fig.update_layout(
+        title=f"{ticker} — walk-forward backtest, refitted every day",
+        yaxis_title="annualised volatility", xaxis_title=None, height=420,
+        margin=dict(l=10, r=10, t=46, b=10), hovermode="x unified",
+        legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0))
+    fig.update_yaxes(tickformat=".0%")
+    return fig

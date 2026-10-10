@@ -1,7 +1,8 @@
 import streamlit as st
 
 from dashboard.sections import (render_model_comparison, render_prediction,
-                                render_sentiment, render_volatility_forecast)
+                                render_sentiment, render_volatility_backtest,
+                                render_volatility_forecast)
 
 st.title("🔮 Stock Prediction")
 st.caption("Four models predicting the same held-out days: ARIMA, XGBoost, XGBoost + FinBERT sentiment, "
@@ -22,5 +23,7 @@ if ticker:
         render_prediction(ticker, sentiment_daily=daily_sentiment, key_prefix="prediction")
         st.divider()
         render_volatility_forecast(ticker, key_prefix="prediction")
+        st.divider()
+        render_volatility_backtest(ticker, key_prefix="prediction")
     except Exception as exc:  # noqa: BLE001
         st.error(f"Couldn't run prediction for '{ticker}': {exc}")

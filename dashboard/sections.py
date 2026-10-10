@@ -737,3 +737,62 @@ def render_volatility_forecast(ticker: str, key_prefix: str = "vol") -> dict | N
         "never which direction; it is not a trading signal."
     )
     return res
+
+
+def render_volatility_backtest(ticker: str, n_days: int = 63,
+                               key_prefix: str = "vol") -> dict | None:
+    """Did the forecast actually work? Walk-forward over the recent past.
+
+    Every point is produced by a model fitted ONLY on days before it. The
+    day being predicted and everything after is absent from the fit, so no
+    forecast can have seen its own answer.
+    """
+    from dashboard.charts import volatility_backtest_chart
+    from quant.vol_models import backtest_ticker
+
+    st.subheader(f"🧪 {ticker} — Does it actually work?")
+    st.caption("Walk-forward backtest. At every step the model is refitted on data strictly "
+               "before that day, then asked for the next one — so nothing is ever trained on "
+               "the day it predicts.")
+
+    months = st.radio("Period", [3, 6, 12], index=0, horizontal=True,
+                      format_func=lambda m: f"{m} months",
+                      key=f"{key_prefix}_bt_months")
+    try:
+        with st.spinner(f"Refitting the model once per day over {months} months..."):
+            r = backtest_ticker(ticker, n_days=int(months * 21))
+    except Exception as exc:  # noqa: BLE001
+        st.info(f"Backtest unavailable for {ticker}: {exc}")
+        return None
+
+    h, n = r["har_ovn"], r["naive"]
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("QLIKE — HAR", f"{h['qlike']:.4f}",
+              delta=f"{-r['qlike_reduction_vs_naive']:.0%} vs naive", delta_color="inverse",
+              help="Primary metric; lower is better. Robust to noise in the volatility proxy.")
+    c2.metric("QLIKE — naive", f"{n['qlike']:.4f}", help="Yesterday repeated.")
+    c3.metric("Mean abs error — HAR", f"{h['mae']:.4f}")
+    c4.metric("Mean abs error — naive", f"{n['mae']:.4f}")
+
+    verdict = "beats" if r["beats_naive"] else "does NOT beat"
+    st.markdown(f"Over **{r['n_days']} trading days** ({r['span'][0]} to {r['span'][1]}), "
+                f"the model **{verdict}** the naive baseline, cutting QLIKE by "
+                f"**{r['qlike_reduction_vs_naive']:.0%}**.")
+
+    st.plotly_chart(volatility_backtest_chart(r["backtest"], ticker),
+                    width="stretch", key=f"{key_prefix}_bt_chart")
+
+    d = r["dispersion"]
+    st.info(
+        f"**Why the orange line is smoother than the grey one.** The forecast varies about "
+        f"**{d['ratio']:.0%}** as much as the realized series "
+        f"(forecast {d['forecast_range'][0]:.1%}–{d['forecast_range'][1]:.1%}, "
+        f"actual {d['actual_range'][0]:.1%}–{d['actual_range'][1]:.1%}). That is deliberate, "
+        "not a failure to react: a single day's high–low range is a noisy estimate of a "
+        "smoother underlying process, so a good forecaster tracks the level and declines to "
+        "chase every spike. It is also why HAR weights the 5- and 22-day averages far more "
+        "than yesterday — and why naive, which copies yesterday's noise wholesale, loses."
+    )
+    st.caption("Volatility says how large tomorrow's move will be, never which direction. "
+               "Not a trading signal.")
+    return r

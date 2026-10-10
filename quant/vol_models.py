@@ -448,3 +448,109 @@ def forecast_ticker(ticker: str, lookback_days: int = 750,
                   "note": "measured on 59,709 held-out forecasts across 48 NSE names; "
                           "naive carry-forward scores 0.77935"},
     }
+
+
+def _ticker_frame(ticker: str, start: str = "2019-01-01") -> pd.DataFrame:
+    """OHLC -> realized volatility + HAR features + overnight, for one ticker."""
+    import yfinance as yf
+
+    raw = yf.download(ticker, start=start, progress=False,
+                      auto_adjust=True, threads=False)
+    if raw is None or len(raw) < 120:
+        raise ValueError(f"not enough history for {ticker!r}")
+    if isinstance(raw.columns, pd.MultiIndex):
+        raw.columns = raw.columns.get_level_values(0)
+
+    df = pd.DataFrame({
+        "date": pd.to_datetime(raw.index), "ticker": ticker,
+        "open": raw["Open"].to_numpy(float), "high": raw["High"].to_numpy(float),
+        "low": raw["Low"].to_numpy(float), "close": raw["Close"].to_numpy(float),
+    }).dropna()
+
+    rv = realized_vol(df, "parkinson")
+    px = df.sort_values("date").copy()
+    px["prev_close"] = px["close"].shift(1)
+    px["ovn_var"] = np.log(px["open"] / px["prev_close"]) ** 2 * TRADING_DAYS
+    g = rv.merge(px[["date", "ovn_var"]], on="date", how="left").sort_values("date")
+    for lag in HAR_LAGS:
+        g[f"rv_{lag}"] = g["rv"].rolling(lag).mean()
+    g["ovn"] = np.sqrt(g["ovn_var"].clip(lower=0.0)).rolling(5).mean()
+    g["target"] = g["rv"].shift(-1)
+    return g.reset_index(drop=True)
+
+
+def backtest_ticker(ticker: str, n_days: int = 63, lookback_days: int = 750,
+                    start: str = "2019-01-01") -> dict:
+    """Walk-forward backtest over the last `n_days`, refitted EVERY day.
+
+    THE POINT OF THIS IS THE THING IT REFUSES TO DO. To forecast day t+1 the
+    model is fitted only on rows whose own target falls on or before day t.
+    The day being predicted, and every day after it, is absent from the fit
+    -- so a forecast can never have seen its own answer, directly or through
+    a rolling average that reaches forward.
+
+    Refitted at every single step rather than every 21 days. The coefficients
+    therefore use the maximum information legitimately available at each
+    point and no more, which is the strictest honest version; it is cheap
+    here because the model is a 5-parameter OLS.
+
+    The naive carry-forward is returned alongside at every step. A backtest
+    that shows only the model is unfalsifiable -- the question is never
+    "does the line look close" but "is it closer than doing nothing".
+    """
+    g = _ticker_frame(ticker, start=start)
+    feats = FEATURE_SETS["har_ovn"]
+    usable = g.dropna(subset=feats + ["target"]).reset_index(drop=True)
+    if len(usable) < 200:
+        raise ValueError(f"only {len(usable)} usable rows for {ticker!r}")
+
+    n_days = int(min(n_days, len(usable) - 150))
+    if n_days < 10:
+        raise ValueError(f"not enough history to back-test {ticker!r}")
+    first = len(usable) - n_days
+
+    X = usable[feats].to_numpy(float)
+    y = usable["target"].to_numpy(float)
+    rows = []
+    for i in range(first, len(usable)):
+        lo = max(0, i - lookback_days)
+        beta = _ols_fit(X[lo:i], y[lo:i])          # strictly before day i
+        rows.append({
+            "date": usable["date"].iloc[i],
+            "actual": float(y[i]),
+            "har_ovn": float(_ols_apply(beta, X[i:i + 1])[0]),
+            "naive": float(usable["rv"].iloc[i]),
+            "n_train": int(i - lo),
+        })
+
+    bt = pd.DataFrame(rows)
+    a = bt["actual"].to_numpy()
+    out = {"ticker": ticker, "n_days": len(bt),
+           "span": [str(bt["date"].iloc[0])[:10], str(bt["date"].iloc[-1])[:10]],
+           "backtest": bt}
+    for m in ("har_ovn", "naive"):
+        p = bt[m].to_numpy()
+        out[m] = {"qlike": qlike(a, p), "mse": mse(a, p),
+                  "mae": float(np.mean(np.abs(a - p))),
+                  "corr": float(np.corrcoef(a, p)[0, 1]) if len(a) > 2 else float("nan")}
+    out["qlike_reduction_vs_naive"] = (
+        1.0 - out["har_ovn"]["qlike"] / out["naive"]["qlike"]
+        if out["naive"]["qlike"] else float("nan"))
+    out["beats_naive"] = bool(out["har_ovn"]["qlike"] < out["naive"]["qlike"])
+
+    # HOW MUCH DOES THE FORECAST ACTUALLY MOVE? A near-constant prediction can
+    # beat a noisy baseline on loss while forecasting nothing, so the spread
+    # of the forecast relative to the spread of the truth is reported next to
+    # the win. A ratio well below 1 is expected and correct here -- daily
+    # realized volatility is a noisy estimate of a smoother latent process, so
+    # a good forecaster tracks the level and declines to chase the spikes --
+    # but it is the reader's business, not a detail to leave out.
+    f = bt["har_ovn"].to_numpy()
+    out["dispersion"] = {
+        "forecast_std": float(f.std()),
+        "actual_std": float(a.std()),
+        "ratio": float(f.std() / a.std()) if a.std() else float("nan"),
+        "forecast_range": [float(f.min()), float(f.max())],
+        "actual_range": [float(a.min()), float(a.max())],
+    }
+    return out
