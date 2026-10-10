@@ -206,7 +206,7 @@ REGISTRY: list[ModelSpec] = [
         "when_not_to_use": "for a price or a direction -- volatility says how BIG the move will "
                            "be, never which way. Returns themselves stay unforecastable here",
         "cost": "fast",
-        "entry_point": "quant.vol_models.walk_forward",
+        "entry_point": "quant.vol_models.forecast_ticker",
     },
     {
         "id": "finance.anomaly_detectors",

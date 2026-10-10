@@ -686,3 +686,54 @@ def render_model_comparison(ticker: str, sentiment_daily=None, key_prefix: str =
                 st.write(f"**{name}** — {err}")
 
     return comparison
+
+
+def render_volatility_forecast(ticker: str, key_prefix: str = "vol") -> dict | None:
+    """Next-day volatility for one stock, with the baseline it has to beat.
+
+    This is the forecasting task where a model actually wins. Price models
+    here all lose to carry-forward -- that is the random-walk result, not a
+    bug -- so the project forecasts volatility instead, where HAR cuts the
+    loss 47% against naive over 59,709 held-out forecasts.
+
+    The model is har_ovn, and the choice is worth surfacing: four models sit
+    inside the 95% Model Confidence Set and cannot be separated statistically,
+    so the tie was broken on PREREQUISITES rather than on the lowest number.
+    har_ovn needs only the OHLC bars already downloaded; the tied alternative
+    har_iv needs a live India VIX feed for no measurable gain.
+    """
+    from dashboard.charts import volatility_forecast_chart
+    from quant.vol_models import forecast_ticker
+
+    st.subheader(f"📉 {ticker} — Volatility Forecast (HAR + overnight)")
+    st.caption("How BIG tomorrow's move will be, not which way. Returns are a random walk "
+               "here (lag-1 autocorrelation +0.010); their volatility is not (+0.459).")
+
+    try:
+        with st.spinner("Fitting HAR on this ticker's own history..."):
+            res = forecast_ticker(ticker)
+    except Exception as exc:  # noqa: BLE001
+        st.info(f"Volatility forecast unavailable for {ticker}: {exc}")
+        return None
+
+    fc, nv = res["forecast_annualised_vol"], res["naive_annualised_vol"]
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Forecast (next session)", f"{fc:.1%}",
+              delta=f"{fc - nv:+.1%} vs naive",
+              help="Annualised. 0.25 means a 25%-a-year pace of movement.")
+    c2.metric("Naive carry-forward", f"{nv:.1%}",
+              help="Yesterday's realized volatility, repeated. The baseline to beat.")
+    c3.metric("22-day average", f"{res['last_22d_mean']:.1%}",
+              help="HAR's longest component, and the one it weights most heavily.")
+
+    st.plotly_chart(volatility_forecast_chart(res["history"], fc, nv, ticker),
+                    width="stretch", key=f"{key_prefix}_vol_chart")
+
+    st.caption(
+        f"Fitted on {res['n_train']} days ending {res['as_of']}. "
+        f"Measured skill: QLIKE {res['skill']['value']} against naive's 0.77935 over "
+        "59,709 held-out forecasts across 48 NSE names — a 48% reduction, with naive "
+        "the best model on none of them. Volatility says how large the move will be and "
+        "never which direction; it is not a trading signal."
+    )
+    return res

@@ -373,3 +373,78 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# ------------------------------------------------- single-ticker live path
+def forecast_ticker(ticker: str, lookback_days: int = 750,
+                    start: str = "2019-01-01") -> dict:
+    """Next-day volatility for ONE ticker, fitted on its own history.
+
+    The batch `walk_forward` above answers "how good is this model"; this
+    answers "what is the number for this stock today", which is what the
+    chatbot and the dashboard actually ask. Both use the same features and
+    the same estimator, so the skill value measured by the benchmark is the
+    skill value this path inherits.
+
+    The model is har_ovn, chosen as the registry records: four models sit in
+    the 95% Model Confidence Set and cannot be separated, so the tie was
+    broken on prerequisites rather than on the point estimate, and har_ovn
+    needs nothing beyond the OHLC bars already being downloaded.
+
+    `lookback_days` defaults to 750 because the fitting sweep found that
+    window best (QLIKE 0.39878 against 0.40377 at 500 and 0.40069 at 1000).
+    The naive carry-forward is always returned alongside, so the caller can
+    never present a forecast without the baseline it has to beat.
+    """
+    import yfinance as yf
+
+    raw = yf.download(ticker, start=start, progress=False,
+                      auto_adjust=True, threads=False)
+    if raw is None or len(raw) < 120:
+        raise ValueError(f"not enough history for {ticker!r}")
+    if isinstance(raw.columns, pd.MultiIndex):
+        raw.columns = raw.columns.get_level_values(0)
+
+    df = pd.DataFrame({
+        "date": pd.to_datetime(raw.index),
+        "ticker": ticker,
+        "open": raw["Open"].to_numpy(float),
+        "high": raw["High"].to_numpy(float),
+        "low": raw["Low"].to_numpy(float),
+        "close": raw["Close"].to_numpy(float),
+    }).dropna()
+
+    rv = realized_vol(df, "parkinson")
+    px = df.sort_values("date").copy()
+    px["prev_close"] = px["close"].shift(1)
+    px["ovn_var"] = np.log(px["open"] / px["prev_close"]) ** 2 * TRADING_DAYS
+    g = rv.merge(px[["date", "ovn_var"]], on="date", how="left").sort_values("date")
+    for lag in HAR_LAGS:
+        g[f"rv_{lag}"] = g["rv"].rolling(lag).mean()
+    g["ovn"] = np.sqrt(g["ovn_var"].clip(lower=0.0)).rolling(5).mean()
+    g["target"] = g["rv"].shift(-1)
+
+    feats = FEATURE_SETS["har_ovn"]
+    train = g.dropna(subset=feats + ["target"]).tail(lookback_days)
+    if len(train) < 120:
+        raise ValueError(f"only {len(train)} usable rows for {ticker!r}")
+
+    beta = _ols_fit(train[feats].to_numpy(float), train["target"].to_numpy(float))
+    latest = g.dropna(subset=feats).iloc[-1]
+    point = float(_ols_apply(beta, latest[feats].to_numpy(float).reshape(1, -1))[0])
+
+    hist = g.dropna(subset=["rv"]).tail(120)
+    return {
+        "ticker": ticker,
+        "model": "har_ovn",
+        "as_of": str(pd.Timestamp(latest["date"]).date()),
+        "forecast_annualised_vol": max(point, 0.0),
+        "naive_annualised_vol": float(latest["rv"]),
+        "last_5d_mean": float(latest["rv_5"]),
+        "last_22d_mean": float(latest["rv_22"]),
+        "n_train": int(len(train)),
+        "history": hist[["date", "rv"]].rename(columns={"rv": "realized_vol"}),
+        "skill": {"metric": "QLIKE", "value": 0.40330,
+                  "note": "measured on 59,709 held-out forecasts across 48 NSE names; "
+                          "naive carry-forward scores 0.77935"},
+    }

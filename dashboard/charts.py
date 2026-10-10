@@ -807,3 +807,38 @@ def risk_attribution_chart(profile: dict):
                       yaxis_title="contribution to the day's return (%)",
                       legend=dict(orientation="h", y=1.14, x=0))
     return fig
+
+
+def volatility_forecast_chart(history: pd.DataFrame, forecast: float, naive: float,
+                              ticker: str) -> go.Figure:
+    """Recent realized volatility, with tomorrow's forecast and the naive baseline.
+
+    The baseline is drawn, not just mentioned. Every price model in this
+    project loses to carry-forward, so a volatility forecast shown WITHOUT
+    the number it has to beat invites exactly the misreading the rest of the
+    work exists to prevent.
+    """
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=history["date"], y=history["realized_vol"], mode="lines",
+        name="realized volatility", line=dict(color="#4A5568", width=1.4)))
+
+    last = history["date"].iloc[-1]
+    nxt = last + pd.Timedelta(days=1)
+    fig.add_trace(go.Scatter(
+        x=[last, nxt], y=[history["realized_vol"].iloc[-1], naive], mode="lines+markers",
+        name="naive (carry forward)", line=dict(color="#6B7482", width=1.6, dash="dash"),
+        marker=dict(size=7)))
+    fig.add_trace(go.Scatter(
+        x=[last, nxt], y=[history["realized_vol"].iloc[-1], forecast], mode="lines+markers",
+        name="HAR+overnight forecast", line=dict(color="#C8621E", width=2.2),
+        marker=dict(size=9)))
+
+    fig.update_layout(
+        title=f"{ticker} — next-day volatility forecast",
+        yaxis_title="annualised volatility", xaxis_title=None,
+        height=380, margin=dict(l=10, r=10, t=44, b=10),
+        legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0),
+        hovermode="x unified")
+    fig.update_yaxes(tickformat=".0%")
+    return fig
