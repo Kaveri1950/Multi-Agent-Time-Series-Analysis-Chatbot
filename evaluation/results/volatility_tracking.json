@@ -1,0 +1,149 @@
+{
+  "generated_at": "2026-10-10T21:13:57+00:00",
+  "estimator": "garman_klass",
+  "objective": "squared error on log volatility",
+  "features": [
+    "l_rv1",
+    "l_rv5",
+    "l_rv22",
+    "l_rv66",
+    "l_mkt",
+    "l_rel",
+    "l_vix",
+    "l_ovn",
+    "neg",
+    "spread"
+  ],
+  "ceiling_r2_log": 0.533,
+  "n_forecasts": 61303,
+  "n_tickers": 50,
+  "summary": {
+    "har_log": {
+      "r2_log": 0.44827330366377904,
+      "corr_log": 0.6695943324740528,
+      "qlike": 0.3555070119355683,
+      "pct_of_ceiling": 84.10380931778218
+    },
+    "rf_log": {
+      "r2_log": 0.44516509907116275,
+      "corr_log": 0.667444347572563,
+      "qlike": 0.35378931328172314,
+      "pct_of_ceiling": 83.52065648614685
+    },
+    "et_log": {
+      "r2_log": 0.44979427752256096,
+      "corr_log": 0.6707015902378108,
+      "qlike": 0.35073087588494434,
+      "pct_of_ceiling": 84.38917026689698
+    },
+    "gbm_log": {
+      "r2_log": 0.43499359225489187,
+      "corr_log": 0.6605494368147711,
+      "qlike": 0.3626279519339333,
+      "pct_of_ceiling": 81.61230623919171
+    },
+    "svr_log": {
+      "r2_log": 0.420431609553495,
+      "corr_log": 0.651547214327764,
+      "qlike": 0.37768338464723233,
+      "pct_of_ceiling": 78.8802269331135
+    },
+    "mlp_log": {
+      "r2_log": 0.44213388497644746,
+      "corr_log": 0.6652181385505711,
+      "qlike": 0.3600215508098051,
+      "pct_of_ceiling": 82.95194840083441
+    },
+    "ens_log": {
+      "r2_log": 0.4511230888371386,
+      "corr_log": 0.6717461063229804,
+      "qlike": 0.35347834024998104,
+      "pct_of_ceiling": 84.63847820584213
+    },
+    "naive": {
+      "r2_log": 0.1526720389895191,
+      "corr_log": 0.5764865179885471,
+      "qlike": 0.5289310219826678,
+      "pct_of_ceiling": 28.64390975413116
+    },
+    "har3_log": {
+      "r2_log": 0.4379612903825222,
+      "corr_log": 0.6631705862526193,
+      "qlike": 0.3510465216435555,
+      "pct_of_ceiling": 82.16909763274337
+    }
+  },
+  "mcs": {
+    "mcs": [
+      "ens_log"
+    ],
+    "eliminated": [
+      {
+        "model": "naive",
+        "t_stat": 82.84530296941794,
+        "p_value": 0.0,
+        "n_alive_before": 9
+      },
+      {
+        "model": "svr_log",
+        "t_stat": 16.86569216746506,
+        "p_value": 0.0,
+        "n_alive_before": 8
+      },
+      {
+        "model": "gbm_log",
+        "t_stat": 12.126033229017732,
+        "p_value": 0.0,
+        "n_alive_before": 7
+      },
+      {
+        "model": "har3_log",
+        "t_stat": 12.735503090957241,
+        "p_value": 0.0,
+        "n_alive_before": 6
+      },
+      {
+        "model": "mlp_log",
+        "t_stat": 7.921982581252136,
+        "p_value": 0.0,
+        "n_alive_before": 5
+      },
+      {
+        "model": "rf_log",
+        "t_stat": 8.910997580942214,
+        "p_value": 0.0,
+        "n_alive_before": 4
+      },
+      {
+        "model": "har_log",
+        "t_stat": 3.448338514918507,
+        "p_value": 0.0005,
+        "n_alive_before": 3
+      },
+      {
+        "model": "et_log",
+        "t_stat": 3.3028172557279225,
+        "p_value": 0.0005,
+        "n_alive_before": 2
+      }
+    ],
+    "alpha": 0.05,
+    "n_obs": 61303,
+    "n_models": 9,
+    "block_length": 22,
+    "n_bootstrap": 2000,
+    "seed": 0,
+    "mean_loss": {
+      "har_log": 0.1462123774949117,
+      "rf_log": 0.14703607876991776,
+      "et_log": 0.14580930618174726,
+      "gbm_log": 0.14973161662260553,
+      "svr_log": 0.15359066880541586,
+      "mlp_log": 0.14783937689275198,
+      "ens_log": 0.14545715961563632,
+      "naive": 0.2245492859416759,
+      "har3_log": 0.14894515078397663
+    },
+    "best_by_mean_loss": "ens_log"
+  }
+}
