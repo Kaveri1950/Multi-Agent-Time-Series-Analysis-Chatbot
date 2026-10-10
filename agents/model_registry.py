@@ -173,25 +173,40 @@ REGISTRY: list[ModelSpec] = [
         "domain": "finance", "task": FORECAST_VOLATILITY,
         "method_family": "statistical",
         "description": "Next-day realized volatility from the daily, weekly and monthly "
-                       "averages of past volatility (Corsi's HAR), with volatility estimated "
-                       "from the daily high-low range so no paid intraday feed is needed. "
+                       "averages of past volatility (Corsi's HAR) plus the overnight gap, with "
+                       "volatility estimated from the daily high-low range so no paid intraday "
+                       "feed is needed. The overnight term matters because a range estimator "
+                       "sees only the trading session and is blind to the close-to-open move, "
+                       "which for Indian equities carries a full session of foreign news. "
                        "Reports the naive carry-forward baseline alongside it.",
         "requires": ["ticker"],
         "returns": "next-day annualised volatility + naive baseline + measured track record",
-        "skill": {"metric": "QLIKE", "value": 0.4105,
+        "skill": {"metric": "QLIKE", "value": 0.40330,
                   "note": "BEATS ITS BASELINE, which nothing else in this registry does: naive "
-                          "carry-forward scores 0.7820, so HAR cuts the loss 47%, and naive is "
-                          "the best model on 0 of 48 tickers. Diebold-Mariano -38.69, p < 1e-16 "
-                          "over 59,709 strictly-causal walk-forward forecasts. Reproduces on all "
-                          "three range estimators (Garman-Klass 0.340, Rogers-Satchell 0.368). "
-                          "Log-HAR is statistically INDISTINGUISHABLE (p=0.12), so it is not "
-                          "registered separately."},
+                          "carry-forward scores 0.7794, so this cuts the loss 48%, and naive is "
+                          "the best model on 0 of 48 tickers over 59,709 strictly-causal "
+                          "walk-forward forecasts. Reproduces on all three range estimators.\n"
+                          "THE VARIANT WAS CHOSEN ON PREREQUISITES, NOT ON THE POINT ESTIMATE. "
+                          "A Model Confidence Set over 14 models leaves four that cannot be "
+                          "statistically separated -- har_ovn 0.40330, har 0.40377, har_l "
+                          "0.40681, har_iv 0.40793 -- so ranking them by loss would be a coin "
+                          "flip dressed as a measurement. The tie is broken on what each needs: "
+                          "har_ovn uses only the OHLC panel already cached, while har_iv needs a "
+                          "live India VIX feed for no measurable gain. Beaten models include a "
+                          "cubic spline that provably nests HAR (0.41015), gradient boosting "
+                          "(0.41764), a pooled LSTM (0.41696) and BiLSTM (0.41729), Chronos-Bolt "
+                          "zero-shot, CARR (0.51932) and GARCH (0.51955 after a Mincer-Zarnowitz "
+                          "rescaling; 0.54608 raw).\n"
+                          "CAVEAT: on MSE rather than QLIKE the two neural nets are the BEST "
+                          "models in the set. QLIKE is the pre-registered primary metric because "
+                          "MSE on a noisy volatility proxy is dominated by a few extreme days, "
+                          "but the ranking does depend on that choice."},
         "when_to_use": "the user asks how volatile a stock will be, or wants a volatility or "
                        "risk-of-movement forecast",
         "when_not_to_use": "for a price or a direction -- volatility says how BIG the move will "
                            "be, never which way. Returns themselves stay unforecastable here",
         "cost": "fast",
-        "entry_point": "quant.volatility.walk_forward_ticker",
+        "entry_point": "quant.vol_models.walk_forward",
     },
     {
         "id": "finance.anomaly_detectors",
