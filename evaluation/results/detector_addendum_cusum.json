@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-10-10T15:41:54+00:00",
+  "detector": "cusum",
+  "kepler_limit": 40,
+  "seed": 0,
+  "note": "Scored by evaluation/detector_addendum.py, which mirrors grid.run_domain's evaluate_one for a single detector. anomaly_grid.json is deliberately not modified, and ensemble selection is not redone.",
+  "domains": {
+    "kepler": {
+      "row": {
+        "domain": "kepler",
+        "detector": "cusum",
+        "group": "threshold",
+        "is_floor": false,
+        "is_ceiling": false,
+        "roc_auc": 0.5085,
+        "pr_auc": 0.2455,
+        "lift": 1.05,
+        "prevalence": 0.23375,
+        "n": 124782,
+        "n_positive": 29168,
+        "n_constant_score": 0,
+        "n_configs_tried": 1,
+        "precision_at_50": 0.42,
+        "in_sample_pr_auc": 0.2898,
+        "in_sample_lift": 1.19,
+        "seconds": 3.05
+      },
+      "verdict": {
+        "vs_floor_raw_input": {
+          "floor_pr_auc": 0.2528,
+          "margin": -0.007300000000000029,
+          "beats_floor": false
+        },
+        "vs_best_committed": {
+          "detector": "matrix_profile_discord_raw",
+          "pr_auc": 0.263,
+          "margin": -0.017500000000000016
+        },
+        "rank": "17 of 22"
+      },
+      "split": {
+        "train_windows": 259499,
+        "test_windows": 124782,
+        "test_positive": 29168,
+        "test_positive_rate": 0.23375166290009777
+      }
+    }
+  }
+}
