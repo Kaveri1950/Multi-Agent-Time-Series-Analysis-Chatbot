@@ -112,10 +112,17 @@ def _make(kind: str):
         return RandomForestRegressor(n_estimators=300, max_depth=10, min_samples_leaf=20,
                                      n_jobs=-1, random_state=SEED)
     if kind == "et_log":
-        return ExtraTreesRegressor(n_estimators=300, max_depth=12, min_samples_leaf=15,
+        # depth 12 / leaf 50 won a causal grid search (0.4420 against ridge's
+        # 0.4377). The grid was nearly flat and the DEEPER settings were
+        # worse -- depth=None with leaf=5 fell to 0.4351 -- so this is a
+        # regularisation choice, not a capacity one.
+        return ExtraTreesRegressor(n_estimators=400, max_depth=12, min_samples_leaf=50,
                                    n_jobs=-1, random_state=SEED)
     if kind == "gbm_log":
-        return HistGradientBoostingRegressor(max_iter=300, learning_rate=0.05, max_depth=4,
+        # lr 0.03 / depth 3 was the best of six settings; at lr 0.06 depth 5
+        # it collapsed to 0.4232, which is the same over-capacity failure the
+        # spline and the LSTMs showed.
+        return HistGradientBoostingRegressor(max_iter=400, learning_rate=0.03, max_depth=3,
                                              l2_regularization=1.0, random_state=SEED)
     if kind == "svr_log":
         return make_pipeline(StandardScaler(), SVR(C=2.0, epsilon=0.05, gamma="scale"))
