@@ -1,0 +1,97 @@
+{
+  "generated_at": "2026-10-10T17:33:01+00:00",
+  "estimator": "garman_klass",
+  "overnight_in_target": false,
+  "protocol": {
+    "min_train": 500,
+    "refit_every": 21,
+    "walk_forward": "expanding, cut by date, strictly causal"
+  },
+  "n_forecasts": 59709,
+  "n_tickers": 48,
+  "span": [
+    "2021-02-10",
+    "2026-10-05"
+  ],
+  "summary": {
+    "naive": {
+      "qlike": 0.6179386231587183,
+      "mse": 0.024534882834124905
+    },
+    "har": {
+      "qlike": 0.33541407085373853,
+      "mse": 0.016959184604596684
+    },
+    "har_l": {
+      "qlike": 0.33831943019763416,
+      "mse": 0.017001495527059582
+    },
+    "har_iv": {
+      "qlike": 0.33938128403689805,
+      "mse": 0.016922602973666608
+    },
+    "har_iv_l": {
+      "qlike": 0.3417464986567758,
+      "mse": 0.016962955728210168
+    },
+    "har_ovn": {
+      "qlike": 0.3365081653926989,
+      "mse": 0.017221218021011203
+    },
+    "spline_har": {
+      "qlike": 0.3419282245400036,
+      "mse": 0.01710101119210513
+    },
+    "pooled_har": {
+      "qlike": 0.34215432870516366,
+      "mse": 0.016840839179758416
+    },
+    "gbm": {
+      "qlike": 0.3469576346339972,
+      "mse": 0.017014613770483307
+    }
+  },
+  "mcs": {
+    "mcs": [
+      "har",
+      "har_l",
+      "har_iv",
+      "har_iv_l",
+      "har_ovn",
+      "spline_har",
+      "pooled_har"
+    ],
+    "eliminated": [
+      {
+        "model": "naive",
+        "t_stat": 30.10523916378397,
+        "p_value": 0.0,
+        "n_alive_before": 9
+      },
+      {
+        "model": "gbm",
+        "t_stat": 5.179542596867459,
+        "p_value": 0.0,
+        "n_alive_before": 8
+      }
+    ],
+    "alpha": 0.05,
+    "n_obs": 59709,
+    "n_models": 9,
+    "block_length": 22,
+    "n_bootstrap": 2000,
+    "seed": 0,
+    "mean_loss": {
+      "naive": 0.6179386231587183,
+      "har": 0.33541407085373853,
+      "har_l": 0.33831943019763416,
+      "har_iv": 0.33938128403689805,
+      "har_iv_l": 0.3417464986567758,
+      "har_ovn": 0.3365081653926989,
+      "spline_har": 0.3419282245400036,
+      "pooled_har": 0.34215432870516366,
+      "gbm": 0.3469576346339972
+    },
+    "best_by_mean_loss": "har"
+  }
+}

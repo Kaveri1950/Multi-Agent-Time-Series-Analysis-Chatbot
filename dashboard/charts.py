@@ -870,3 +870,39 @@ def volatility_backtest_chart(bt: pd.DataFrame, ticker: str) -> go.Figure:
         legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0))
     fig.update_yaxes(tickformat=".0%")
     return fig
+
+
+def volatility_models_chart(bt, models: list, labels: dict, ticker: str) -> go.Figure:
+    """Several models against the same realized series.
+
+    Actual is drawn thin and grey because it is the noisy quantity -- a
+    single day's range is one draw from that day's true volatility, so a
+    model that tracked it exactly would be fitting noise. Naive is dotted
+    and always shown: the question is whether a model is closer than doing
+    nothing, not whether it hugs the grey line.
+    """
+    palette = ["#C8621E", "#2B5F8A", "#1F7A5A", "#8A4FA0", "#B03A48",
+               "#7A6A1F", "#3A6EA5", "#A0522D"]
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=bt["date"], y=bt["actual"], mode="lines",
+                             name="actual realized volatility",
+                             line=dict(color="#9AA3AF", width=1.2)))
+    if "naive" in bt:
+        fig.add_trace(go.Scatter(x=bt["date"], y=bt["naive"], mode="lines",
+                                 name=labels.get("naive", "naive"),
+                                 line=dict(color="#6B7482", width=1.0, dash="dot")))
+    i = 0
+    for m in models:
+        if m in ("naive",) or m not in bt:
+            continue
+        fig.add_trace(go.Scatter(x=bt["date"], y=bt[m], mode="lines",
+                                 name=labels.get(m, m),
+                                 line=dict(color=palette[i % len(palette)], width=2.0)))
+        i += 1
+    fig.update_layout(
+        title=f"{ticker} — models against the same realized series",
+        yaxis_title="annualised volatility", xaxis_title=None, height=440,
+        margin=dict(l=10, r=10, t=46, b=10), hovermode="x unified",
+        legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0))
+    fig.update_yaxes(tickformat=".0%")
+    return fig

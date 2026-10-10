@@ -1,0 +1,201 @@
+{
+  "generated_at": "2026-10-10T17:22:48+00:00",
+  "estimator": "parkinson",
+  "n_forecasts": 39651,
+  "base_models": [
+    "naive",
+    "har",
+    "har_l",
+    "har_iv",
+    "har_iv_l",
+    "har_ovn",
+    "spline_har",
+    "pooled_har",
+    "gbm",
+    "garch_mz",
+    "gjr_garch_mz",
+    "carr"
+  ],
+  "combinations": [
+    "mean_mcs",
+    "mean_all",
+    "inv_loss",
+    "stack_ols"
+  ],
+  "summary": {
+    "naive": {
+      "qlike": 0.7794591529418574,
+      "mse": 0.026328096386188504
+    },
+    "har": {
+      "qlike": 0.4079602497753029,
+      "mse": 0.017656441302209554
+    },
+    "har_l": {
+      "qlike": 0.4110441542340899,
+      "mse": 0.01769135449408623
+    },
+    "har_iv": {
+      "qlike": 0.41461000299506445,
+      "mse": 0.017455801069177757
+    },
+    "har_iv_l": {
+      "qlike": 0.4170276447461988,
+      "mse": 0.01749176141688148
+    },
+    "har_ovn": {
+      "qlike": 0.4076144620905087,
+      "mse": 0.017820145030858173
+    },
+    "spline_har": {
+      "qlike": 0.41332152271026545,
+      "mse": 0.017795740187293196
+    },
+    "pooled_har": {
+      "qlike": 0.41681966454132807,
+      "mse": 0.017630495301312204
+    },
+    "gbm": {
+      "qlike": 0.420277356024772,
+      "mse": 0.017522249307981567
+    },
+    "garch_mz": {
+      "qlike": 0.5124941045141487,
+      "mse": 0.02551056205424877
+    },
+    "gjr_garch_mz": {
+      "qlike": 0.5138281921657685,
+      "mse": 0.026364306983896302
+    },
+    "carr": {
+      "qlike": 0.4971422177923557,
+      "mse": 0.02303545498422545
+    },
+    "mean_mcs": {
+      "qlike": 0.4050267048362607,
+      "mse": 0.01750991711312114
+    },
+    "mean_all": {
+      "qlike": 0.40420273100693344,
+      "mse": 0.017631704230221736
+    },
+    "inv_loss": {
+      "qlike": 0.4027499489087011,
+      "mse": 0.017545501271694554
+    },
+    "stack_ols": {
+      "qlike": 0.42398680512599646,
+      "mse": 0.017268489369951165
+    }
+  },
+  "mcs": {
+    "mcs": [
+      "har_ovn",
+      "mean_mcs",
+      "mean_all",
+      "inv_loss"
+    ],
+    "eliminated": [
+      {
+        "model": "naive",
+        "t_stat": 27.25395811117435,
+        "p_value": 0.0,
+        "n_alive_before": 16
+      },
+      {
+        "model": "carr",
+        "t_stat": 13.225846787419787,
+        "p_value": 0.0,
+        "n_alive_before": 15
+      },
+      {
+        "model": "gjr_garch_mz",
+        "t_stat": 12.718695537889467,
+        "p_value": 0.0,
+        "n_alive_before": 14
+      },
+      {
+        "model": "garch_mz",
+        "t_stat": 11.820625467985662,
+        "p_value": 0.0,
+        "n_alive_before": 13
+      },
+      {
+        "model": "stack_ols",
+        "t_stat": 7.588660864882014,
+        "p_value": 0.0,
+        "n_alive_before": 12
+      },
+      {
+        "model": "gbm",
+        "t_stat": 4.368153297942485,
+        "p_value": 0.0005,
+        "n_alive_before": 11
+      },
+      {
+        "model": "har_iv_l",
+        "t_stat": 4.694151076304078,
+        "p_value": 0.0005,
+        "n_alive_before": 10
+      },
+      {
+        "model": "pooled_har",
+        "t_stat": 4.331867695945661,
+        "p_value": 0.0005,
+        "n_alive_before": 9
+      },
+      {
+        "model": "har_iv",
+        "t_stat": 3.3620117933893545,
+        "p_value": 0.0045,
+        "n_alive_before": 8
+      },
+      {
+        "model": "spline_har",
+        "t_stat": 3.5683537701096686,
+        "p_value": 0.0035,
+        "n_alive_before": 7
+      },
+      {
+        "model": "har_l",
+        "t_stat": 2.802071752574108,
+        "p_value": 0.012,
+        "n_alive_before": 6
+      },
+      {
+        "model": "har",
+        "t_stat": 2.449556791449555,
+        "p_value": 0.032,
+        "n_alive_before": 5
+      }
+    ],
+    "alpha": 0.05,
+    "n_obs": 39651,
+    "n_models": 16,
+    "block_length": 22,
+    "n_bootstrap": 2000,
+    "seed": 0,
+    "mean_loss": {
+      "naive": 0.7794591529418574,
+      "har": 0.4079602497753029,
+      "har_l": 0.4110441542340899,
+      "har_iv": 0.41461000299506445,
+      "har_iv_l": 0.4170276447461988,
+      "har_ovn": 0.4076144620905087,
+      "spline_har": 0.41332152271026545,
+      "pooled_har": 0.41681966454132807,
+      "gbm": 0.420277356024772,
+      "garch_mz": 0.5124941045141487,
+      "gjr_garch_mz": 0.5138281921657685,
+      "carr": 0.4971422177923557,
+      "mean_mcs": 0.4050267048362607,
+      "mean_all": 0.40420273100693344,
+      "inv_loss": 0.4027499489087011,
+      "stack_ols": 0.42398680512599646
+    },
+    "best_by_mean_loss": "inv_loss"
+  },
+  "best_single": "har_ovn",
+  "best_combination": "inv_loss",
+  "combination_gain_qlike": 0.004864513181807639
+}

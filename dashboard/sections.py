@@ -796,3 +796,75 @@ def render_volatility_backtest(ticker: str, n_days: int = 63,
     st.caption("Volatility says how large tomorrow's move will be, never which direction. "
                "Not a trading signal.")
     return r
+
+
+VOL_MODEL_LABELS = {'naive': 'Naive (yesterday repeated)', 'har': 'HAR', 'har_l': 'HAR + leverage', 'har_iv': 'HAR + India VIX', 'har_ovn': 'HAR + overnight gap', 'spline_har': 'Spline HAR (non-linear)', 'carr': 'CARR (range GARCH)', 'garch': 'GARCH(1,1)', 'mean_har': 'Ensemble — equal weights', 'inv_loss': 'Ensemble — inverse-loss weights'}
+
+
+def render_volatility_models(ticker: str, key_prefix: str = "vol") -> dict | None:
+    """Ten volatility models on this one stock, refitted every day.
+
+    The committed benchmark compares models across 48 tickers; this runs the
+    same comparison on whichever stock the user typed, so the headline is
+    reproducible on a name they chose rather than only in aggregate.
+
+    The neural nets are deliberately absent. They need pooling across
+    tickers to have enough data, so a single-ticker fit would misrepresent
+    them rather than test them -- they are judged in the committed benchmark
+    instead, where they lost to HAR anyway.
+    """
+    from dashboard.charts import volatility_models_chart
+    from quant.vol_models import compare_models_ticker
+
+    st.subheader(f"⚖️ {ticker} — How the models compare")
+    st.caption("Every model refitted once per day on data strictly before that day, then asked "
+               "for the next one. All scored on identical days, so the comparison is like for "
+               "like. Lower QLIKE is better.")
+
+    months = st.radio("Period", [3, 6], index=0, horizontal=True,
+                      format_func=lambda m: f"{m} months", key=f"{key_prefix}_cmp_months")
+    try:
+        with st.spinner(f"Refitting 10 models once per day over {months} months..."):
+            r = compare_models_ticker(ticker, n_days=int(months * 21))
+    except Exception as exc:  # noqa: BLE001
+        st.info(f"Model comparison unavailable for {ticker}: {exc}")
+        return None
+
+    tbl = r["table"].copy()
+    tbl["Model"] = tbl["model"].map(lambda m: VOL_MODEL_LABELS.get(m, m))
+    show = tbl[["Model", "qlike", "mse", "mae", "corr", "vs_naive"]].rename(columns={
+        "qlike": "QLIKE", "mse": "MSE", "mae": "Mean abs error",
+        "corr": "Correlation", "vs_naive": "Loss cut vs naive"})
+    st.dataframe(
+        show.style.format({"QLIKE": "{:.4f}", "MSE": "{:.4f}", "Mean abs error": "{:.4f}",
+                           "Correlation": "{:+.3f}", "Loss cut vs naive": "{:.1%}"})
+            .background_gradient(subset=["QLIKE"], cmap="RdYlGn_r"),
+        width="stretch", hide_index=True)
+
+    best = tbl.iloc[0]
+    st.markdown(f"On **{ticker}** over {r['n_days']} trading days ({r['span'][0]} to "
+                f"{r['span'][1]}), **{VOL_MODEL_LABELS.get(best['model'], best['model'])}** "
+                f"ranks first, cutting the loss **{best['vs_naive']:.0%}** against naive.")
+
+    default = [m for m in ("har", "har_ovn", "garch", "inv_loss") if m in r["backtest"]]
+    picked = st.multiselect("Models to plot", [m for m in tbl["model"] if m != "naive"],
+                            default=default, format_func=lambda m: VOL_MODEL_LABELS.get(m, m),
+                            key=f"{key_prefix}_cmp_pick")
+    st.plotly_chart(volatility_models_chart(r["backtest"], picked, VOL_MODEL_LABELS, ticker),
+                    width="stretch", key=f"{key_prefix}_cmp_chart")
+
+    st.info(
+        "**Why no model hugs the grey line, and why that is correct.** A single day's "
+        "high-low range is one noisy draw from that day's true volatility, so much of the "
+        "grey line is measurement error rather than signal. Measured across 48 tickers, the "
+        "same unchanged forecast scores R-squared 0.32 against a single day but **0.41 "
+        "against the next 5-day average** — the forecast did not change, only the noise in "
+        "the comparison did. A model that tracked every spike would be fitting noise, which "
+        "is exactly why the flexible models here (spline, gradient boosting, LSTM) forecast "
+        "worse than a 3-parameter regression."
+    )
+    st.caption(f"Estimator: {r['estimator']} — chosen over Parkinson because it uses the open "
+               "and close as well as the range, lifting out-of-sample R-squared from 0.330 to "
+               "0.368 across the full benchmark. Ensemble weights: "
+               + ", ".join(f"{k} {v}" for k, v in r["inv_loss_weights"].items()))
+    return r
