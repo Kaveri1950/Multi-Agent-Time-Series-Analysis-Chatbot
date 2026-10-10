@@ -44,3 +44,18 @@ evaluation/build_report_pdf.py
 
 # LaTeX vector copies of figures; PNGs are tracked for the README
 evaluation/results/**/*.pdf
+
+# Extraction scratch (not part of the codebase)
+PROJECT_EXTRACTION.md
+
+# Figure-pack build script output (regenerable)
+evaluation/results/BTP_FIGURES.pdf
+evaluation/results/figures_for_overleaf/
+
+# Screen recordings and submission videos (tens of MB, not source)
+*.mp4
+
+# Per-window score caches. Regenerable, and large; the committed JSON
+# results carry every reported statistic.
+evaluation/results/consensus_scores_*.npz
+evaluation/results/bootstrap_scores_*.npz

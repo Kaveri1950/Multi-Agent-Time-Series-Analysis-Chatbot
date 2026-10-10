@@ -1,0 +1,126 @@
+{
+  "kepler": [
+    {
+      "name": "KIC 5088591",
+      "ratio": 107440.53,
+      "structure": "periodic",
+      "dominant_period": 7.6014
+    },
+    {
+      "name": "KIC 9466668",
+      "ratio": 286.53,
+      "structure": "periodic",
+      "dominant_period": 16.0374
+    },
+    {
+      "name": "KIC 7978202",
+      "ratio": 10084.48,
+      "structure": "periodic",
+      "dominant_period": 14.8921
+    },
+    {
+      "name": "KIC 3954227",
+      "ratio": 7985.06,
+      "structure": "periodic",
+      "dominant_period": 0.2971
+    },
+    {
+      "name": "KIC 5479973",
+      "ratio": 24011.48,
+      "structure": "periodic",
+      "dominant_period": 0.8976
+    },
+    {
+      "name": "KIC 6451125",
+      "ratio": 55.02,
+      "structure": "uncertain",
+      "dominant_period": 2.33
+    },
+    {
+      "name": "KIC 5471770",
+      "ratio": 74.82,
+      "structure": "periodic",
+      "dominant_period": 6.2155
+    },
+    {
+      "name": "KIC 5263802",
+      "ratio": 1808.79,
+      "structure": "periodic",
+      "dominant_period": 3.3508
+    },
+    {
+      "name": "KIC 9007953",
+      "ratio": 63070.06,
+      "structure": "periodic",
+      "dominant_period": 13.1473
+    },
+    {
+      "name": "KIC 9729691",
+      "ratio": 44693.44,
+      "structure": "periodic",
+      "dominant_period": 24.0041
+    }
+  ],
+  "equity": [
+    {
+      "name": "RELIANCE",
+      "ratio": 13.39,
+      "structure": "one-off",
+      "dominant_period": 2.3857
+    },
+    {
+      "name": "HDFCBANK",
+      "ratio": 15.02,
+      "structure": "one-off",
+      "dominant_period": 3.4943
+    },
+    {
+      "name": "ICICIBANK",
+      "ratio": 12.76,
+      "structure": "one-off",
+      "dominant_period": 4.8502
+    },
+    {
+      "name": "SBIN",
+      "ratio": 14.37,
+      "structure": "one-off",
+      "dominant_period": 2.3413
+    },
+    {
+      "name": "BAJFINANCE",
+      "ratio": 13.4,
+      "structure": "one-off",
+      "dominant_period": 8.7534
+    },
+    {
+      "name": "INFY",
+      "ratio": 10.67,
+      "structure": "one-off",
+      "dominant_period": 122.4359
+    },
+    {
+      "name": "AXISBANK",
+      "ratio": 12.04,
+      "structure": "one-off",
+      "dominant_period": 18.9484
+    },
+    {
+      "name": "ETERNAL",
+      "ratio": 9.5,
+      "structure": "one-off",
+      "dominant_period": 3.9113
+    },
+    {
+      "name": "TMPV",
+      "ratio": 10.06,
+      "structure": "one-off",
+      "dominant_period": 2.4639
+    },
+    {
+      "name": "BHARTIARTL",
+      "ratio": 9.41,
+      "structure": "one-off",
+      "dominant_period": 4.7371
+    }
+  ]
+}

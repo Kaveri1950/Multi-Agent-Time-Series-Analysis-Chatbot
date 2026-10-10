@@ -1,0 +1,119 @@
+{
+  "domains": [
+    {
+      "domain": "equity",
+      "n_detectors": 20,
+      "detectors": [
+        "raw_input",
+        "untrained_autoencoder",
+        "moving_variance",
+        "squared_difference",
+        "zscore",
+        "hampel_mad",
+        "isolation_forest",
+        "mahalanobis",
+        "local_outlier_factor",
+        "elliptic_envelope",
+        "one_class_svm",
+        "pca_autoencoder",
+        "latent_isoforest",
+        "spectral_pca",
+        "hmm_3state",
+        "matrix_profile_discord",
+        "matrix_profile_discord_raw",
+        "matrix_profile_motif",
+        "matrix_profile_motif_raw",
+        "garch_residual"
+      ],
+      "agreement": {
+        "mean_pairwise_rank_correlation": 0.2743037814894726,
+        "mean_pairwise_jaccard_of_flags": 0.1358283821441716,
+        "max_votes_on_any_window": 9,
+        "votes_needed_for_majority": 11,
+        "mean_votes_on_positive_windows": 0.125,
+        "mean_votes_on_negative_windows": 0.2839285714285714
+      },
+      "n_held_out": 568,
+      "n_positive": 8,
+      "prevalence": 0.014084507042253521,
+      "floor_raw_input": 0.03247937276848921,
+      "best_single": {
+        "detector": "spectral_pca",
+        "pr_auc": 0.0355285277706357
+      },
+      "mean_rank_all": {
+        "pr_auc": 0.025341211413053816,
+        "margin_vs_floor": -0.007138161355435393
+      },
+      "vote_fraction_all": {
+        "pr_auc": 0.014217883055911226,
+        "margin_vs_floor": -0.01826148971257798
+      },
+      "hard_majority": {
+        "rule": "flagged by more than half of 20 detectors",
+        "n_flagged": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "precision_lift_vs_prevalence": 0.0
+      }
+    },
+    {
+      "domain": "kepler",
+      "n_detectors": 19,
+      "detectors": [
+        "raw_input",
+        "untrained_autoencoder",
+        "moving_variance",
+        "squared_difference",
+        "zscore",
+        "hampel_mad",
+        "isolation_forest",
+        "mahalanobis",
+        "local_outlier_factor",
+        "elliptic_envelope",
+        "one_class_svm",
+        "pca_autoencoder",
+        "latent_isoforest",
+        "spectral_pca",
+        "hmm_3state",
+        "matrix_profile_discord",
+        "matrix_profile_discord_raw",
+        "matrix_profile_motif",
+        "matrix_profile_motif_raw"
+      ],
+      "agreement": {
+        "mean_pairwise_rank_correlation": 0.19602259516998227,
+        "mean_pairwise_jaccard_of_flags": 0.2558052728248918,
+        "max_votes_on_any_window": 17,
+        "votes_needed_for_majority": 10,
+        "mean_votes_on_positive_windows": 4.698368074602304,
+        "mean_votes_on_negative_windows": 4.362854812056812
+      },
+      "n_held_out": 124782,
+      "n_positive": 29168,
+      "prevalence": 0.23375166290009777,
+      "floor_raw_input": 0.2528369733430317,
+      "best_single": {
+        "detector": "matrix_profile_discord_raw",
+        "pr_auc": 0.26296524947983757
+      },
+      "mean_rank_all": {
+        "pr_auc": 0.2626662449963142,
+        "margin_vs_floor": 0.009829271653282512
+      },
+      "vote_fraction_all": {
+        "pr_auc": 0.2535976717313411,
+        "margin_vs_floor": 0.0007606983883094443
+      },
+      "hard_majority": {
+        "rule": "flagged by more than half of 19 detectors",
+        "n_flagged": 15901,
+        "precision": 0.2936293314885856,
+        "recall": 0.16007268239166209,
+        "f1": 0.2071934145421465,
+        "precision_lift_vs_prevalence": 1.256159326721362
+      }
+    }
+  ]
+}
