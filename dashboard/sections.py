@@ -868,3 +868,100 @@ def render_volatility_models(ticker: str, key_prefix: str = "vol") -> dict | Non
                "0.368 across the full benchmark. Ensemble weights: "
                + ", ".join(f"{k} {v}" for k, v in r["inv_loss_weights"].items()))
     return r
+
+
+ALL_VOL_LABELS = {'ens_log': 'Ensemble of all six', 'et_log': 'Extra Trees', 'har_log': 'HAR + market factor (ridge)', 'rf_log': 'Random Forest', 'mlp_log': 'Neural net (MLP)', 'gbm_log': 'Gradient Boosting', 'har3_log': 'Plain HAR (3 features)', 'svr_log': 'Support Vector Regression', 'naive': 'Naive (yesterday repeated)'}
+
+
+def render_all_volatility_models(ticker: str, key_prefix: str = "allvol") -> dict | None:
+    """Every benchmarked model's prediction for this ticker, from cache.
+
+    These are POOLED models, fitted across all 48 names and refitted annually
+    on an expanding window. Their predictions are precomputed because
+    retraining six learners inside a web request would take half an hour --
+    and fitting them on one ticker instead would be a different, worse model
+    than the one that was benchmarked.
+
+    The scores shown are this TICKER's, not the panel average, so they will
+    differ from the headline figures. That is the point: it shows whether the
+    aggregate result holds on the specific name a user cares about.
+    """
+    from pathlib import Path
+
+    import numpy as np
+
+    from dashboard.charts import volatility_all_models_chart, volatility_scatter_chart
+
+    cache = (Path(__file__).parent.parent / "evaluation" / "results"
+             / "volatility_tracking_predictions.parquet")
+    st.subheader(f"🧮 {ticker} — every model, side by side")
+    if not cache.exists():
+        st.info("Predictions not cached yet. Run `python -m quant.tracking_models`.")
+        return None
+
+    df = pd.read_parquet(cache)
+    d = df[df["ticker"] == ticker].sort_values("date").reset_index(drop=True)
+    if d.empty:
+        st.info(f"{ticker} is not in the benchmark panel (48 most liquid NSE names). "
+                "The models are pooled across those names, so no cached prediction exists.")
+        return None
+
+    months = st.radio("Period", [3, 6, 12, 24], index=1, horizontal=True,
+                      format_func=lambda m: f"{m} months", key=f"{key_prefix}_months")
+    d = d.tail(int(months * 21)).reset_index(drop=True)
+    models = [c for c in ALL_VOL_LABELS if c in d.columns]
+
+    a = d["target"].to_numpy(float)
+    rows = []
+    for m in models:
+        pz = d[m].to_numpy(float)
+        ly, lp = np.log(np.clip(a, 1e-9, None)), np.log(np.clip(pz, 1e-9, None))
+        rows.append({"model": m,
+                     "R2 (log)": 1 - np.sum((ly - lp) ** 2) / np.sum((ly - ly.mean()) ** 2),
+                     "Correlation": float(np.corrcoef(a, pz)[0, 1]),
+                     "Mean abs error": float(np.mean(np.abs(a - pz))),
+                     "Forecast spread / actual": float(pz.std() / a.std())})
+    tbl = pd.DataFrame(rows).sort_values("R2 (log)", ascending=False)
+    tbl["Model"] = tbl["model"].map(ALL_VOL_LABELS)
+    st.dataframe(
+        tbl[["Model", "R2 (log)", "Correlation", "Mean abs error",
+             "Forecast spread / actual"]]
+        .style.format({"R2 (log)": "{:.3f}", "Correlation": "{:.3f}",
+                       "Mean abs error": "{:.4f}", "Forecast spread / actual": "{:.2f}"})
+        .background_gradient(subset=["R2 (log)"], cmap="RdYlGn"),
+        width="stretch", hide_index=True)
+
+    st.warning(
+        "**These per-ticker scores are much lower than the headline 0.45, and that is the "
+        "honest number.** Pooled across 48 stocks the models reach R-squared(log) 0.434, but "
+        "decomposed: **0.935 between tickers** (knowing WHICH stock is volatile) and only "
+        "**0.247 within a ticker** (knowing WHEN one becomes volatile). The pooled figure is "
+        "flattered by the easy cross-sectional half. Over a short window on a single name "
+        "there is very little explainable variance left, so R-squared here can even go "
+        "negative — meaning the ticker's own average would have done better."
+    )
+    st.caption("**Forecast spread / actual** is the diagnostic to watch. A model near 0.2 is "
+               "nearly flat and is winning on loss by refusing to move; one near 1.0 tracks "
+               "the realized series stride for stride. Neither extreme is automatically "
+               "better — much of the realized series is measurement noise, so a spread of 1.0 "
+               "means the model is reproducing noise as well as signal.")
+
+    default = [m for m in ("ens_log", "har3_log", "naive") if m in models]
+    picked = st.multiselect("Models to plot", models, default=default,
+                            format_func=lambda m: ALL_VOL_LABELS.get(m, m),
+                            key=f"{key_prefix}_pick")
+    st.plotly_chart(volatility_all_models_chart(d, picked, ALL_VOL_LABELS, ticker),
+                    width="stretch", key=f"{key_prefix}_lines")
+
+    best = tbl.iloc[0]["model"]
+    focus = st.selectbox("Predicted vs actual for", models,
+                         index=models.index(best),
+                         format_func=lambda m: ALL_VOL_LABELS.get(m, m),
+                         key=f"{key_prefix}_focus")
+    st.plotly_chart(volatility_scatter_chart(d, focus, ALL_VOL_LABELS.get(focus, focus), ticker),
+                    width="stretch", key=f"{key_prefix}_scatter")
+    st.caption("Points on the dashed diagonal are perfect forecasts. The cloud tilts below the "
+               "line at high volatility because no model predicts a spike before it happens — "
+               "and a model that did would be fitting noise, since 92% of the day-to-day "
+               "movement in the realized series is measurement error.")
+    return {"ticker": ticker, "table": tbl, "n": len(d)}

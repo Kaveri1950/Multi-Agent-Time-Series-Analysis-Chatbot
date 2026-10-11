@@ -1,6 +1,7 @@
 import streamlit as st
 
-from dashboard.sections import (render_model_comparison, render_prediction,
+from dashboard.sections import (render_all_volatility_models,
+                                render_model_comparison, render_prediction,
                                 render_sentiment, render_volatility_backtest,
                                 render_volatility_models,
                                 render_volatility_forecast)
@@ -28,5 +29,7 @@ if ticker:
         render_volatility_backtest(ticker, key_prefix="prediction")
         st.divider()
         render_volatility_models(ticker, key_prefix="prediction")
+        st.divider()
+        render_all_volatility_models(ticker, key_prefix="prediction")
     except Exception as exc:  # noqa: BLE001
         st.error(f"Couldn't run prediction for '{ticker}': {exc}")

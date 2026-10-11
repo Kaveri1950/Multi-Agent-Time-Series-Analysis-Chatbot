@@ -906,3 +906,58 @@ def volatility_models_chart(bt, models: list, labels: dict, ticker: str) -> go.F
         legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0))
     fig.update_yaxes(tickformat=".0%")
     return fig
+
+
+def volatility_all_models_chart(df, models: list, labels: dict, ticker: str) -> go.Figure:
+    """Every selected model against the realized series for one ticker."""
+    palette = ["#C8621E", "#2B5F8A", "#1F7A5A", "#8A4FA0", "#B03A48",
+               "#7A6A1F", "#3A6EA5", "#A0522D", "#5B7C99"]
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=df["date"], y=df["target"], mode="lines",
+                             name="actual realized volatility",
+                             line=dict(color="#9AA3AF", width=1.3)))
+    i = 0
+    for m in models:
+        if m not in df:
+            continue
+        dash = "dot" if m == "naive" else None
+        width = 1.1 if m == "naive" else 2.0
+        colr = "#6B7482" if m == "naive" else palette[i % len(palette)]
+        if m != "naive":
+            i += 1
+        fig.add_trace(go.Scatter(x=df["date"], y=df[m], mode="lines",
+                                 name=labels.get(m, m),
+                                 line=dict(color=colr, width=width, dash=dash)))
+    fig.update_layout(
+        title=f"{ticker} — every model against the same realized series",
+        yaxis_title="annualised volatility", xaxis_title=None, height=460,
+        margin=dict(l=10, r=10, t=46, b=10), hovermode="x unified",
+        legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0))
+    fig.update_yaxes(tickformat=".0%")
+    return fig
+
+
+def volatility_scatter_chart(df, model: str, label: str, ticker: str) -> go.Figure:
+    """Predicted against actual. A perfect model sits on the diagonal.
+
+    This is the honest view of tracking quality: a flat forecast shows up as
+    a horizontal cloud however good its loss looks, and a model that chases
+    noise shows up as scatter around the line rather than along it.
+    """
+    import numpy as np
+
+    a, p = df["target"].to_numpy(float), df[model].to_numpy(float)
+    lo, hi = float(min(a.min(), p.min())), float(max(a.max(), p.max()))
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=a, y=p, mode="markers", name=label,
+                             marker=dict(size=5, color="#C8621E", opacity=0.45)))
+    fig.add_trace(go.Scatter(x=[lo, hi], y=[lo, hi], mode="lines",
+                             name="perfect forecast",
+                             line=dict(color="#6B7482", width=1.2, dash="dash")))
+    fig.update_layout(title=f"{ticker} — {label}: predicted vs actual",
+                      xaxis_title="actual", yaxis_title="predicted",
+                      height=400, margin=dict(l=10, r=10, t=46, b=10),
+                      legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0))
+    fig.update_xaxes(tickformat=".0%")
+    fig.update_yaxes(tickformat=".0%")
+    return fig

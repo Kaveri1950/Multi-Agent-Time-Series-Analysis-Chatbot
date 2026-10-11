@@ -251,6 +251,21 @@ def main():
     path.write_text(json.dumps(out, indent=2, default=str))
     print(f"\nwrote {path}")
 
+    # Per-observation predictions, on the ORIGINAL scale, so the dashboard can
+    # show every model on any ticker without refitting. These are pooled
+    # models trained across all 48 names -- retraining six learners inside a
+    # web request would take half an hour, and training them on one ticker
+    # instead would be a different (worse) model than the one benchmarked.
+    # Each column is exponentiated with its own smearing correction, since a
+    # log-space fit exponentiates biased low.
+    keep = sc[["date", "ticker", "target"]].copy()
+    for m in models:
+        lp = sc[m].to_numpy(float)
+        keep[m] = np.exp(lp + 0.5 * np.var(ly - lp))
+    pred_path = RESULTS / "volatility_tracking_predictions.parquet"
+    keep.to_parquet(pred_path, index=False)
+    print(f"wrote {pred_path}  ({len(keep):,} rows x {len(models)} models)")
+
 
 if __name__ == "__main__":
     main()
