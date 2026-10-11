@@ -61,11 +61,19 @@ FEATURES = [
 ]
 
 
-def build_tracking_frame(estimator: str = "garman_klass", verbose: bool = True) -> pd.DataFrame:
-    """Log-space features including the cross-sectional terms."""
+def build_tracking_frame(estimator: str = "garman_klass", verbose: bool = True,
+                         require_target: bool = True) -> pd.DataFrame:
+    """Log-space features including the cross-sectional terms.
+
+    `require_target=False` keeps the most recent row, whose target is the
+    day that has not happened yet. Training must drop it -- there is nothing
+    to fit against -- but SERVING needs exactly that row, and serving from
+    the last row with a known target would be forecasting a day already
+    observed, using a row the model was trained on.
+    """
     from quant.vol_models import build_features
 
-    f = build_features(estimator, verbose=verbose)
+    f = build_features(estimator, verbose=verbose, require_target=require_target)
     f = f.sort_values(["date", "ticker"]).reset_index(drop=True)
 
     # The market factor is the cross-sectional MEDIAN of today's realized
@@ -94,7 +102,8 @@ def build_tracking_frame(estimator: str = "garman_klass", verbose: bool = True) 
     f["neg"] = (f["lev"] > 0).astype(float)
     f["spread"] = f["l_rv5"] - f["l_rv22"]
     f["y"] = lg(f["target"])
-    return f.dropna(subset=FEATURES + ["y", "target"]).reset_index(drop=True)
+    need = FEATURES + (["y", "target"] if require_target else [])
+    return f.dropna(subset=need).reset_index(drop=True)
 
 
 def _make(kind: str):

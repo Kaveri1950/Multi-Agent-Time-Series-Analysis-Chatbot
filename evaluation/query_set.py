@@ -194,17 +194,17 @@ QUERIES = [
     # is definitional, so the pattern has to want a forward-looking cue
     # rather than the bare word.
     q("how volatile will TCS be tomorrow", "finance", FIN,
-      "finance.har_volatility", CANONICAL),
-    q("forecast the volatility of RELIANCE", "finance", FIN, "finance.har_volatility"),
-    q("volatility forecast for INFY", "finance", FIN, "finance.har_volatility"),
+      "finance.volatility_forecast", CANONICAL),
+    q("forecast the volatility of RELIANCE", "finance", FIN, "finance.volatility_forecast"),
+    q("volatility forecast for INFY", "finance", FIN, "finance.volatility_forecast"),
     q("what is the expected volatility of HDFCBANK", "finance", FIN,
-      "finance.har_volatility"),
-    q("predict volatility for SBIN", "finance", FIN, "finance.har_volatility"),
-    q("how volatile is WIPRO going to be", "finance", FIN, "finance.har_volatility"),
+      "finance.volatility_forecast"),
+    q("predict volatility for SBIN", "finance", FIN, "finance.volatility_forecast"),
+    q("how volatile is WIPRO going to be", "finance", FIN, "finance.volatility_forecast"),
     q("give me the realized volatility outlook for ITC", "finance", FIN,
-      "finance.har_volatility"),
+      "finance.volatility_forecast"),
     q("how big are the moves going to be in TCS", "finance", FIN,
-      "finance.har_volatility", ADVERSARIAL),
+      "finance.volatility_forecast", ADVERSARIAL),
 
     # ================= GENERAL : nothing should run =================
     q("what does RSI mean", "finance", FIN, None, GENERAL),

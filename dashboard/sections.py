@@ -705,16 +705,39 @@ def render_volatility_forecast(ticker: str, key_prefix: str = "vol") -> dict | N
     from dashboard.charts import volatility_forecast_chart
     from quant.vol_models import forecast_ticker
 
-    st.subheader(f"📉 {ticker} — Volatility Forecast (HAR + overnight)")
+    st.subheader(f"📉 {ticker} — Volatility Forecast")
     st.caption("How BIG tomorrow's move will be, not which way. Returns are a random walk "
                "here (lag-1 autocorrelation +0.010); their volatility is not (+0.459).")
 
+    res, served_by = None, None
     try:
-        with st.spinner("Fitting HAR on this ticker's own history..."):
-            res = forecast_ticker(ticker)
-    except Exception as exc:  # noqa: BLE001
-        st.info(f"Volatility forecast unavailable for {ticker}: {exc}")
-        return None
+        from quant.production_model import forecast as prod_forecast
+        with st.spinner("Loading the trained ensemble..."):
+            pr = prod_forecast(ticker)
+        res = {"forecast_annualised_vol": pr["forecast_annualised_vol"],
+               "naive_annualised_vol": pr["today_realised_vol"],
+               "last_22d_mean": float("nan"), "as_of": pr["as_of"],
+               "n_train": None, "history": None, "prod": pr}
+        served_by = "ensemble"
+    except Exception:  # noqa: BLE001
+        # The ensemble is pooled and serves only the 48-name panel, so fall
+        # back to the per-ticker HAR for anything outside it rather than
+        # refusing. The UI says which one answered.
+        try:
+            with st.spinner("Not in the pooled panel — fitting HAR on this ticker alone..."):
+                res = forecast_ticker(ticker)
+            served_by = "har_ticker"
+        except Exception as exc:  # noqa: BLE001
+            st.info(f"Volatility forecast unavailable for {ticker}: {exc}")
+            return None
+
+    if res.get("history") is None:
+        try:
+            hist = forecast_ticker(ticker)["history"]
+            res["history"] = hist
+            res["last_22d_mean"] = float(hist["realized_vol"].tail(22).mean())
+        except Exception:  # noqa: BLE001
+            res["history"] = None
 
     fc, nv = res["forecast_annualised_vol"], res["naive_annualised_vol"]
     c1, c2, c3 = st.columns(3)
@@ -726,16 +749,36 @@ def render_volatility_forecast(ticker: str, key_prefix: str = "vol") -> dict | N
     c3.metric("22-day average", f"{res['last_22d_mean']:.1%}",
               help="HAR's longest component, and the one it weights most heavily.")
 
-    st.plotly_chart(volatility_forecast_chart(res["history"], fc, nv, ticker),
-                    width="stretch", key=f"{key_prefix}_vol_chart")
+    if res.get("history") is not None:
+        st.plotly_chart(volatility_forecast_chart(res["history"], fc, nv, ticker),
+                        width="stretch", key=f"{key_prefix}_vol_chart")
 
-    st.caption(
-        f"Fitted on {res['n_train']} days ending {res['as_of']}. "
-        f"Measured skill: QLIKE {res['skill']['value']} against naive's 0.77935 over "
-        "59,709 held-out forecasts across 48 NSE names — a 48% reduction, with naive "
-        "the best model on none of them. Volatility says how large the move will be and "
-        "never which direction; it is not a trading signal."
-    )
+    if served_by == "ensemble":
+        pr = res["prod"]
+        with st.expander("What the six members each said"):
+            st.dataframe(pd.DataFrame(
+                [{"member": k.replace("_log", ""), "forecast": v}
+                 for k, v in pr["member_forecasts"].items()]
+            ).style.format({"forecast": "{:.2%}"}), width="stretch", hide_index=True)
+            st.caption("Equal weights. The Model Confidence Set could not separate these, "
+                       "and an estimated weighting lost to a flat one.")
+        if not pr.get("is_live", True):
+            st.warning(pr["note"])
+        st.caption(
+            f"Served by the pooled log-space ensemble, trained through {pr['trained_through']}, "
+            f"forecasting {pr['as_of']}. Measured on 61,303 held-out forecasts: it calls "
+            "tomorrow higher-or-lower correctly **70.9%** of the time against a simulated "
+            "ceiling of **74.1%** (naive manages 34.2%), and beats each stock's own trailing "
+            "60-day average on **50 of 50** tickers. Within-ticker R² on the LEVEL is 0.247 "
+            "of an attainable 0.533 — it knows which way volatility is going better than how "
+            "far. Volatility is the size of the move, never its direction; not a trading signal."
+        )
+    else:
+        st.caption(
+            f"{ticker} is outside the 48-name pooled panel, so this is a HAR fit on its own "
+            f"history ({res.get('n_train')} days ending {res['as_of']}). The ensemble uses "
+            "cross-sectional features and cannot serve a name absent from the panel."
+        )
     return res
 
 

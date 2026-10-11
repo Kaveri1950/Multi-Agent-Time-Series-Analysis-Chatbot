@@ -168,45 +168,47 @@ REGISTRY: list[ModelSpec] = [
         "entry_point": "finance.forecast_log.latest",
     },
     {
-        "id": "finance.har_volatility",
-        "name": "HAR realized-volatility forecast",
+        "id": "finance.volatility_forecast",
+        "name": "Realized-volatility forecast (log-space ensemble)",
         "domain": "finance", "task": FORECAST_VOLATILITY,
         "method_family": "statistical",
-        "description": "Next-day realized volatility from the daily, weekly and monthly "
-                       "averages of past volatility (Corsi's HAR) plus the overnight gap, with "
-                       "volatility estimated from the daily high-low range so no paid intraday "
-                       "feed is needed. The overnight term matters because a range estimator "
-                       "sees only the trading session and is blind to the close-to-open move, "
-                       "which for Indian equities carries a full session of foreign news. "
+        "description": "Next-day realized volatility from an equal-weight ensemble of six "
+                       "learners -- ridge, random forest, extra trees, gradient boosting, SVR "
+                       "and an MLP -- fitted in LOG space on Garman-Klass range volatility, "
+                       "pooled across 48 NSE names. Alongside the stock's own history it uses "
+                       "two cross-sectional features, the market-median volatility and this "
+                       "stock's level relative to it, which a single-ticker model cannot see. "
                        "Reports the naive carry-forward baseline alongside it.",
         "requires": ["ticker"],
         "returns": "next-day annualised volatility + naive baseline + measured track record",
-        "skill": {"metric": "QLIKE", "value": 0.40330,
-                  "note": "BEATS ITS BASELINE, which nothing else in this registry does: naive "
-                          "carry-forward scores 0.7794, so this cuts the loss 48%, and naive is "
-                          "the best model on 0 of 48 tickers over 59,709 strictly-causal "
-                          "walk-forward forecasts. Reproduces on all three range estimators.\n"
-                          "THE VARIANT WAS CHOSEN ON PREREQUISITES, NOT ON THE POINT ESTIMATE. "
-                          "A Model Confidence Set over 14 models leaves four that cannot be "
-                          "statistically separated -- har_ovn 0.40330, har 0.40377, har_l "
-                          "0.40681, har_iv 0.40793 -- so ranking them by loss would be a coin "
-                          "flip dressed as a measurement. The tie is broken on what each needs: "
-                          "har_ovn uses only the OHLC panel already cached, while har_iv needs a "
-                          "live India VIX feed for no measurable gain. Beaten models include a "
-                          "cubic spline that provably nests HAR (0.41015), gradient boosting "
-                          "(0.41764), a pooled LSTM (0.41696) and BiLSTM (0.41729), Chronos-Bolt "
-                          "zero-shot, CARR (0.51932) and GARCH (0.51955 after a Mincer-Zarnowitz "
-                          "rescaling; 0.54608 raw).\n"
-                          "CAVEAT: on MSE rather than QLIKE the two neural nets are the BEST "
-                          "models in the set. QLIKE is the pre-registered primary metric because "
-                          "MSE on a noisy volatility proxy is dominated by a few extreme days, "
-                          "but the ranking does depend on that choice."},
+        "skill": {"metric": "QLIKE", "value": 0.3517,
+                  "note": "Measured on 61,303 strictly causal walk-forward forecasts.\n"
+                          "DIRECTION IS NEAR-OPTIMAL: given today, it calls tomorrow higher or "
+                          "lower correctly 70.9% of the time against a simulated ceiling of "
+                          "74.1% -- 96% of what is achievable. Naive manages 34.2%.\n"
+                          "LEVEL HAS ROOM: within-ticker R-squared(log) is 0.247 against a "
+                          "ceiling of 0.533, so 46% captured. The ceiling is measured, not "
+                          "assumed: a Kalman fit puts Var(latent log-vol) at 0.125 against "
+                          "Var(measurement noise) 0.110, so 92% of the day-to-day movement in "
+                          "the observed series is estimation error that nothing can forecast.\n"
+                          "It beats the stock's own trailing 60-day average on 50 of 50 "
+                          "tickers, and naive on QLIKE 0.3517 against 0.5271.\n"
+                          "BEATEN ALONG THE WAY: plain HAR, GARCH, GJR-GARCH, CARR, a cubic "
+                          "spline that provably nests HAR, a pooled LSTM and BiLSTM, "
+                          "Chronos-Bolt zero-shot, a Kalman state-space model, wavelet "
+                          "decomposition and temporal-hierarchy reconciliation. Most of the "
+                          "gain came from training in log space rather than from any "
+                          "architecture.\n"
+                          "CAVEAT: the pooled R-squared of 0.452 is flattered by the easy "
+                          "cross-sectional half -- 0.935 between tickers, 0.247 within one."},
         "when_to_use": "the user asks how volatile a stock will be, or wants a volatility or "
                        "risk-of-movement forecast",
-        "when_not_to_use": "for a price or a direction -- volatility says how BIG the move will "
-                           "be, never which way. Returns themselves stay unforecastable here",
+        "when_not_to_use": "for a price or a market direction -- this says how BIG the move "
+                           "will be, never which way the price goes. Also not for a ticker "
+                           "outside the 48-name panel: two features are cross-sectional, so a "
+                           "name absent from the panel cannot be served",
         "cost": "fast",
-        "entry_point": "quant.vol_models.forecast_ticker",
+        "entry_point": "quant.production_model.forecast",
     },
     {
         "id": "finance.anomaly_detectors",

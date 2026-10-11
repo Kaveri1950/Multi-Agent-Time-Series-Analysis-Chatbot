@@ -99,7 +99,7 @@ def load_vix(force: bool = False, verbose: bool = True) -> pd.Series:
 
 def build_features(estimator: str = "parkinson", top_n: int = DEFAULT_TOP_N,
                    include_overnight_in_target: bool = False,
-                   verbose: bool = True) -> pd.DataFrame:
+                   verbose: bool = True, require_target: bool = True) -> pd.DataFrame:
     """One long frame: date, ticker, features, target.
 
     `include_overnight_in_target` changes what is being FORECAST, not which
@@ -141,7 +141,11 @@ def build_features(estimator: str = "parkinson", top_n: int = DEFAULT_TOP_N,
 
     cols = (["date", "ticker", "target", "naive"]
             + sorted({c for s in FEATURE_SETS.values() for c in s}))
-    frame = pd.concat(out, ignore_index=True)[cols].dropna()
+    frame = pd.concat(out, ignore_index=True)[cols]
+    # A blanket dropna() also removes the most recent row, whose target is
+    # tomorrow. Training needs that row gone; SERVING needs exactly it.
+    need = [c for c in cols if c not in ("target",)] + (["target"] if require_target else [])
+    frame = frame.dropna(subset=need)
     return frame.sort_values(["date", "ticker"]).reset_index(drop=True)
 
 

@@ -60,3 +60,4 @@ evaluation/results/figures_for_overleaf/
 evaluation/results/consensus_scores_*.npz
 evaluation/results/bootstrap_scores_*.npz
 evaluation/results/volatility_tracking_predictions.parquet
+data/cache/models/
