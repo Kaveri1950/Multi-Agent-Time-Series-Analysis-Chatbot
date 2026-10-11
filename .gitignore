@@ -59,3 +59,4 @@ evaluation/results/figures_for_overleaf/
 # results carry every reported statistic.
 evaluation/results/consensus_scores_*.npz
 evaluation/results/bootstrap_scores_*.npz
+evaluation/results/volatility_tracking_predictions.parquet
