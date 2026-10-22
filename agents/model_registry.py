@@ -175,7 +175,7 @@ REGISTRY: list[ModelSpec] = [
         "description": "Next-day realized volatility from an equal-weight ensemble of six "
                        "learners -- ridge, random forest, extra trees, gradient boosting, SVR "
                        "and an MLP -- fitted in LOG space on Garman-Klass range volatility, "
-                       "pooled across 48 NSE names. Alongside the stock's own history it uses "
+                       "pooled across 50 NSE names. Alongside the stock's own history it uses "
                        "two cross-sectional features, the market-median volatility and this "
                        "stock's level relative to it, which a single-ticker model cannot see. "
                        "Reports the naive carry-forward baseline alongside it.",
@@ -193,22 +193,82 @@ REGISTRY: list[ModelSpec] = [
                           "the observed series is estimation error that nothing can forecast.\n"
                           "It beats the stock's own trailing 60-day average on 50 of 50 "
                           "tickers, and naive on QLIKE 0.3517 against 0.5271.\n"
-                          "BEATEN ALONG THE WAY: plain HAR, GARCH, GJR-GARCH, CARR, a cubic "
-                          "spline that provably nests HAR, a pooled LSTM and BiLSTM, "
+                          "NOT BETTER THAN PLAIN HAR ON QLIKE. A HAR fitted on each stock's "
+                          "own history, in levels, scores QLIKE 0.3354 against this "
+                          "ensemble's 0.3530 (volatility_roster_garman_klass.json, "
+                          "volatility_tracking.json), and 0.334 against 0.347 for a "
+                          "three-member version on identical rows (out_of_panel.json). The "
+                          "ensemble was trained for TRACKING, squared error in logs, and wins "
+                          "there: direction 71.0% against HAR's 68.0%, within-stock R2 0.244 "
+                          "against 0.216. QLIKE punishes under-forecasting, and a level model "
+                          "trained on squared error sits higher. Which is better depends on "
+                          "the loss; neither dominates.\n"
+                          "BEATEN ALONG THE WAY on the tracking objective: GARCH, GJR-GARCH, "
+                          "CARR, a cubic spline that provably nests HAR, a pooled LSTM and "
+                          "BiLSTM, "
                           "Chronos-Bolt zero-shot, a Kalman state-space model, wavelet "
                           "decomposition and temporal-hierarchy reconciliation. Most of the "
                           "gain came from training in log space rather than from any "
                           "architecture.\n"
                           "CAVEAT: the pooled R-squared of 0.452 is flattered by the easy "
-                          "cross-sectional half -- 0.935 between tickers, 0.247 within one."},
+                          "cross-sectional half -- 0.935 between tickers, 0.247 within one.\n"
+                          "AND THE CROSS-SECTION IS MOSTLY PERSISTENCE: ranking stocks by "
+                          "this forecast gives a daily Spearman of 0.631 against what then "
+                          "happens, but ranking by a plain trailing 66-day average gives "
+                          "0.610. The model adds +0.021 (t = 12.3), real and small.\n"
+                          "INTERVAL: the 80% band covered 80.6% and the 95% band 94.8% of "
+                          "held-out days. One width is shared by every stock, so per-stock "
+                          "coverage of the 80% band runs from 72.4% to 86.1%."},
         "when_to_use": "the user asks how volatile a stock will be, or wants a volatility or "
                        "risk-of-movement forecast",
         "when_not_to_use": "for a price or a market direction -- this says how BIG the move "
                            "will be, never which way the price goes. Also not for a ticker "
-                           "outside the 48-name panel: two features are cross-sectional, so a "
+                           "outside the 50-name panel: two features are cross-sectional, so a "
                            "name absent from the panel cannot be served",
         "cost": "fast",
         "entry_point": "quant.production_model.forecast",
+    },
+    {
+        "id": "finance.volatility_price_range",
+        "name": "Next-session price range (volatility-scaled)",
+        "domain": "finance", "task": FORECAST_VALUE,
+        "method_family": "statistical",
+        "description": "Tomorrow's close as a RANGE: today's close as the point, with an 80% "
+                       "and a 95% band whose width comes from the realized-volatility "
+                       "forecast. The volatility model contributes the width only -- it "
+                       "carries no information about direction.",
+        # `next_session` is a capability, not a formality. The model has been
+        # measured one session ahead and nowhere else, so a question about
+        # next month must not reach it. Registered with `ticker` alone it won
+        # every value-forecast query on calibration, the 30-day ones included,
+        # and selection accuracy fell from 95.04% to 85.11%.
+        "requires": ["ticker", "next_session"],
+        "returns": "today's close + 80% and 95% price range for the next session",
+        "skill": {"metric": "interval coverage", "value": 0.794,
+                  "note": "Measured on 42,834 held-out stock-days across 45 names, the 80% band "
+                          "covered 79.4% and the 95% band 94.8%.\n"
+                          "EFFECTIVELY TIED WITH A PER-STOCK HAR. Seven width sources, one "
+                          "causal calibration recipe: Winkler score 6.514 against 6.534 for "
+                          "a HAR fitted on each stock (Diebold-Mariano p=0.003) at 80%, and "
+                          "10.229 against 10.265 (p=0.11, not significant) at 95%. Best of the "
+                          "seven on 34 of 45 stocks at 80% and 27 of 45 at 95%. Clearly "
+                          "narrower than constant, trailing 60-day, EWMA, GARCH or "
+                          "carried-forward volatility (6.704 and 10.810 for the best of those). "
+                          "An earlier comparison omitted HAR and reported a 3-5% gain; against "
+                          "HAR the gain is 0.3%.\n"
+                          "NO DIRECTIONAL SKILL, by measurement: forecast volatility "
+                          "correlates +0.018 with the next return, and the share of up days "
+                          "is 50.2% when it is high and 50.1% when it is low. The point is "
+                          "today's close.\n"
+                          "WEAK ON WILD DAYS: the 80% band covers 92% of the calmest third "
+                          "of days and 65% of the most volatile third. Average coverage "
+                          "hides that."},
+        "when_to_use": "the user asks where a price will be TOMORROW or at the next close, "
+                       "and wants the realistic range rather than a single number",
+        "when_not_to_use": "for any horizon beyond one session, for a ticker outside the "
+                           "volatility panel, or as a view on direction -- it has none",
+        "cost": "fast",
+        "entry_point": "quant.price_intervals.forecast",
     },
     {
         "id": "finance.anomaly_detectors",
@@ -220,9 +280,18 @@ REGISTRY: list[ModelSpec] = [
                        "carries a computed reason, so days are explained not just flagged.",
         "requires": ["ticker"],
         "returns": "typed, severity-scored anomalous days with reasons",
-        "skill": {"metric": "none", "value": None,
-                  "note": "NO ground-truth evaluation exists yet -- validated only "
-                          "anecdotally on 2024-06-04, India's election result day"},
+        # "event-day lift" is deliberately not a metric the selector ranks
+        # on: it is not comparable with the Hampel entry's out-of-sample lift,
+        # which was measured on windows under held-out splits.
+        "skill": {"metric": "event-day lift", "value": 3.34,
+                  "note": "Flags 39.2% of stock-days on pre-registered event dates against "
+                          "11.8% on ordinary ones, across 50 stocks (Mann-Whitney on the daily "
+                          "share of stocks flagged, 42 event days, p=1.5e-11; lift 2.75 with "
+                          "2020 removed). By type: overnight gap 9.33, return outlier 6.77, "
+                          "volatility spike 3.08, volume spike 2.17. Thresholds are fixed "
+                          "constants, never tuned on those events, so this is not in-sample. "
+                          "Sentiment divergence was not evaluated. Most flagged days are "
+                          "still not events: 12% of ordinary days are flagged too."},
         "when_to_use": "the user asks what was unusual, odd, or anomalous about a stock",
         "when_not_to_use": "for prediction -- this describes the past only",
         "cost": "medium",
@@ -418,9 +487,28 @@ REGISTRY: list[ModelSpec] = [
                        "Answers the forward-looking question anomaly detection cannot.",
         "requires": ["ticker"],
         "returns": "volatility, downside estimates, drawdown, regime state, attributed anomalies",
-        "skill": {"metric": "VaR backtest", "value": "Kupiec p=0.273, Christoffersen p=0.237",
-                  "note": "regime-conditional passes both coverage tests; the unconditional "
-                          "version is REJECTED (Kupiec p=0.0068 at 95%, p=0.0005 at 99%)"},
+        "skill": {"metric": "VaR backtest", "value": "Kupiec p=0.831, Christoffersen p=0.575",
+                  "note": "MEASURED ON THE EQUAL-WEIGHTED MARKET PROXY, NOT ON A STOCK. There "
+                          "the regime-conditional VaR passes both coverage tests and the "
+                          "unconditional version is REJECTED (Kupiec p=0.0057 at 95%, "
+                          "p=0.0004 at 99%).\n"
+                          "THE PASS IS ROBUST; THE P-VALUE IS NOT A STABLE NUMBER. On the "
+                          "panel as cached to 2026-09-21 the same code gave Kupiec p=0.273 "
+                          "and Christoffersen p=0.237. Nine more sessions, and the removal of "
+                          "four flat rows the vendor had served for exchange holidays, moved "
+                          "them to 0.831 and 0.575. Across ten random starts of the HMM on "
+                          "the served regime, both tests pass every time, with Kupiec p "
+                          "between 0.63 and 0.96 and Christoffersen between 0.22 and 0.58. "
+                          "Quote the verdict, not the third decimal.\n"
+                          "THE PASS DOES NOT TRANSFER TO SINGLE STOCKS. Re-run per stock on "
+                          "the 50-name panel, the regime-conditional VaR passes both tests on "
+                          "12 of 46 testable names (15 on the 2026-09-21 panel; 4 have too "
+                          "little history). Of the 22 Kupiec rejections, 18 overstate the "
+                          "loss and 4 understate it. Conditioning still helps: unconditional "
+                          "passes on 6 of 46.\n"
+                          "Expected shortfall and the multi-day Markov VaR are not backtested "
+                          "at all. agents/risk_composition.py attaches each stock's own "
+                          "backtest to its VaR for this reason."},
         "when_to_use": "the user asks how risky a stock is, or what they could lose",
         "when_not_to_use": "the user asks whether to buy -- the system does not advise",
         "cost": "medium",
@@ -438,7 +526,13 @@ REGISTRY: list[ModelSpec] = [
         "returns": "regime state, transition probabilities, multi-day risk",
         "skill": {"metric": "lift on event days", "value": 5.59,
                   "note": "P(turbulent | event day) 52.9% vs 9.5% on ordinary days, computed "
-                          "causally. Smoothed and filtered states agree on 97.7% of days."},
+                          "causally. Smoothed and filtered states agree on 97.7% of days. "
+                          "Re-measured on the served regime (top-100 panel, to 2026-10-09): "
+                          "47.1% vs 9.7%, lift 4.86, Fisher p=4e-08; lift 4.67 with 2020 "
+                          "removed. Across ten random starts of the HMM the lift ranges 4.60 "
+                          "to 5.49 and the daily labels agree on at least 98.9% of days, so "
+                          "read 5.59 as one draw from that range. The transition "
+                          "probabilities have never been scored as forecasts."},
         "when_to_use": "the user asks about market conditions, volatility or risk generally",
         "when_not_to_use": "the user asks about one stock in isolation",
         "cost": "medium",
