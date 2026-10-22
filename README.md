@@ -1,182 +1,172 @@
 # Multi-Agent Time-Series Analysis
 
-An agent that answers natural-language questions about time series by **choosing its model from a registry of measured out-of-sample skill**, instead of asking a language model to pick one.
+B.Tech Project, IIT Indore (Aug 2026 to present). Guide: Amit Shukla
 
-Ask *"has anything unusual happened to Reliance this year?"* or *"is there a planet around KIC 11446443?"* and the same system routes the question to a task, checks which registered models can actually accept that data, ranks them by how well they scored on held-out folds, runs the winner, and explains the result in plain language.
+A Streamlit app with a chatbot that answers questions about three kinds of time series: Indian stock prices, Kepler star light curves, and solar flares. You ask something like "any unusual days in RELIANCE?" or "how risky is TCS?", and the app works out what kind of question it is, picks a model, runs it, and explains the result.
 
-Two domains are covered end to end — Kepler light curves labelled from **NASA transit ephemerides**, and Indian equity returns labelled from a **pre-registered event calendar**. Neither set of labels is derived from the series being scored.
+The main idea is in how the model is picked. Every model is listed in a registry along with the inputs it needs and the score it got on held-out data. A question is mapped to a task (forecast, anomaly, risk, lookup, and so on), models that can't run on the available inputs are removed, and the one with the best measured score is used. A local LLM (Llama 3 through Ollama) writes the final answer from the computed numbers, and in the chatbot it also reads the question to pick out the stock or star name. It doesn't choose the model and doesn't calculate anything.
 
----
+## What's in the app
 
-## Headline results
-
-Everything below is **held out**. Nothing is scored on data it was fitted on, and no point adjustment is applied.
-
-| Question | Result |
+| Page | What it does |
 |---|---|
-| Can a capability filter route better than an LLM? | **95.9%** vs **83.7%**, and in under a second against 41 min |
-| Does combining them help? | No — **95.1%**, worse than the filter alone |
-| Do 22 anomaly detectors beat a rule that learns nothing? | Barely. Best margin **+0.0102 PR-AUC** on Kepler, **+0.0030** on equities |
-| How much do in-sample scores overstate skill? | From **0.9x** (matrix profile) to **6.4x** (one-class SVM) |
-| Does regime-conditional VaR pass its coverage tests? | Yes (Kupiec p=0.27) where the unconditional model is **rejected** (p=0.007) |
-| Do the forecasting models beat a naive baseline? | **No.** Naive RMSE **36.2**; XGBoost 50.5, GPR 65.8, ARIMA 123.7 |
-| Can a task-specific method succeed where generic ones fail? | Yes — Box Least Squares recovers **60.9%** of orbital periods |
+| Chatbot | Multi-turn chat across all three domains. You can also upload an image of a light-curve plot |
+| Stock Analysis | Price charts, company metrics and unusual days for any ticker |
+| Stock Prediction | ARIMA, XGBoost and XGBoost with FinBERT news sentiment, then the volatility forecast |
+| Volatility Benchmark | Why the forecasting target was changed from price to volatility, and the model comparison |
+| Stock Risk | Volatility, VaR/ES, beta, drawdown, market regime, and unusual days split into market vs company moves |
+| Risk Analysis | Market risk today, 50 stocks ranked by forecast volatility, and each number marked passed / failed / untested |
+| Market Screener | Nifty 50/100/500 or Sensex 30 ranked by 1-day return and RSI |
+| Mutual Funds | Search about 38,000 Indian schemes; NAV history, returns and an ARIMA forecast |
+| Anomaly Benchmark | The detector comparison on both datasets, with a live demo |
+| Astronomy | Kepler light curve, anomaly detection and plain-language reasons |
+| Solar Weather | Chance of an M-class or larger flare in the next 24 h, next to NOAA's own forecast |
+| Home | A dashboard you can rearrange by typing what you want |
 
-The negative results are the point. Three of the seven rows are failures, and they were kept because a benchmark that only reports its wins cannot be used to choose a model.
+## How a question is answered
 
----
+```
+question
+  -> task classifier (ordered regex rules)             agents/model_selector.py
+  -> capability filter + rank by held-out score        agents/model_registry.py  (22 models, 11 tasks)
+  -> LangGraph agents: router, finance, sentiment,     agents/graph.py
+     anomaly, astronomy, solar, explainer
+  -> LLM writes the answer from the computed facts     agents/llm_backend.py
+  -> number check: any figure not in the facts is flagged   agents/answer_style.py
+```
 
-## Model selection
+Questions like "what is RSI?" don't run any model. They are answered directly.
 
-![Pipeline](evaluation/results/figures/fig_pipeline.png)
+## Results
 
-The registry holds **20 models over 10 tasks and 4 domains**; 16 carry a measured held-out score. Each declares what it needs (sampling rate, minimum length, whether gaps are tolerated), what it returns, and how it actually scored.
+All of these are on held-out or walk-forward data. Result files are in `evaluation/results/`.
 
-Selection is a filter, not a generation step: a question is mapped to a task, models that cannot accept the data are eliminated on their declared constraints, and the survivors are ranked by measured skill. A language model is used for *explanation*, never for choosing.
+### 1. Picking the model: rules vs LLM
 
-![Routing accuracy](evaluation/results/figures/fig_routing.png)
+141 labelled questions (11 canonical, 102 paraphrases, 18 tricky near-misses, 10 that no model should answer).
 
-Tested on **123 labelled queries** — canonical phrasings, paraphrases, adversarial near-misses, and 10 questions no registered model can answer, where the correct behaviour is to decline.
-
-| Strategy | Accuracy | Wall clock |
+| Method | Correct | Time per question |
 |---|---|---|
-| Capability filter | **95.93%** | 0.0 s |
-| Filter + LLM (hybrid) | 95.12% | 43.0 min |
-| LLM only | 83.74% | 41.0 min |
+| Rule-based filter | **95.0%** (134/141) | under 0.01 s |
+| Filter, then LLM re-ranks the shortlist | 80.9% | 22.6 s |
+| LLM picks from the whole registry | 65.2% | 26.7 s |
 
-Adding the language model to a working filter made it *worse*. Reproduce with `python -m evaluation.run_selection`.
+On the 18 tricky questions the filter got 77.8% and the LLM alone 33.3%. Adding the LLM on top of the filter made it worse, not better.
 
----
+Limitation: I wrote both the rules and the questions, so 95% is an optimistic number. A fresh question set written by someone else would be a fairer test.
 
-## Anomaly detection across two domains
+Earlier version: on the first 123-question set the numbers were 95.9% / 95.1% / 83.7% (`selection_all.json`). Some expected answers in that set pointed to an old model. After fixing the labels and adding risk and volatility questions, the current numbers are the ones above.
 
-![Detector grid](evaluation/results/figures/fig_grid.png)
+Reproduce: `python -m evaluation.run_selection --strategies filter_only`
 
-22 detectors in six families — threshold rules, distance and density methods, matrix profile, spectral decomposition, state-space models, and neural autoencoders — run on both domains through one interface.
+### 2. Anomaly detection on two very different datasets
+
+18 detector settings from 6 families (simple thresholds, rolling rules, density/distance, reconstruction, matrix profile, HMM/GARCH), each with one fixed setting. GARCH is equity-only, so Kepler has 17. Each is compared with two baselines that learn nothing (raw values and an untrained autoencoder) and with a supervised model given the labels.
 
 | | Kepler | Indian equities |
 |---|---|---|
-| Data | 40 targets, 384,281 windows | 50 names, 1,911 days |
-| Held-out windows | 124,782 | 568 |
-| Prevalence | 23.4% | 1.41% |
-| No-skill floor (PR-AUC) | 0.2528 | 0.0325 |
-| Best detector | `matrix_profile_discord_raw` **0.2630** | `spectral_pca` **0.0355** |
-| Supervised ceiling | 0.2555 | 0.0172 |
+| Data | 40 stars, 384,281 windows (12 h windows, 3 h stride) | 50-stock index, 1,911 days |
+| Labels | Transit times from NASA ephemerides | A fixed list of market events, written before running any detector |
+| Test split | By star | By time |
+| Test positives | 29,168 of 124,782 (23.4%) | 8 of 568 (1.4%) |
+| Baseline PR-AUC | 0.2528 | 0.0325 |
+| Best detector | matrix profile, 0.2630 | spectral PCA, 0.0355 |
 
-Two findings worth stating plainly:
+The best detectors beat "learn nothing" by only a small margin. On equities the margin is not significant (block-bootstrap 95% CI -0.040 to +0.137), because there are only 8 positive test windows.
 
-- On Kepler, **three unsupervised detectors outscore a supervised model that was given the labels.** The features do not separate transits, so extra information does not help.
-- On equities the supervised ceiling (0.0172) falls **below the no-skill floor** (0.0325). With 8 positive windows in the test fold, a supervised model has nothing to learn from.
+Scores on training data overstate skill a lot: one-class SVM looks 6.4x better in-sample than on held-out data, while matrix profile is about the same (0.9x).
 
-### Why in-sample numbers cannot be trusted
+An LSTM autoencoder was also tried on Kepler only: PR-AUC 0.2591, just above the baseline.
 
-![Inflation](evaluation/results/figures/fig_inflation.png)
+The labels never come from the series being scored. An earlier version labelled transits by their own depth, which inflated the median AUC from 0.88 to 0.98 on 25 stars, an inflation of about 0.10 (`python -m astronomy.evaluate --inflation`).
 
-Inflation = in-sample PR-AUC divided by held-out PR-AUC:
+### 3. Price forecasting doesn't work, so the target changed
 
-| Detector | Inflation |
-|---|---|
-| `matrix_profile_discord` | 0.91x |
-| `hampel_mad` | 1.99x |
-| `zscore` | 2.02x |
-| `isolation_forest` | 2.89x |
-| `local_outlier_factor` | 4.73x |
-| `one_class_svm` | **6.37x** |
+On a 120-day walk-forward log for 3 stocks, nothing beats "tomorrow = today":
 
-It tracks **capacity, not skill**. Scored transductively, the one-class SVM looked like the strongest equity detector at 4.62x lift; held out it manages 1.14x. Any leaderboard built without a split would have crowned it.
-
-### The representation, not the algorithm
-
-![Transit search](evaluation/results/figures/fig_transit.png)
-
-A transit repeats hundreds of times in one light curve, which makes it the *least* unusual feature of that curve — generic anomaly detection is searching for the opposite of what is there. Changing the question rather than the model fixes it. Box Least Squares folds the series on thousands of candidate periods and stacks every repetition:
-
-| Metric | Value |
-|---|---|
-| Significant peak found | 91.4% |
-| Period recovered within 1% | **60.9%** |
-| Median period error | 0.005% |
-| Harmonic locks (2x or half the true period) | 33.6% |
-
----
-
-## Quantitative risk
-
-`quant/` and `finance/risk_profile.py` hold the risk work, built around the idea that a single unconditional distribution is the wrong model for returns.
-
-**Regimes.** A Mahalanobis turbulence index (Kritzman & Li, 2010) over a 252-day trailing covariance, plus a Gaussian HMM. Turbulence runs **5.59x higher** on pre-registered event days. Both *filtered* (forward-recursion) and *smoothed* (Viterbi) states are exposed, and the difference is documented: smoothed states use future data and must never be used for backtesting.
-
-**Value-at-Risk.** Regime-conditional VaR passes both coverage tests that the unconditional model fails:
-
-| Model | Kupiec POF | Christoffersen |
+| Model | RMSE | Direction correct |
 |---|---|---|
-| Unconditional | rejected, p=0.0068 | rejected, p=0.0005 |
-| Regime-conditional | **pass, p=0.273** | **pass, p=0.861** |
+| Naive (no change) | 30.21 | n/a |
+| ARIMA | 30.10 | 47.5% |
+| Gaussian Process | 36.83 | 44.2% |
 
-**Multi-horizon.** Propagating the Markov transition matrix forward gives a 10-day VaR of **-5.00%**, against **-6.31%** from the square-root-of-time rule — that scaling overstates the tail by **20.7%** because it assumes i.i.d. returns that regime persistence contradicts.
+Daily returns have almost no autocorrelation (about +0.01), but volatility does (about +0.5). So the forecasting target became tomorrow's volatility (Garman-Klass).
 
-**Attribution.** Anomalies are decomposed into systematic and idiosyncratic components via beta against the index, so a flagged day can be attributed to a market-wide move or to the name itself. An event study over the pre-registered calendar gives **+0.32%** at 1 day (t=3.37) and **+0.58%** at 21 days (t=2.25) on sign-adjusted forward returns.
+### 4. Volatility forecasting
 
----
+A pooled ensemble (ridge, random forest, extra trees, gradient boosting, SVR, MLP) trained in log space on 50 NSE stocks, walk-forward.
 
-## Layout
+| Measure | Result |
+|---|---|
+| Says correctly whether volatility goes up or down | **70.9%** |
+| Best possible, estimated from a Kalman fit of measurement noise | 74.1% |
+| Beats each stock's own 60-day average | 50 of 50 stocks |
+| Coverage of the 80% / 95% bands | 80.6% / 94.8% |
 
-```
-agents/           model registry, capability selector, LangGraph nodes, answer guards
-anomaly/          detector interface, 22 detectors, splits, metrics, data audit, profiler
-quant/            turbulence, HMM regimes, VaR/ES, Kupiec + Christoffersen, Markov horizons
-finance/          price data, risk profile, sentiment, universe construction, forecasting
-astronomy/        Kepler loading, KOI catalogue labels, Box Least Squares, embeddings
-solar/            NOAA X-ray flux, flare features, Hawkes process
-evaluation/       query set, selection experiment, figures, committed results
-rag/              embeddings and vector store for the explanation layer
-pages/ views/ dashboard/    Streamlit interface
-tests/            integration tests
-```
+On the QLIKE loss a simple per-stock HAR model is slightly better (0.335 vs 0.353), so the "best model" depends on the metric.
 
-## Getting started
+### 5. Market regimes and Value-at-Risk
+
+- Turbulence: Mahalanobis distance of daily returns from the past year's normal pattern.
+- Regimes: a 2-state Gaussian HMM (quiet vs turbulent). Only forward-filtered states are used, since Viterbi states use future data.
+- On the pre-registered event days, the market is in the turbulent state 47% of the time vs 10% on other days.
+
+VaR backtest on the equal-weighted market proxy (walk-forward, data to 21 Sep 2026):
+
+| Model | 95%: Kupiec p | 95%: Christoffersen p | 99%: Kupiec p |
+|---|---|---|---|
+| Unconditional | 0.0068 (rejected) | 0.563 | 0.0005 (rejected) |
+| Regime-conditional | **0.273** (pass) | 0.237 (pass) | **0.861** (pass) |
+
+The exact p-values move with new data: after the 9 Oct refresh they are 0.831 and 0.229, and on that data the pass holds under all 10 HMM random seeds. Tested stock by stock, only 12 of 46 stocks pass both tests, so the Risk Analysis page shows each stock's own result.
+
+10-day VaR from the Markov chain is -4.89%, against -6.56% from the square-root-of-time rule.
+
+### 6. Astronomy and solar
+
+- A Lomb-Scargle check sorts series into periodic or one-off: 9 of 10 Kepler stars come out periodic and 10 of 10 stocks one-off.
+- Box Least Squares period search is implemented (`astronomy/transit_search.py`) but doesn't have a committed result file yet.
+- Solar flares: a Hawkes process (each flare raises the short-term chance of another) gets TSS 0.49 on the last test block. On a recent 61-day hindcast, NOAA's own forecast and simple persistence both did better.
+
+## Running it
+
+Python 3.12. Ollama with `llama3` is needed for chatbot answers. MongoDB is optional; it's used for chat history and the forecast log.
 
 ```bash
 python -m venv .venv
-.venv\Scripts\activate          # Windows; source .venv/bin/activate elsewhere
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-No API key is needed for the analysis — every model runs locally on free data (yfinance, NASA Exoplanet Archive, NOAA SWPC). A key is only read from the environment (`OPENAI_API_KEY` / `ANTHROPIC_API_KEY`) if you want LLM-written explanations; without one the system still answers, using templates.
+Data comes from free sources (yfinance, NSE, api.mfapi.in, NASA Exoplanet Archive, NOAA) and is cached in `data/cache/`, which is not in the repo. Settings are read from environment variables: `BTP_LLM_BACKEND` (`ollama`, `openai` or `claude`), `BTP_OLLAMA_MODEL`, `MONGODB_URI`.
 
-## Reproducing the results
+Tests: `pytest -m "not slow"` (61 tests pass; some need internet). The slow tests call the LLM.
 
-```bash
-python -m evaluation.run_selection      # routing table (~45 min with the LLM arms)
-python -m anomaly.grid                  # detector grid on both domains
-python -m evaluation.report_figures     # regenerate every figure above
-python -m astronomy.transit_search      # Box Least Squares period recovery
-pytest                                  # integration tests
+## Folder layout
+
 ```
-
-Committed results live in `evaluation/results/` — `anomaly_grid.json`, `selection_all.json` and the figures — so every number in this README can be checked without re-running anything.
-
-## Design notes
-
-**Labels never come from the series being scored.** An earlier version labelled a window "transit" by thresholding its own depth, then evaluated detectors that look for deep dips. Measured inflation from that circularity: **+0.11 AUC**. Labels now come from NASA ephemerides (T0 + nP) and a pre-registered event calendar fixed before any detector ran.
-
-**Solar is deliberately excluded from the anomaly benchmark.** A flare's class is *defined* by an X-ray flux threshold, so detecting flares from X-ray flux cannot fail. It is kept as a forecasting domain, where the question is genuinely open.
-
-**No point adjustment.** Under the point-adjustment protocol common in the time-series anomaly literature, a *random* score reaches state-of-the-art F1 (Kim et al., AAAI 2022). Raw PR-AUC is reported instead, floored at the base rate.
-
-**The data was audited before any result was recorded.** Wu & Keogh's four benchmark flaws — triviality, unrealistic anomaly density, mislabelled ground truth, run-to-failure bias — are checked by `anomaly/audit.py` on both datasets. Kepler raises one warning on anomaly density; it is reported rather than hidden.
-
-**Splits are stratified by prevalence.** A naive temporal split gave 17.9% versus 42.8% positive rates across folds, which makes the comparison meaningless. Group-stratified splitting closes that gap to 0.0145.
+agents/       registry, model selector, LangGraph nodes, risk composition, answer checks
+anomaly/      detector interface, detectors, splits, metrics, data audit, labels
+quant/        turbulence, HMM regimes, VaR and backtests, volatility models
+finance/      price data, forecasting, sentiment, risk profile, screener, mutual funds
+astronomy/    Kepler loading, KOI labels, transit search
+solar/        NOAA data, flare features, Hawkes model
+evaluation/   question set, experiments, results/
+rag/          sentence embeddings + FAISS for the explainer
+pages/ views/ dashboard/   Streamlit UI
+tests/
+```
 
 ## Known limitations
 
-- Kepler is 40 targets in the detector grid; the Box Least Squares run covers 440.
-- The equity test fold contains **8 positive windows**. Wide confidence intervals; treat the equity column as directional.
-- Astronomy caching and Box Least Squares are implemented but not yet reachable from the chat interface.
-- The local LLM backend takes 3–8 minutes per answer. A hosted backend is needed for a live demo.
-- The planned ablation (bare LLM vs. retrieval vs. full agent) has not been run.
+- The question set is small and I wrote it myself.
+- The equity anomaly test has only 8 positive windows.
+- The detector comparison uses 40 of the 440 downloaded Kepler stars.
+- With the local LLM on CPU, a full chatbot answer takes about 5 to 7 minutes.
+- Volatility jumps on results days are under-forecast. Calendar features help a little, but they aren't in the served model yet.
+- Dependencies are not pinned, and there is no CI yet.
 
 ## Licence
 
-MIT — see [LICENSE](LICENSE). Data comes from public sources (NASA Exoplanet Archive, NOAA SWPC, yfinance) under their own terms; no vendor data is redistributed here.
+MIT. Data belongs to its sources (NASA Exoplanet Archive, NOAA SWPC, NSE, AMFI, Yahoo Finance) and is not redistributed here.
