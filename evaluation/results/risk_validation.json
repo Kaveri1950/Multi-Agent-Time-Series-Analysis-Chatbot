@@ -1,0 +1,1248 @@
+{
+  "generated_at": "2026-10-13T00:56:15+00:00",
+  "volatility": {
+    "n_forecasts": 61303,
+    "n_tickers": 50,
+    "first_date": "2021-05-20",
+    "last_date": "2026-10-05",
+    "log_sd_served": 0.37439483329532364,
+    "log_sd_out_of_sample": 0.3812319766146889,
+    "interval": {
+      "80": {
+        "coverage": 0.8063716294471722,
+        "below": 0.08914735004812163,
+        "above": 0.10448102050470613,
+        "per_ticker_min": 0.7239543726235741,
+        "per_ticker_max": 0.8607975921745673,
+        "per_ticker": {
+          "ADANIENT.NS": 0.7652,
+          "ADANIPORTS.NS": 0.7794,
+          "ASIANPAINT.NS": 0.836,
+          "AXISBANK.NS": 0.8434,
+          "BAJAJFINSV.NS": 0.8164,
+          "BAJFINANCE.NS": 0.8119,
+          "BEL.NS": 0.8202,
+          "BHARTIARTL.NS": 0.8104,
+          "BHEL.NS": 0.7908,
+          "BSE.NS": 0.772,
+          "DRREDDY.NS": 0.839,
+          "ETERNAL.NS": 0.7632,
+          "HAL.NS": 0.7871,
+          "HCLTECH.NS": 0.833,
+          "HDFCBANK.NS": 0.8412,
+          "HINDALCO.NS": 0.8495,
+          "HINDUNILVR.NS": 0.8292,
+          "ICICIBANK.NS": 0.8608,
+          "IDEA.NS": 0.7449,
+          "INDIGO.NS": 0.8102,
+          "INDUSINDBK.NS": 0.8486,
+          "INFY.NS": 0.8525,
+          "IREDA.NS": 0.7852,
+          "IRFC.NS": 0.724,
+          "ITC.NS": 0.791,
+          "JIOFIN.NS": 0.7909,
+          "KOTAKBANK.NS": 0.8315,
+          "LT.NS": 0.8375,
+          "M&M.NS": 0.8456,
+          "MARUTI.NS": 0.8029,
+          "MAZDOCK.NS": 0.7626,
+          "NETWEB.NS": 0.7784,
+          "OLAELEC.NS": 0.7578,
+          "PAYTM.NS": 0.7538,
+          "RELIANCE.NS": 0.8119,
+          "SAMMAANCAP.NS": 0.7773,
+          "SBIN.NS": 0.8141,
+          "SHRIRAMFIN.NS": 0.8072,
+          "SUNPHARMA.NS": 0.8292,
+          "SWIGGY.NS": 0.8263,
+          "TATAPOWER.NS": 0.7938,
+          "TATASTEEL.NS": 0.833,
+          "TCS.NS": 0.8322,
+          "TITAN.NS": 0.8126,
+          "TMPV.NS": 0.8029,
+          "VEDL.NS": 0.8096,
+          "WAAREEENER.NS": 0.7755,
+          "WIPRO.NS": 0.8337,
+          "YESBANK.NS": 0.7434,
+          "ZEEL.NS": 0.7637
+        },
+        "by_year": {
+          "2021": 0.7981,
+          "2022": 0.8148,
+          "2023": 0.8072,
+          "2024": 0.7802,
+          "2025": 0.82,
+          "2026": 0.8157
+        }
+      },
+      "95": {
+        "coverage": 0.9479144576937507,
+        "below": 0.01791103208652105,
+        "above": 0.034174510219728234,
+        "per_ticker_min": 0.9051918735891648,
+        "per_ticker_max": 0.9744168547780286,
+        "per_ticker": {
+          "ADANIENT.NS": 0.9225,
+          "ADANIPORTS.NS": 0.9383,
+          "ASIANPAINT.NS": 0.9631,
+          "AXISBANK.NS": 0.9721,
+          "BAJAJFINSV.NS": 0.9526,
+          "BAJFINANCE.NS": 0.9579,
+          "BEL.NS": 0.9421,
+          "BHARTIARTL.NS": 0.9451,
+          "BHEL.NS": 0.9391,
+          "BSE.NS": 0.9217,
+          "DRREDDY.NS": 0.9564,
+          "ETERNAL.NS": 0.9272,
+          "HAL.NS": 0.9436,
+          "HCLTECH.NS": 0.9601,
+          "HDFCBANK.NS": 0.9669,
+          "HINDALCO.NS": 0.9729,
+          "HINDUNILVR.NS": 0.9609,
+          "ICICIBANK.NS": 0.9744,
+          "IDEA.NS": 0.9052,
+          "INDIGO.NS": 0.9405,
+          "INDUSINDBK.NS": 0.9593,
+          "INFY.NS": 0.9669,
+          "IREDA.NS": 0.9377,
+          "IRFC.NS": 0.9057,
+          "ITC.NS": 0.9564,
+          "JIOFIN.NS": 0.9293,
+          "KOTAKBANK.NS": 0.9609,
+          "LT.NS": 0.9691,
+          "M&M.NS": 0.9608,
+          "MARUTI.NS": 0.9556,
+          "MAZDOCK.NS": 0.9231,
+          "NETWEB.NS": 0.9094,
+          "OLAELEC.NS": 0.9148,
+          "PAYTM.NS": 0.9315,
+          "RELIANCE.NS": 0.9616,
+          "SAMMAANCAP.NS": 0.933,
+          "SBIN.NS": 0.9571,
+          "SHRIRAMFIN.NS": 0.948,
+          "SUNPHARMA.NS": 0.9526,
+          "SWIGGY.NS": 0.9474,
+          "TATAPOWER.NS": 0.9421,
+          "TATASTEEL.NS": 0.9669,
+          "TCS.NS": 0.9684,
+          "TITAN.NS": 0.9594,
+          "TMPV.NS": 0.9503,
+          "VEDL.NS": 0.9526,
+          "WAAREEENER.NS": 0.9388,
+          "WIPRO.NS": 0.9594,
+          "YESBANK.NS": 0.9165,
+          "ZEEL.NS": 0.9315
+        },
+        "by_year": {
+          "2021": 0.9412,
+          "2022": 0.9551,
+          "2023": 0.944,
+          "2024": 0.933,
+          "2025": 0.9559,
+          "2026": 0.9569
+        }
+      }
+    },
+    "direction": {
+      "log_rule": 0.708595011663377,
+      "served_rule": 0.6982529403128721,
+      "share_called_higher_log_rule": 0.4925860072100876,
+      "share_called_higher_served_rule": 0.5919938665318174,
+      "share_actually_higher": 0.48834477921145786
+    },
+    "r2": {
+      "pooled": 0.45151849803627864,
+      "within": 0.24735917858638845,
+      "between_ticker_means": 0.990672219998614
+    },
+    "cross_section": {
+      "spearman_mean": 0.6314092781063584,
+      "spearman_p10": 0.4708574768018897,
+      "spearman_naive_mean": 0.5091644899912824,
+      "n_days": 1329,
+      "spearman_trailing22_mean": 0.6124778614577985,
+      "spearman_trailing66_mean": 0.6104512803807527,
+      "gain_over_trailing66": 0.02095799772560576,
+      "gain_over_trailing66_t": 12.274226394715853,
+      "share_of_days_better_than_trailing66": 0.6313017306245298,
+      "top5_forecast_in_realised_top10": 0.7298192771084336,
+      "top5_trailing66_in_realised_top10": 0.6713855421686746,
+      "top5_chance_level": 0.2
+    }
+  },
+  "var": {
+    "panel_last_date": "2026-10-09",
+    "market_proxy_registry_top50": {
+      "unconditional_95": {
+        "n_days": 1168,
+        "breach_rate": 0.0334,
+        "kupiec_p": 0.0057,
+        "christoffersen_p": 0.5564,
+        "joint_p": 0.0184
+      },
+      "conditional_95": {
+        "n_days": 1168,
+        "breach_rate": 0.0514,
+        "kupiec_p": 0.8306,
+        "christoffersen_p": 0.5753,
+        "joint_p": 0.8353
+      },
+      "unconditional_99": {
+        "n_days": 1168,
+        "breach_rate": 0.0017,
+        "kupiec_p": 0.0004,
+        "christoffersen_p": NaN,
+        "joint_p": null
+      },
+      "conditional_99": {
+        "n_days": 1168,
+        "breach_rate": 0.0137,
+        "kupiec_p": 0.229,
+        "christoffersen_p": NaN,
+        "joint_p": null
+      }
+    },
+    "market_proxy_served_top100": {
+      "unconditional_95": {
+        "n_days": 1167,
+        "breach_rate": 0.036,
+        "kupiec_p": 0.0211,
+        "christoffersen_p": 0.6461,
+        "joint_p": 0.0629
+      },
+      "conditional_95": {
+        "n_days": 1167,
+        "breach_rate": 0.0506,
+        "kupiec_p": 0.9306,
+        "christoffersen_p": 0.244,
+        "joint_p": 0.5054
+      },
+      "unconditional_99": {
+        "n_days": 1167,
+        "breach_rate": 0.0017,
+        "kupiec_p": 0.0004,
+        "christoffersen_p": NaN,
+        "joint_p": null
+      },
+      "conditional_99": {
+        "n_days": 1167,
+        "breach_rate": 0.0146,
+        "kupiec_p": 0.1421,
+        "christoffersen_p": NaN,
+        "joint_p": null
+      }
+    },
+    "per_ticker": {
+      "ADANIENT.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0531,
+          "kupiec_p": 0.6273,
+          "christoffersen_p": 0.0182
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0377,
+          "kupiec_p": 0.0443,
+          "christoffersen_p": 0.0056
+        }
+      },
+      "ADANIPORTS.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0506,
+          "kupiec_p": 0.9306,
+          "christoffersen_p": 0.9929
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0428,
+          "kupiec_p": 0.2508,
+          "christoffersen_p": 0.0778
+        }
+      },
+      "ASIANPAINT.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.054,
+          "kupiec_p": 0.5373,
+          "christoffersen_p": 0.0004
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0428,
+          "kupiec_p": 0.2508,
+          "christoffersen_p": 0.005
+        }
+      },
+      "AXISBANK.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0274,
+          "kupiec_p": 0.0001,
+          "christoffersen_p": null
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.018,
+          "kupiec_p": 0.0,
+          "christoffersen_p": null
+        }
+      },
+      "BAJAJFINSV.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0377,
+          "kupiec_p": 0.0443,
+          "christoffersen_p": 0.3278
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0257,
+          "kupiec_p": 0.0,
+          "christoffersen_p": 0.0444
+        }
+      },
+      "BAJFINANCE.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.042,
+          "kupiec_p": 0.1971,
+          "christoffersen_p": 0.5195
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0231,
+          "kupiec_p": 0.0,
+          "christoffersen_p": 0.0238
+        }
+      },
+      "BEL.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0368,
+          "kupiec_p": 0.0309,
+          "christoffersen_p": 0.0836
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0283,
+          "kupiec_p": 0.0002,
+          "christoffersen_p": 0.0761
+        }
+      },
+      "BHARTIARTL.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.03,
+          "kupiec_p": 0.0007,
+          "christoffersen_p": 0.3926
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0223,
+          "kupiec_p": 0.0,
+          "christoffersen_p": 0.6074
+        }
+      },
+      "BHEL.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0454,
+          "kupiec_p": 0.4658,
+          "christoffersen_p": 0.6763
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0343,
+          "kupiec_p": 0.0091,
+          "christoffersen_p": 0.7522
+        }
+      },
+      "BSE.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0668,
+          "kupiec_p": 0.0119,
+          "christoffersen_p": 0.0053
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0506,
+          "kupiec_p": 0.9306,
+          "christoffersen_p": 0.0005
+        }
+      },
+      "DRREDDY.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0446,
+          "kupiec_p": 0.3853,
+          "christoffersen_p": 0.2906
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.036,
+          "kupiec_p": 0.0211,
+          "christoffersen_p": 0.0773
+        }
+      },
+      "ETERNAL.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 788,
+          "breach_rate": 0.019,
+          "kupiec_p": 0.0,
+          "christoffersen_p": null
+        },
+        "unconditional": {
+          "n_days": 788,
+          "breach_rate": 0.0178,
+          "kupiec_p": 0.0,
+          "christoffersen_p": null
+        }
+      },
+      "HAL.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0506,
+          "kupiec_p": 0.9306,
+          "christoffersen_p": 0.0097
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0446,
+          "kupiec_p": 0.3853,
+          "christoffersen_p": 0.0316
+        }
+      },
+      "HCLTECH.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0471,
+          "kupiec_p": 0.6497,
+          "christoffersen_p": 0.7716
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0368,
+          "kupiec_p": 0.0309,
+          "christoffersen_p": 0.2951
+        }
+      },
+      "HDFCBANK.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0411,
+          "kupiec_p": 0.1521,
+          "christoffersen_p": 0.0001
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0283,
+          "kupiec_p": 0.0002,
+          "christoffersen_p": 0.0761
+        }
+      },
+      "HINDALCO.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.036,
+          "kupiec_p": 0.0211,
+          "christoffersen_p": 0.0179
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0257,
+          "kupiec_p": 0.0,
+          "christoffersen_p": 0.2272
+        }
+      },
+      "HINDUNILVR.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0548,
+          "kupiec_p": 0.4546,
+          "christoffersen_p": 0.0783
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0394,
+          "kupiec_p": 0.0855,
+          "christoffersen_p": 0.009
+        }
+      },
+      "ICICIBANK.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0257,
+          "kupiec_p": 0.0,
+          "christoffersen_p": 0.2272
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0137,
+          "kupiec_p": 0.0,
+          "christoffersen_p": 0.2131
+        }
+      },
+      "IDEA.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0291,
+          "kupiec_p": 0.0004,
+          "christoffersen_p": 0.9929
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0266,
+          "kupiec_p": 0.0001,
+          "christoffersen_p": 0.8471
+        }
+      },
+      "INDIGO.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0471,
+          "kupiec_p": 0.6497,
+          "christoffersen_p": null
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0394,
+          "kupiec_p": 0.0855,
+          "christoffersen_p": 0.8879
+        }
+      },
+      "INDUSINDBK.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0326,
+          "kupiec_p": 0.0036,
+          "christoffersen_p": 0.1615
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0206,
+          "kupiec_p": 0.0,
+          "christoffersen_p": 0.5166
+        }
+      },
+      "INFY.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0643,
+          "kupiec_p": 0.0319,
+          "christoffersen_p": 0.0084
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0548,
+          "kupiec_p": 0.4546,
+          "christoffersen_p": 0.0783
+        }
+      },
+      "IREDA.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": false,
+        "why": "only 706 days of history; the backtest needs 500 to train on and 250 to test on"
+      },
+      "IRFC.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 906,
+          "breach_rate": 0.0839,
+          "kupiec_p": 0.0,
+          "christoffersen_p": 0.8961
+        },
+        "unconditional": {
+          "n_days": 906,
+          "breach_rate": 0.0795,
+          "kupiec_p": 0.0002,
+          "christoffersen_p": 0.8735
+        }
+      },
+      "ITC.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0394,
+          "kupiec_p": 0.0855,
+          "christoffersen_p": 0.8879
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0291,
+          "kupiec_p": 0.0004,
+          "christoffersen_p": 0.9929
+        }
+      },
+      "JIOFIN.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 273,
+          "breach_rate": 0.0513,
+          "kupiec_p": 0.9229,
+          "christoffersen_p": 0.7416
+        },
+        "unconditional": {
+          "n_days": 273,
+          "breach_rate": 0.044,
+          "kupiec_p": 0.6402,
+          "christoffersen_p": 0.5425
+        }
+      },
+      "KOTAKBANK.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0317,
+          "kupiec_p": 0.0022,
+          "christoffersen_p": null
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0231,
+          "kupiec_p": 0.0,
+          "christoffersen_p": null
+        }
+      },
+      "LT.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0531,
+          "kupiec_p": 0.6273,
+          "christoffersen_p": 0.0011
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.036,
+          "kupiec_p": 0.0211,
+          "christoffersen_p": 0.0033
+        }
+      },
+      "M&M.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0583,
+          "kupiec_p": 0.2061,
+          "christoffersen_p": 0.0188
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0368,
+          "kupiec_p": 0.0309,
+          "christoffersen_p": 0.022
+        }
+      },
+      "MARUTI.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0386,
+          "kupiec_p": 0.0622,
+          "christoffersen_p": 0.0063
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0308,
+          "kupiec_p": 0.0013,
+          "christoffersen_p": 0.0005
+        }
+      },
+      "MAZDOCK.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 982,
+          "breach_rate": 0.0662,
+          "kupiec_p": 0.0262,
+          "christoffersen_p": 0.0008
+        },
+        "unconditional": {
+          "n_days": 982,
+          "breach_rate": 0.055,
+          "kupiec_p": 0.4798,
+          "christoffersen_p": 0.0005
+        }
+      },
+      "NETWEB.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 289,
+          "breach_rate": 0.0588,
+          "kupiec_p": 0.5026,
+          "christoffersen_p": 0.012
+        },
+        "unconditional": {
+          "n_days": 289,
+          "breach_rate": 0.0554,
+          "kupiec_p": 0.6807,
+          "christoffersen_p": 0.0072
+        }
+      },
+      "OLAELEC.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": false,
+        "why": "only 536 days of history; the backtest needs 500 to train on and 250 to test on"
+      },
+      "PAYTM.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 708,
+          "breach_rate": 0.041,
+          "kupiec_p": 0.2552,
+          "christoffersen_p": 0.0
+        },
+        "unconditional": {
+          "n_days": 708,
+          "breach_rate": 0.0353,
+          "kupiec_p": 0.0589,
+          "christoffersen_p": 0.0
+        }
+      },
+      "RELIANCE.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0343,
+          "kupiec_p": 0.0091,
+          "christoffersen_p": null
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0283,
+          "kupiec_p": 0.0002,
+          "christoffersen_p": 0.9445
+        }
+      },
+      "SAMMAANCAP.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0326,
+          "kupiec_p": 0.0036,
+          "christoffersen_p": 0.8191
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.024,
+          "kupiec_p": 0.0,
+          "christoffersen_p": null
+        }
+      },
+      "SBIN.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0308,
+          "kupiec_p": 0.0013,
+          "christoffersen_p": 0.4314
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0171,
+          "kupiec_p": 0.0,
+          "christoffersen_p": 0.0036
+        }
+      },
+      "SHRIRAMFIN.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0403,
+          "kupiec_p": 0.1151,
+          "christoffersen_p": 0.0471
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0283,
+          "kupiec_p": 0.0002,
+          "christoffersen_p": 0.3206
+        }
+      },
+      "SUNPHARMA.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0351,
+          "kupiec_p": 0.014,
+          "christoffersen_p": 0.2356
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0308,
+          "kupiec_p": 0.0013,
+          "christoffersen_p": 0.9117
+        }
+      },
+      "SWIGGY.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": false,
+        "why": "only 470 days of history; the backtest needs 500 to train on and 250 to test on"
+      },
+      "TATAPOWER.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.036,
+          "kupiec_p": 0.0211,
+          "christoffersen_p": 0.016
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0223,
+          "kupiec_p": 0.0,
+          "christoffersen_p": 0.002
+        }
+      },
+      "TATASTEEL.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0334,
+          "kupiec_p": 0.0058,
+          "christoffersen_p": 0.7742
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0249,
+          "kupiec_p": 0.0,
+          "christoffersen_p": 0.7499
+        }
+      },
+      "TCS.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0566,
+          "kupiec_p": 0.3138,
+          "christoffersen_p": 0.1054
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0446,
+          "kupiec_p": 0.3853,
+          "christoffersen_p": 0.2906
+        }
+      },
+      "TITAN.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0403,
+          "kupiec_p": 0.1151,
+          "christoffersen_p": 0.4375
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0274,
+          "kupiec_p": 0.0001,
+          "christoffersen_p": 0.8959
+        }
+      },
+      "TMPV.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0326,
+          "kupiec_p": 0.0036,
+          "christoffersen_p": 0.1615
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0249,
+          "kupiec_p": 0.0,
+          "christoffersen_p": 0.2002
+        }
+      },
+      "VEDL.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0437,
+          "kupiec_p": 0.3135,
+          "christoffersen_p": 0.0261
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0368,
+          "kupiec_p": 0.0309,
+          "christoffersen_p": 0.2951
+        }
+      },
+      "WAAREEENER.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": false,
+        "why": "only 482 days of history; the backtest needs 500 to train on and 250 to test on"
+      },
+      "WIPRO.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0583,
+          "kupiec_p": 0.2061,
+          "christoffersen_p": 0.1391
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0454,
+          "kupiec_p": 0.4658,
+          "christoffersen_p": 0.1216
+        }
+      },
+      "YESBANK.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0291,
+          "kupiec_p": 0.0004,
+          "christoffersen_p": 0.3557
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.024,
+          "kupiec_p": 0.0,
+          "christoffersen_p": 0.1752
+        }
+      },
+      "ZEEL.NS": {
+        "panel_last_date": "2026-10-09",
+        "level": 0.95,
+        "testable": true,
+        "conditional": {
+          "n_days": 1167,
+          "breach_rate": 0.048,
+          "kupiec_p": 0.7507,
+          "christoffersen_p": 0.4307
+        },
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0351,
+          "kupiec_p": 0.014,
+          "christoffersen_p": 0.0655
+        }
+      }
+    },
+    "per_ticker_summary": {
+      "n_tickers": 50,
+      "n_testable": 46,
+      "untestable": [
+        "IREDA.NS",
+        "OLAELEC.NS",
+        "SWIGGY.NS",
+        "WAAREEENER.NS"
+      ],
+      "conditional": {
+        "kupiec_pass": 24,
+        "christoffersen_pass": 25,
+        "christoffersen_not_computable": 5,
+        "both_pass": 12,
+        "kupiec_fail_understates_loss": 4,
+        "kupiec_fail_overstates_loss": 18,
+        "median_breach_rate": 0.04105
+      },
+      "unconditional": {
+        "kupiec_pass": 13,
+        "christoffersen_pass": 27,
+        "christoffersen_not_computable": 4,
+        "both_pass": 6,
+        "kupiec_fail_understates_loss": 1,
+        "kupiec_fail_overstates_loss": 32,
+        "median_breach_rate": 0.0308
+      }
+    }
+  },
+  "regime": {
+    "p_turbulent_event": 0.47058823529411764,
+    "p_turbulent_ordinary": 0.09675443968156766,
+    "lift": 4.863737900223381,
+    "fisher_p": 4.210792387273206e-08,
+    "excluding_2020": {
+      "lift": 4.67,
+      "fisher_p": 0.00023371402038672371,
+      "p_turbulent_event": 0.32,
+      "n_event_days": 25
+    },
+    "n_event_days": 34,
+    "n_days": 1667,
+    "turbulent_share": 0.10437912417516497,
+    "first_date": "2020-01-15",
+    "last_date": "2026-10-09",
+    "note": "regime fitted on the top-100 panel, states filtered, parameters fitted on the full sample"
+  },
+  "anomaly": {
+    "flag_rate_event": 0.3923287671232877,
+    "flag_rate_ordinary": 0.11750198503404634,
+    "lift": 3.3389118235714057,
+    "day_level": {
+      "n_event_days": 42,
+      "median_share_event": 0.3225,
+      "median_share_ordinary": 0.0851063829787234,
+      "p": 1.5252782420604997e-11
+    },
+    "excluding_2020": {
+      "n_event_days": 33,
+      "median_share_event": 0.20454545454545456,
+      "median_share_ordinary": 0.09090909090909091,
+      "p": 4.007565856676763e-07,
+      "lift": 2.748226071838427
+    },
+    "n_event_ticker_days": 1825,
+    "n_ordinary_ticker_days": 83122,
+    "n_tickers": 50,
+    "by_type": {
+      "return_outlier": {
+        "rate_event": 0.1567123287671233,
+        "rate_ordinary": 0.023146700031279326,
+        "lift": 6.770396149574232
+      },
+      "volatility_spike": {
+        "rate_event": 0.22136986301369863,
+        "rate_ordinary": 0.07187026298693487,
+        "lift": 3.0801315288625135
+      },
+      "volume_spike": {
+        "rate_event": 0.0684931506849315,
+        "rate_ordinary": 0.03153196506340079,
+        "lift": 2.1721814846367327
+      },
+      "gap_event": {
+        "rate_event": 0.20164383561643837,
+        "rate_ordinary": 0.021606794831693175,
+        "lift": 9.332427006742533
+      },
+      "sentiment_divergence": {
+        "rate_event": 0.0,
+        "rate_ordinary": 0.0,
+        "lift": NaN
+      }
+    },
+    "note": "sentiment_divergence never fires here: no headlines are passed"
+  },
+  "regime_stability": {
+    "n_seeds": 10,
+    "runs": [
+      {
+        "seed": 0,
+        "turbulent_share": 0.10437912417516497,
+        "agreement_with_seed_0": 1.0,
+        "lift": 4.863737900223381,
+        "breach_rate": 0.0506,
+        "kupiec_p": 0.9306,
+        "christoffersen_p": 0.244
+      },
+      {
+        "seed": 1,
+        "turbulent_share": 0.10437912417516497,
+        "agreement_with_seed_0": 1.0,
+        "lift": 4.863737900223381,
+        "breach_rate": 0.0506,
+        "kupiec_p": 0.9306,
+        "christoffersen_p": 0.244
+      },
+      {
+        "seed": 2,
+        "turbulent_share": 0.10437912417516497,
+        "agreement_with_seed_0": 1.0,
+        "lift": 4.863737900223381,
+        "breach_rate": 0.0506,
+        "kupiec_p": 0.9306,
+        "christoffersen_p": 0.244
+      },
+      {
+        "seed": 3,
+        "turbulent_share": 0.09358128374325135,
+        "agreement_with_seed_0": 0.9892021595680864,
+        "lift": 5.489075630252101,
+        "breach_rate": 0.0506,
+        "kupiec_p": 0.9306,
+        "christoffersen_p": 0.5328
+      },
+      {
+        "seed": 4,
+        "turbulent_share": 0.11517696460707859,
+        "agreement_with_seed_0": 0.9892021595680864,
+        "lift": 4.968559837728194,
+        "breach_rate": 0.0531,
+        "kupiec_p": 0.6273,
+        "christoffersen_p": 0.3362
+      },
+      {
+        "seed": 5,
+        "turbulent_share": 0.10437912417516497,
+        "agreement_with_seed_0": 1.0,
+        "lift": 4.863737900223381,
+        "breach_rate": 0.0506,
+        "kupiec_p": 0.9306,
+        "christoffersen_p": 0.244
+      },
+      {
+        "seed": 6,
+        "turbulent_share": 0.09958008398320337,
+        "agreement_with_seed_0": 0.9952009598080384,
+        "lift": 5.123137254901961,
+        "breach_rate": 0.0514,
+        "kupiec_p": 0.8254,
+        "christoffersen_p": 0.5765
+      },
+      {
+        "seed": 7,
+        "turbulent_share": 0.10437912417516497,
+        "agreement_with_seed_0": 1.0,
+        "lift": 4.863737900223381,
+        "breach_rate": 0.0506,
+        "kupiec_p": 0.9306,
+        "christoffersen_p": 0.244
+      },
+      {
+        "seed": 8,
+        "turbulent_share": 0.10437912417516497,
+        "agreement_with_seed_0": 1.0,
+        "lift": 4.863737900223381,
+        "breach_rate": 0.0506,
+        "kupiec_p": 0.9306,
+        "christoffersen_p": 0.244
+      },
+      {
+        "seed": 9,
+        "turbulent_share": 0.10977804439112178,
+        "agreement_with_seed_0": 0.9946010797840432,
+        "lift": 4.601620288834096,
+        "breach_rate": 0.0497,
+        "kupiec_p": 0.9625,
+        "christoffersen_p": 0.2174
+      }
+    ],
+    "min_agreement_with_seed_0": 0.9892021595680864,
+    "lift_range": [
+      4.601620288834096,
+      5.489075630252101
+    ],
+    "kupiec_p_range": [
+      0.6273,
+      0.9625
+    ],
+    "christoffersen_p_range": [
+      0.2174,
+      0.5765
+    ],
+    "seeds_passing_both": 10
+  }
+}

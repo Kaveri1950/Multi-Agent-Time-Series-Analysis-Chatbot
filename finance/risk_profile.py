@@ -171,6 +171,51 @@ def _fit_market_regime(market_panel: pd.DataFrame):
     return _REGIME_CACHE[key]
 
 
+def market_panel(close: pd.DataFrame, volume: pd.DataFrame, top_n: int = 100) -> pd.DataFrame:
+    """Daily returns of the `top_n` most traded names: the regime's cross-section."""
+    tv = (close * volume).rolling(21, min_periods=10).mean()
+    return close[tv.mean().nlargest(top_n).index].pct_change(fill_method=None).dropna(how="all")
+
+
+#: The market-level keys `_regime_layer` copies into every stock's profile.
+_REGIME_KEYS = ("current_regime", "p_turbulent_now", "p_turbulent_tomorrow",
+                "p_turbulent_in_21d", "long_run_turbulent_share")
+
+
+def market_regime_state(market_panel: pd.DataFrame) -> dict:
+    """The market's regime today and where the chain says it is heading.
+
+    Market-level, so identical for every ticker: split out of `_regime_layer`
+    so the regime can be asked for on its own, without a stock attached.
+
+    `p_turbulent_in_21d` is the probability of BEING turbulent on day 21, the
+    state distribution propagated 21 steps. It is not the probability of a
+    turbulent day occurring at some point within the 21, which is larger.
+    """
+    from quant.risk import propagate_state
+
+    obs, model, order, regime, probs = _fit_market_regime(market_panel)
+    collapsed = np.array([probs[int(order[0])],
+                          probs[[int(x) for x in order[1:]]].sum()])
+    trans = np.asarray(model.transmat_, dtype=float)
+    qi, ti = int(order[0]), [int(x) for x in order[1:]]
+    C = np.array([[trans[qi, qi], trans[qi, ti].sum()],
+                  [trans[ti, qi].mean(), trans[np.ix_(ti, ti)].sum(axis=1).mean()]])
+    C /= C.sum(axis=1, keepdims=True)
+    return {
+        "as_of": str(obs.index[-1].date()),
+        "current_regime": "turbulent" if collapsed[1] > 0.5 else "quiet",
+        "p_turbulent_now": round(float(collapsed[1]), 4),
+        "p_turbulent_tomorrow": round(float(propagate_state(C, collapsed, 1)[1]), 4),
+        "p_turbulent_in_21d": round(float(propagate_state(C, collapsed, 21)[1]), 4),
+        "long_run_turbulent_share": round(float(propagate_state(C, collapsed, 1000)[1]), 4),
+        "p_quiet_to_turbulent": round(float(C[0, 1]), 4),
+        "p_turbulent_to_quiet": round(float(C[1, 0]), 4),
+        "turbulent_share_of_history": round(float(regime.mean()), 4),
+        "_state_probs": collapsed,
+    }
+
+
 def _regime_layer(stock: pd.Series, market_panel: pd.DataFrame) -> dict:
     """Markov regime state and what it implies for this stock specifically.
 
@@ -179,7 +224,7 @@ def _regime_layer(stock: pd.Series, market_panel: pd.DataFrame) -> dict:
     observations to fit a regime model on. But the VaR is then measured on
     THIS stock's returns within each regime, so the answer is stock-specific.
     """
-    from quant.risk import markov_var, propagate_state, var_es
+    from quant.risk import markov_var, var_es
 
     obs, model, order, regime, probs = _fit_market_regime(market_panel)
     s = stock.reindex(obs.index).dropna()
@@ -187,20 +232,11 @@ def _regime_layer(stock: pd.Series, market_panel: pd.DataFrame) -> dict:
     quiet_var, _ = var_es(s[reg == False].to_numpy(), 0.95)   # noqa: E712
     turb_var, turb_es = var_es(s[reg == True].to_numpy(), 0.95)   # noqa: E712
 
-    collapsed = np.array([probs[int(order[0])],
-                          probs[[int(x) for x in order[1:]]].sum()])
-    trans = np.asarray(model.transmat_, dtype=float)
-    qi, ti = int(order[0]), [int(x) for x in order[1:]]
-    C = np.array([[trans[qi, qi], trans[qi, ti].sum()],
-                  [trans[ti, qi].mean(), trans[np.ix_(ti, ti)].sum(axis=1).mean()]])
-    C /= C.sum(axis=1, keepdims=True)
+    state = market_regime_state(market_panel)
+    collapsed = state["_state_probs"]
 
     out = {
-        "current_regime": "turbulent" if collapsed[1] > 0.5 else "quiet",
-        "p_turbulent_now": round(float(collapsed[1]), 4),
-        "p_turbulent_tomorrow": round(float(propagate_state(C, collapsed, 1)[1]), 4),
-        "p_turbulent_in_21d": round(float(propagate_state(C, collapsed, 21)[1]), 4),
-        "long_run_turbulent_share": round(float(propagate_state(C, collapsed, 1000)[1]), 4),
+        **{k: state[k] for k in _REGIME_KEYS},
         "var_95_quiet_pct": round(quiet_var * 100, 2),
         "var_95_turbulent_pct": round(turb_var * 100, 2),
         "turbulent_multiplier": round(turb_var / quiet_var, 2) if quiet_var else np.nan,
@@ -282,8 +318,7 @@ def risk_profile(ticker: str, lookback_days: int = 365, top_n: int = 8,
     if ticker not in close.columns:
         raise ValueError(f"{ticker} not in the cached panel of {close.shape[1]} tickers")
 
-    tv = (close * volume).rolling(21, min_periods=10).mean()
-    panel = close[tv.mean().nlargest(100).index].pct_change(fill_method=None).dropna(how="all")
+    panel = market_panel(close, volume)
     market = panel.mean(axis=1)
     full = close[ticker].pct_change(fill_method=None).dropna()
 
