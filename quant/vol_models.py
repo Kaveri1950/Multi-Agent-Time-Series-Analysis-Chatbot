@@ -99,15 +99,20 @@ def load_vix(force: bool = False, verbose: bool = True) -> pd.Series:
 
 def build_features(estimator: str = "parkinson", top_n: int = DEFAULT_TOP_N,
                    include_overnight_in_target: bool = False,
-                   verbose: bool = True, require_target: bool = True) -> pd.DataFrame:
+                   verbose: bool = True, require_target: bool = True,
+                   ohlc: pd.DataFrame | None = None) -> pd.DataFrame:
     """One long frame: date, ticker, features, target.
+
+    `ohlc` replaces the cached 50-name panel with any long-format OHLC frame,
+    so names outside the panel can be put through exactly the same features.
 
     `include_overnight_in_target` changes what is being FORECAST, not which
     features are available, so a run with it on is not comparable with one
     without -- the loss is computed against a different quantity. It is
     therefore a separate run, never a separate model in the same set.
     """
-    ohlc = download_ohlc(top_n=top_n, verbose=verbose)
+    if ohlc is None:
+        ohlc = download_ohlc(top_n=top_n, verbose=verbose)
     rv = realized_vol(ohlc, estimator, verbose=verbose)
 
     px = ohlc.sort_values(["ticker", "date"]).copy()

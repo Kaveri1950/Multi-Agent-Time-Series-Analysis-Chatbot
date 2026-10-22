@@ -1,0 +1,126 @@
+{
+  "generated_at": "2026-10-21T06:57:26+00:00",
+  "members": [
+    "ridge_log",
+    "et_log",
+    "gbm_log"
+  ],
+  "tiers": {
+    "next_largest": [
+      "ADANIPOWER.NS",
+      "BANKBARODA.NS",
+      "DIXON.NS",
+      "KAYNES.NS",
+      "ULTRACEMCO.NS",
+      "NTPC.NS",
+      "EICHERMOT.NS",
+      "TECHM.NS",
+      "PNB.NS",
+      "IRCTC.NS"
+    ],
+    "mid": [
+      "LODHA.NS",
+      "UNITDSPR.NS",
+      "ESCORTS.NS",
+      "ATGL.NS",
+      "LAURUSLABS.NS",
+      "BDL.NS",
+      "LICHSGFIN.NS",
+      "SONACOMS.NS"
+    ],
+    "small": [
+      "COROMANDEL.NS",
+      "IIFL.NS",
+      "ZENSARTECH.NS",
+      "IPCALAB.NS",
+      "SUPREMEIND.NS",
+      "RADICO.NS",
+      "PGEL.NS",
+      "IOB.NS",
+      "AEGISLOG.NS"
+    ]
+  },
+  "A_leave_10_out": {
+    "n": 59020,
+    "n_tickers": 50,
+    "pooled": {
+      "qlike": 0.34694638869455846,
+      "r2_within": 0.24351955858364283,
+      "direction": 0.7095730260928499
+    },
+    "held_out": {
+      "qlike": 0.34818972956583194,
+      "r2_within": 0.24336845415037978,
+      "direction": 0.709234157912572
+    },
+    "har": {
+      "qlike": 0.33410065116384524,
+      "r2_within": 0.21603384835938388,
+      "direction": 0.6797695696374111
+    },
+    "tickers_where_pooled_beats_har_on_qlike": 20
+  },
+  "B_new_names": {
+    "next_largest": {
+      "n": 12585,
+      "n_tickers": 10,
+      "pooled": {
+        "qlike": 0.36003127522723083,
+        "r2_within": 0.2364774302890671,
+        "direction": 0.7070321811680572
+      },
+      "har": {
+        "qlike": 0.34402174645371353,
+        "r2_within": 0.21588823187232797,
+        "direction": 0.6759634485498609
+      },
+      "tickers_where_pooled_beats_har_on_qlike": 1
+    },
+    "mid": {
+      "n": 9943,
+      "n_tickers": 8,
+      "pooled": {
+        "qlike": 0.3960786088091766,
+        "r2_within": 0.2324701300619877,
+        "direction": 0.7039123001106306
+      },
+      "har": {
+        "qlike": 0.3684651250361045,
+        "r2_within": 0.2119356532100266,
+        "direction": 0.6664990445539576
+      },
+      "tickers_where_pooled_beats_har_on_qlike": 0
+    },
+    "small": {
+      "n": 11981,
+      "n_tickers": 9,
+      "pooled": {
+        "qlike": 0.412340069985082,
+        "r2_within": 0.2235065821875426,
+        "direction": 0.7027794007178032
+      },
+      "har": {
+        "qlike": 0.3792238613412673,
+        "r2_within": 0.2108468173343402,
+        "direction": 0.6675569651948919
+      },
+      "tickers_where_pooled_beats_har_on_qlike": 0
+    }
+  },
+  "B_new_names_all": {
+    "n": 34509,
+    "n_tickers": 27,
+    "pooled": {
+      "qlike": 0.3888425598013317,
+      "r2_within": 0.23059026271381844,
+      "direction": 0.7046567562085253
+    },
+    "har": {
+      "qlike": 0.3634076331568793,
+      "r2_within": 0.21290752967866944,
+      "direction": 0.6703178880871656
+    },
+    "tickers_where_pooled_beats_har_on_qlike": 1
+  },
+  "seconds": 2972
+}

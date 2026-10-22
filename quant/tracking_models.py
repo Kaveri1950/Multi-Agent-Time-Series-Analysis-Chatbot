@@ -62,7 +62,8 @@ FEATURES = [
 
 
 def build_tracking_frame(estimator: str = "garman_klass", verbose: bool = True,
-                         require_target: bool = True) -> pd.DataFrame:
+                         require_target: bool = True, ohlc: pd.DataFrame | None = None,
+                         market_tickers: list | None = None) -> pd.DataFrame:
     """Log-space features including the cross-sectional terms.
 
     `require_target=False` keeps the most recent row, whose target is the
@@ -70,17 +71,23 @@ def build_tracking_frame(estimator: str = "garman_klass", verbose: bool = True,
     to fit against -- but SERVING needs exactly that row, and serving from
     the last row with a known target would be forecasting a day already
     observed, using a row the model was trained on.
+
+    `ohlc` and `market_tickers` exist for serving names outside the panel.
+    The market factor must then come from the panel alone: a new name's own
+    volatility leaking into "the market" would be a feature the trained model
+    never saw, and a held-out name's leaking in would flatter its test.
     """
     from quant.vol_models import build_features
 
-    f = build_features(estimator, verbose=verbose, require_target=require_target)
+    f = build_features(estimator, verbose=verbose, require_target=require_target, ohlc=ohlc)
     f = f.sort_values(["date", "ticker"]).reset_index(drop=True)
 
     # The market factor is the cross-sectional MEDIAN of today's realized
     # volatility. Median rather than mean so one blown-up stock cannot
     # define the market state. It uses only same-day information, which is
     # available when the forecast is made.
-    mkt = f.groupby("date")["naive"].median().rename("mkt")
+    base = f if market_tickers is None else f[f["ticker"].isin(market_tickers)]
+    mkt = base.groupby("date")["naive"].median().rename("mkt")
     f = f.merge(mkt, on="date", how="left")
 
     g = []

@@ -1,0 +1,424 @@
+{
+  "generated_at": "2026-10-21T06:58:37+00:00",
+  "n_forecasts": 42834,
+  "n_tickers": 45,
+  "n_days": 1015,
+  "span": "2022-08-24 -> 2026-10-05",
+  "point_forecast": "today's close, for every source",
+  "calibration": {
+    "min_history": 250,
+    "refresh_days": 21
+  },
+  "sources": {
+    "constant": {
+      "80": {
+        "coverage": 0.7918942895830415,
+        "mean_width_pct": 4.04054912713188,
+        "winkler": 6.703522699435139,
+        "coverage_by_day_type": {
+          "calm": 0.9409581173833871,
+          "middle": 0.8164308726712425,
+          "wild": 0.618293878694495
+        },
+        "width_tracks_move": 0.2230577471404383
+      },
+      "95": {
+        "coverage": 0.9459541485735631,
+        "mean_width_pct": 7.346894707541165,
+        "winkler": 10.8100319793714,
+        "coverage_by_day_type": {
+          "calm": 0.9967782602605407,
+          "middle": 0.9749964981089788,
+          "wild": 0.8660876873511696
+        },
+        "width_tracks_move": 0.22481472521924523
+      }
+    },
+    "hist60": {
+      "80": {
+        "coverage": 0.7936452350936172,
+        "mean_width_pct": 4.31541900388116,
+        "winkler": 6.809687546226363,
+        "coverage_by_day_type": {
+          "calm": 0.9250595321473596,
+          "middle": 0.8099173553719008,
+          "wild": 0.6459588177615913
+        },
+        "width_tracks_move": 0.24027065493395844
+      },
+      "95": {
+        "coverage": 0.9465144511369473,
+        "mean_width_pct": 7.766681373486566,
+        "winkler": 10.939760364495607,
+        "coverage_by_day_type": {
+          "calm": 0.9943969743661577,
+          "middle": 0.970514077601905,
+          "wild": 0.8746323014427791
+        },
+        "width_tracks_move": 0.2403668021168186
+      }
+    },
+    "ewma": {
+      "80": {
+        "coverage": 0.7950926833823598,
+        "mean_width_pct": 4.308411665388055,
+        "winkler": 6.756259756786442,
+        "coverage_by_day_type": {
+          "calm": 0.920997338562824,
+          "middle": 0.8110379604986693,
+          "wild": 0.6532427510855863
+        },
+        "width_tracks_move": 0.24744901836556693
+      },
+      "95": {
+        "coverage": 0.9471447915207546,
+        "mean_width_pct": 7.796371550107407,
+        "winkler": 10.815872043591428,
+        "coverage_by_day_type": {
+          "calm": 0.9939067096231965,
+          "middle": 0.9676425269645609,
+          "wild": 0.8798851379745062
+        },
+        "width_tracks_move": 0.24745734578227768
+      }
+    },
+    "garch": {
+      "80": {
+        "coverage": 0.7864313395900453,
+        "mean_width_pct": 4.196280025508382,
+        "winkler": 6.823129822985923,
+        "coverage_by_day_type": {
+          "calm": 0.9240089648410141,
+          "middle": 0.8046645188401736,
+          "wild": 0.630620535088948
+        },
+        "width_tracks_move": 0.22857270492060913
+      },
+      "95": {
+        "coverage": 0.9425689872531167,
+        "mean_width_pct": 7.565029855497348,
+        "winkler": 11.056095573054954,
+        "coverage_by_day_type": {
+          "calm": 0.9941168230844656,
+          "middle": 0.9665219218377924,
+          "wild": 0.867068216837092
+        },
+        "width_tracks_move": 0.22917686427916387
+      }
+    },
+    "range_today": {
+      "80": {
+        "coverage": 0.793271700051361,
+        "mean_width_pct": 4.496784145265098,
+        "winkler": 6.867625503976132,
+        "coverage_by_day_type": {
+          "calm": 0.899005462949993,
+          "middle": 0.8048045944810197,
+          "wild": 0.6760050427230705
+        },
+        "width_tracks_move": 0.24404276851692222
+      },
+      "95": {
+        "coverage": 0.9478685156651259,
+        "mean_width_pct": 8.496042938000027,
+        "winkler": 11.223621175801268,
+        "coverage_by_day_type": {
+          "calm": 0.9885838352710463,
+          "middle": 0.9620395013307186,
+          "wild": 0.8929822103936126
+        },
+        "width_tracks_move": 0.24480599141579812
+      }
+    },
+    "har_stock": {
+      "80": {
+        "coverage": 0.7895130036886585,
+        "mean_width_pct": 4.024259927199823,
+        "winkler": 6.534273048403684,
+        "coverage_by_day_type": {
+          "calm": 0.9222580193304384,
+          "middle": 0.810337582294439,
+          "wild": 0.6359434094410982
+        },
+        "width_tracks_move": 0.2808861252241654
+      },
+      "95": {
+        "coverage": 0.9456973432320119,
+        "mean_width_pct": 7.102179469713467,
+        "winkler": 10.265496097647008,
+        "coverage_by_day_type": {
+          "calm": 0.9947471634682729,
+          "middle": 0.9703039641406359,
+          "wild": 0.872040902087127
+        },
+        "width_tracks_move": 0.2813679967992563
+      }
+    },
+    "ens_log": {
+      "80": {
+        "coverage": 0.7938086566746043,
+        "mean_width_pct": 4.091814713670484,
+        "winkler": 6.514138576681412,
+        "coverage_by_day_type": {
+          "calm": 0.9208572629219779,
+          "middle": 0.8111079983190923,
+          "wild": 0.6494607087827426
+        },
+        "width_tracks_move": 0.28822453712009555
+      },
+      "95": {
+        "coverage": 0.948382126348228,
+        "mean_width_pct": 7.2204804680504155,
+        "winkler": 10.22903124648157,
+        "coverage_by_day_type": {
+          "calm": 0.9943269365457347,
+          "middle": 0.9703740019610589,
+          "wild": 0.8804454405378904
+        },
+        "width_tracks_move": 0.2882833430741413
+      }
+    }
+  },
+  "diebold_mariano_ens_log_vs": {
+    "80": {
+      "constant": {
+        "n": 1015,
+        "mean_loss_diff": -0.18927533698142998,
+        "stat": -9.69458587842275,
+        "p_value": 0.0
+      },
+      "hist60": {
+        "n": 1015,
+        "mean_loss_diff": -0.2920389598640159,
+        "stat": -18.345188431895252,
+        "p_value": 0.0
+      },
+      "ewma": {
+        "n": 1015,
+        "mean_loss_diff": -0.24011019109155426,
+        "stat": -17.110810940566473,
+        "p_value": 0.0
+      },
+      "garch": {
+        "n": 1015,
+        "mean_loss_diff": -0.3077236609293028,
+        "stat": -16.328117927038345,
+        "p_value": 0.0
+      },
+      "range_today": {
+        "n": 1015,
+        "mean_loss_diff": -0.3560073805665092,
+        "stat": -17.709786891455515,
+        "p_value": 0.0
+      },
+      "har_stock": {
+        "n": 1015,
+        "mean_loss_diff": -0.020501247716896997,
+        "stat": -2.988937995880383,
+        "p_value": 0.0028669851336564633
+      }
+    },
+    "95": {
+      "constant": {
+        "n": 1015,
+        "mean_loss_diff": -0.582322019294469,
+        "stat": -9.067643348114157,
+        "p_value": 0.0
+      },
+      "hist60": {
+        "n": 1015,
+        "mean_loss_diff": -0.7074395393117988,
+        "stat": -15.83602031316731,
+        "p_value": 0.0
+      },
+      "ewma": {
+        "n": 1015,
+        "mean_loss_diff": -0.5825614416000418,
+        "stat": -12.693006990053414,
+        "p_value": 0.0
+      },
+      "garch": {
+        "n": 1015,
+        "mean_loss_diff": -0.825597057127994,
+        "stat": -14.01797296225575,
+        "p_value": 0.0
+      },
+      "range_today": {
+        "n": 1015,
+        "mean_loss_diff": -0.9911975051279444,
+        "stat": -13.49475845789447,
+        "p_value": 0.0
+      },
+      "har_stock": {
+        "n": 1015,
+        "mean_loss_diff": -0.03638499995551748,
+        "stat": -1.6119435819956138,
+        "p_value": 0.10728540093555083
+      }
+    }
+  },
+  "robustness": {
+    "80": {
+      "tickers_where_ens_log_beats": {
+        "constant": 45,
+        "hist60": 44,
+        "ewma": 44,
+        "garch": 45,
+        "range_today": 45,
+        "har_stock": 35
+      },
+      "tickers_where_ens_log_is_best": 34,
+      "n_tickers": 45,
+      "years_where_ens_log_is_best": [
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "years": [
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ]
+    },
+    "95": {
+      "tickers_where_ens_log_beats": {
+        "constant": 45,
+        "hist60": 44,
+        "ewma": 43,
+        "garch": 45,
+        "range_today": 45,
+        "har_stock": 29
+      },
+      "tickers_where_ens_log_is_best": 27,
+      "n_tickers": 45,
+      "years_where_ens_log_is_best": [
+        2022,
+        2024,
+        2025,
+        2026
+      ],
+      "years": [
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ]
+    }
+  },
+  "point": {
+    "corr_with_return": 0.01773110292616893,
+    "corr_with_abs_return": 0.28496267339031656,
+    "daily_cross_sectional_corr_with_return": -0.012080837611294736,
+    "daily_cross_sectional_t_stat": -1.404531869415014,
+    "daily_cross_sectional_corr_with_abs_return": 0.24947663171632758,
+    "share_up_when_forecast_vol_high": 0.5021567891972993,
+    "share_up_when_forecast_vol_low": 0.501348460894634,
+    "mean_abs_move_pct_high_vs_low": [
+      1.614978618211777,
+      1.0017108703700657
+    ]
+  },
+  "serving_calibration": {
+    "source": "ens_log",
+    "through": "2026-10-05",
+    "n": 61303,
+    "scale": {
+      "ADANIENT.NS": 0.08883284807219531,
+      "ADANIPORTS.NS": 0.08170515751401074,
+      "ASIANPAINT.NS": 0.06857081484061082,
+      "AXISBANK.NS": 0.07296619676892797,
+      "BAJAJFINSV.NS": 0.07379379916772699,
+      "BAJFINANCE.NS": 0.0799553879210081,
+      "BEL.NS": 0.07459016513906934,
+      "BHARTIARTL.NS": 0.06868186017075875,
+      "BHEL.NS": 0.0800880191229187,
+      "BSE.NS": 0.08522984569143477,
+      "DRREDDY.NS": 0.06830474368192897,
+      "ETERNAL.NS": 0.07739929581301692,
+      "HAL.NS": 0.07532777105025558,
+      "HCLTECH.NS": 0.07410935088551443,
+      "HDFCBANK.NS": 0.07338895550973394,
+      "HINDALCO.NS": 0.07870622548648352,
+      "HINDUNILVR.NS": 0.06869198513780297,
+      "ICICIBANK.NS": 0.06729037327979688,
+      "IDEA.NS": 0.08208510844016281,
+      "INDIGO.NS": 0.07629470201955521,
+      "INDUSINDBK.NS": 0.08159867717607652,
+      "INFY.NS": 0.08311168482438774,
+      "IREDA.NS": 0.07605826178388372,
+      "IRFC.NS": 0.07441582697341541,
+      "ITC.NS": 0.07018114641497004,
+      "JIOFIN.NS": 0.08017111250084027,
+      "KOTAKBANK.NS": 0.07342186844353023,
+      "LT.NS": 0.07417615657579671,
+      "M&M.NS": 0.07224436851897238,
+      "MARUTI.NS": 0.07041594173282245,
+      "MAZDOCK.NS": 0.07965114566286345,
+      "NETWEB.NS": 0.07774018856150426,
+      "OLAELEC.NS": 0.0838169477838843,
+      "PAYTM.NS": 0.08538712205883246,
+      "RELIANCE.NS": 0.07538446446754507,
+      "SAMMAANCAP.NS": 0.07908787479930626,
+      "SBIN.NS": 0.07375493304510881,
+      "SHRIRAMFIN.NS": 0.07413941815401873,
+      "SUNPHARMA.NS": 0.06195308863131156,
+      "SWIGGY.NS": 0.06928453002901924,
+      "TATAPOWER.NS": 0.07480165411511742,
+      "TATASTEEL.NS": 0.0771897515217882,
+      "TCS.NS": 0.07569337709758686,
+      "TITAN.NS": 0.07036890781733536,
+      "TMPV.NS": 0.1008887867167272,
+      "VEDL.NS": 0.1075500062869859,
+      "WAAREEENER.NS": 0.0786024218611654,
+      "WIPRO.NS": 0.07772926085057666,
+      "YESBANK.NS": 0.07836105587494076,
+      "ZEEL.NS": 0.08559140929665587
+    },
+    "scale_is_pooled": [],
+    "quantiles": {
+      "0.025": -1.8968977406810914,
+      "0.1": -1.078956276283141,
+      "0.9": 1.1594672077220418,
+      "0.975": 2.048308717452465
+    }
+  },
+  "forecast_log": {
+    "n": 117,
+    "tickers": [
+      "INFY.NS",
+      "RELIANCE.NS",
+      "TCS.NS"
+    ],
+    "span": "2026-07-23 -> 2026-09-16",
+    "models": {
+      "volatility_interval": {
+        "n": 117,
+        "coverage": 0.7606837606837606,
+        "mean_width_pct_of_price": 3.528525013466089,
+        "winkler_pct_of_price": 6.1260518156145345
+      },
+      "gpr": {
+        "n": 117,
+        "coverage": 0.8376068376068376,
+        "mean_width_pct_of_price": 4.88776079768333,
+        "winkler_pct_of_price": 7.238200387062972
+      },
+      "arima": {
+        "n": 115,
+        "coverage": 0.8521739130434782,
+        "mean_width_pct_of_price": 4.512599535178877,
+        "winkler_pct_of_price": 6.170674487807129
+      }
+    },
+    "point_mae_pct_of_price": {
+      "today's close": 1.2434171190078536,
+      "gpr": 1.5234692453173657,
+      "arima": 1.257653877513202
+    }
+  }
+}
