@@ -38,6 +38,7 @@ from __future__ import annotations
 import argparse
 import json
 from datetime import datetime, timezone
+from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
@@ -108,12 +109,37 @@ def fit_production(estimator: str = "garman_klass", verbose: bool = True) -> dic
 
 
 def _load():
-    import joblib
-
     if not MODEL_PATH.exists():
         raise FileNotFoundError(
             f"{MODEL_PATH.name} not found. Run `python -m quant.production_model --fit`.")
+    return _load_bundle(MODEL_PATH.stat().st_mtime)
+
+
+@lru_cache(maxsize=1)
+def _load_bundle(model_mtime: float):
+    """The 60 MB ensemble, read once per process and again only after a refit.
+
+    Unpickling it took 2.8 s, most of a forecast, on every single call.
+    """
+    import joblib
+
     return joblib.load(MODEL_PATH), json.loads(META_PATH.read_text())
+
+
+@lru_cache(maxsize=2)
+def _serving_frame(estimator: str, panel_mtime: float) -> pd.DataFrame:
+    """The feature frame every ticker's forecast is read from.
+
+    Building it costs about four seconds and is the same for all 50 names, so
+    a scan of the panel was paying for it 50 times. Keyed on the OHLC cache's
+    modification time, so refreshing the panel invalidates it.
+    """
+    from quant.tracking_models import build_tracking_frame
+
+    # require_target=False keeps the latest row, whose target is tomorrow and
+    # therefore unknown. Serving from the last row with a KNOWN target would
+    # forecast a day already observed, from a row the model trained on.
+    return build_tracking_frame(estimator, verbose=False, require_target=False)
 
 
 def forecast(ticker: str, estimator: str = "garman_klass") -> dict:
@@ -122,17 +148,14 @@ def forecast(ticker: str, estimator: str = "garman_klass") -> dict:
 
     warnings.filterwarnings("ignore")
     bundle, meta = _load()
-    from quant.tracking_models import build_tracking_frame
+    from quant.volatility import OHLC_PATH
 
-    # require_target=False keeps the latest row, whose target is tomorrow and
-    # therefore unknown. Serving from the last row with a KNOWN target would
-    # forecast a day already observed, from a row the model trained on.
-    f = build_tracking_frame(estimator, verbose=False, require_target=False)
+    f = _serving_frame(estimator, OHLC_PATH.stat().st_mtime if OHLC_PATH.exists() else 0.0)
     g = f[f["ticker"] == ticker].sort_values("date")
     if g.empty:
         raise ValueError(
             f"{ticker!r} is not in the panel. The model uses cross-sectional "
-            "features, so it serves the 48 benchmarked names only.")
+            f"features, so it serves the {f['ticker'].nunique()} panel names only.")
 
     latest = g.iloc[-1]
     is_live = bool(pd.isna(latest.get("target")))
@@ -148,7 +171,12 @@ def forecast(ticker: str, estimator: str = "garman_klass") -> dict:
         "as_of": str(pd.Timestamp(g["date"].iloc[-1]).date()),
         "forecast_annualised_vol": point,
         "today_realised_vol": today,
-        "direction": "higher" if point > today else "lower",
+        # Called on the LOG forecast, the median, because that is the rule the
+        # 70.9% was measured on. Comparing `point` instead looks equivalent
+        # and is not: the smearing correction lifts the mean above the
+        # median, so it said "higher" on 59% of days when 49% were, and
+        # scored 69.8%.
+        "direction": "higher" if lp > np.log(today) else "lower",
         "interval_80": [float(np.exp(lp - 1.2816 * sd)), float(np.exp(lp + 1.2816 * sd))],
         "member_forecasts": {k: float(np.exp(v + 0.5 * bundle["smear_var"]))
                              for k, v in preds.items()},
