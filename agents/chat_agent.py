@@ -88,6 +88,20 @@ _RISK_QUERY_PATTERN = re.compile(
     re.IGNORECASE,
 )
 
+# A question about the MARKET'S risk, or about which names are riskiest. It
+# must be tested before the single-stock risk pattern, which would otherwise
+# match "riskiest" and answer about whatever ticker the previous turn left
+# in the session.
+_MARKET_RISK_PATTERN = re.compile(
+    r"\b(?:riskiest|most\s+(?:risky|volatile)|least\s+(?:risky|volatile)|safest)\b"
+    r"|\b(?:which|what)\s+(?:stocks?|shares?|names?|companies)\b.{0,40}"
+    r"\b(?:risk\w*|volatil\w*|safe\w*)"
+    r"|\b(?:market|whole\s+market|overall\s+market|nifty)\s+risk\b"
+    r"|\bhow\s+(?:risky|volatile)\s+is\s+the\s+(?:market|nifty)\b"
+    r"|\brank\w*\b.{0,30}\b(?:risk|volatil\w*)",
+    re.IGNORECASE,
+)
+
 _ANOMALY_QUERY_PATTERN = re.compile(
     # anomal\w* (not a literal "anomal\b") is deliberate -- found in
     # testing: "anomal" followed by a required \b never matches "anomaly"
@@ -1544,6 +1558,9 @@ def answer_query(message: str, session_state: dict, backend: str | None = None, 
     # before the anomaly path deliberately: "is TCS risky, any unusual days?"
     # matches both, and the risk answer already contains the anomalies --
     # attributed to market or company, which the anomaly path alone cannot do.
+    if _MARKET_RISK_PATTERN.search(message) and not _EXPLICIT_SUFFIX_IN_TEXT.search(message):
+        return _answer_market_risk_query(message, session_state, backend=backend, model=model)
+
     if _RISK_QUERY_PATTERN.search(message):
         risk_answer = _answer_risk_query(message, session_state, backend=backend, model=model)
         if risk_answer is not None:
@@ -1826,74 +1843,136 @@ def _answer_risk_query(message: str, session_state: dict, backend: str | None = 
     """Forward-looking risk for one stock. Returns None if no ticker is found,
     so the caller falls through to its normal routing.
 
-    The facts handed to the model are already translated out of statistics --
-    "swings about 28% a year", not "annual volatility 28.5%". An instruction
-    not to use jargon is not enough on its own: a model shown "excess
-    kurtosis 3.21" in its context will repeat it, because it looks like the
-    authoritative thing to say.
+    Answered by the risk composition: five registry models chosen through the
+    selector, every figure carrying its validation status. The model phrases
+    the facts; the table of headline figures and their statuses is appended
+    verbatim, because a small local model drops qualifiers such as "this
+    backtest failed" more readily than it drops numbers.
     """
-    from agents.answer_style import CHAT_SYSTEM_PROMPT
-    from agents.nodes.risk_node import answer_risk_question
+    from agents.answer_style import CHAT_SYSTEM_PROMPT, guard_answer
+    from agents.risk_composition import (assess_stock_risk, chat_facts, figure,
+                                         status_table)
 
     ticker = _resolve_ticker_from_message(message, session_state)
     if not ticker:
         return None
 
     try:
-        result = answer_risk_question(ticker)
+        a = assess_stock_risk(ticker, with_news=True)
     except Exception as exc:  # noqa: BLE001
         return {"answer": f"I couldn't work out the risk picture for {ticker}: {exc}",
                 "domain": "finance", "trace": []}
-    if "risk_error" in result:
-        return {"answer": f"I couldn't work out the risk picture for {ticker}. "
-                          f"{result['risk_error']}", "domain": "finance", "trace": []}
+    working = [c for c in a["components"].values() if "error" not in c]
+    if not working:
+        reasons = "; ".join(c["error"] for c in a["components"].values())
+        return {"answer": f"I couldn't work out the risk picture for {ticker}. {reasons}",
+                "domain": "finance", "trace": []}
 
-    prompt = (f"{result['facts']}\n\nThe user asked: {message}\n\n"
-              f"Answer conversationally, in plain language, using only the facts above.")
+    facts = chat_facts(a, context=_market_context(ticker, a))
+    prompt = (f"{facts}\n\nThe user asked: {message}\n\nAnswer conversationally in a few "
+              f"short paragraphs, using only the facts above. A table of the headline numbers "
+              f"will be shown under your answer, so do not repeat it as a table.")
     try:
         answer = call_llm(prompt, system=CHAT_SYSTEM_PROMPT, backend=backend, model=model)
     except Exception:
-        # Without a model the facts are still useful, just unpolished.
-        answer = result["facts"]
+        answer = a["summary"]     # without a model the summary is still exact
 
-    # A small local model rewrites counts even when they are stated plainly:
-    # observed turning "0 market-wide, 8 company-specific" into "one ... the
-    # other seven". Firmer prompt wording does not fix it, so the answer is
-    # checked against the facts and corrected in place when it drifts.
-    from agents.answer_style import guard_answer
+    n = figure(a, "anomalies", "n_recent_anomalies")
+    correction = (f"{n['value']} unusual days were flagged in the last "
+                  f"{n['label'].rsplit(' ', 2)[-2]} days" if n else None)
+    answer, invented = guard_answer(answer, facts, correction=correction)
+    answer = f"{answer}\n\n**The numbers, and how far to trust each one**\n\n{status_table(a)}"
 
-    # One sentence with the counts that get rewritten most often, rather than
-    # the whole fact block -- a wall of bullets under a conversational reply
-    # reads worse than the error it is fixing.
-    a = result["profile"]["anomalies"]
-    if a["n_market_wide"] == 0:
-        correction = (f"there were {a['n_flagged']} unusual days, and all of them were "
-                      f"specific to the company -- none were the whole market moving")
-    else:
-        correction = (f"there were {a['n_flagged']} unusual days: {a['n_market_wide']} "
-                      f"where the whole market moved and {a['n_company_specific']} "
-                      f"specific to the company")
-
-    answer, invented = guard_answer(answer, result["facts"], correction=correction)
-    trace = list(result["trace"])
+    trace = [f"[risk] {r['role']}: {r['question']!r} -> task {r['task']} -> {r['model_id']} "
+             f"({len(r['shortlist'])} feasible)" for r in a["routing"]]
+    if a["freshness"].get("warning"):
+        trace.append("[risk] " + a["freshness"]["warning"])
     if invented:
-        trace.append({"step": "guard", "decision": f"corrected {len(invented)} figure(s)",
-                      "why": f"not supported by the computed facts: {', '.join(invented)}"})
+        trace.append(f"[guard] corrected {len(invented)} figure(s) not in the computed facts: "
+                     f"{', '.join(invented)}")
 
+    profile = a["components"].get("tail_risk", {}).get("detail", {}).get("profile")
     charts = []
-    try:
-        from dashboard.charts import risk_attribution_chart, risk_price_chart
+    if profile:
+        try:
+            from dashboard.charts import risk_attribution_chart, risk_price_chart
 
-        charts = [c for c in (risk_price_chart(ticker, result["profile"]),
-                              risk_attribution_chart(result["profile"])) if c is not None]
-    except Exception:
-        pass   # a missing chart should never cost the user their answer
+            charts = [c for c in (risk_price_chart(ticker, profile),
+                                  risk_attribution_chart(profile)) if c is not None]
+        except Exception:
+            pass   # a missing chart should never cost the user their answer
 
     session_state["last_domain"] = "finance"
     session_state["last_ticker"] = ticker
-    return {"answer": answer, "domain": "finance", "ticker": ticker,
-            "trace": trace, "risk_profile": result["profile"],
-            "charts": charts, "retrieved_context": []}
+    return {"answer": answer, "domain": "finance", "ticker": ticker, "trace": trace,
+            "risk_profile": profile, "risk_assessment": a, "charts": charts,
+            "retrieved_context": []}
+
+
+def _market_context(ticker: str, a: dict) -> str | None:
+    """Where this stock's forecast sits among the 50, from the saved snapshot.
+
+    Only used when the snapshot describes the same day as the assessment; a
+    comparison against another day's market is worse than none.
+    """
+    import statistics
+
+    from agents.risk_composition import figure, load_market_snapshot
+
+    m = load_market_snapshot()
+    f = figure(a, "volatility", "forecast_vol_pct")
+    if not m or not f or not m.get("ranking"):
+        return None
+    if (m.get("freshness") or {}).get("as_of", {}).get("volatility") != \
+            a["components"]["volatility"].get("as_of"):
+        return None
+    vols = [r["forecast_vol_pct"] for r in m["ranking"]]
+    rank = 1 + sum(v > f["value"] for v in vols)
+    return (f"across the {len(vols)} stocks in the panel the median forecast is "
+            f"{statistics.median(vols):.1f}% and the range is {min(vols):.1f}% to "
+            f"{max(vols):.1f}%; this stock's {f['value']:.1f}% ranks {rank} of {len(vols)}, "
+            f"where 1 is the most volatile")
+
+
+def _answer_market_risk_query(message: str, session_state: dict, backend: str | None = None,
+                              model: str | None = None) -> dict:
+    """Which names are riskiest, from the saved 50-name assessment.
+
+    The saved snapshot is used because a fresh pass takes about two minutes;
+    its date is stated in the answer so a stale one cannot pass for today's.
+    """
+    from agents.answer_style import CHAT_SYSTEM_PROMPT, guard_answer
+    from agents.risk_composition import (assess_market_risk, load_market_snapshot,
+                                         market_chat_facts, market_status_table,
+                                         save_market_snapshot)
+
+    m = load_market_snapshot()
+    trace = []
+    if m is None:
+        trace.append("[risk] no saved market assessment -- computing all 50 names")
+        m = assess_market_risk()
+        save_market_snapshot(m)
+    trace.append(f"[risk] market assessment computed {m['generated_at']}, "
+                 f"{m['n_ranked']} names ranked by forecast volatility")
+
+    facts = market_chat_facts(m)
+    prompt = (f"{facts}\n\nThe user asked: {message}\n\nAnswer conversationally in a few "
+              f"short paragraphs using only the facts above. A ranked table will be shown "
+              f"under your answer, so do not repeat it.")
+    try:
+        answer = call_llm(prompt, system=CHAT_SYSTEM_PROMPT, backend=backend, model=model)
+    except Exception:
+        answer = m["summary"]
+    answer, invented = guard_answer(answer, facts)
+    if invented:
+        trace.append(f"[guard] corrected {len(invented)} figure(s): {', '.join(invented)}")
+    as_of = (m.get("freshness") or {}).get("as_of", {}).get("volatility", "?")
+    answer = (f"{answer}\n\n**Riskiest names for the next session** "
+              f"(data as of {as_of})\n\n{market_status_table(m)}")
+    session_state["last_domain"] = "finance"
+    return {"answer": answer, "domain": "finance", "trace": trace,
+            "market_risk": {k: v for k, v in m.items() if k != "assessments"},
+            "retrieved_context": []}
 
 
 def _resolve_ticker_from_message(message: str, session_state: dict) -> str | None:
