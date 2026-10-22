@@ -909,14 +909,14 @@ def _build_solar_chart(result: dict):
         import plotly.graph_objects as go
 
         fig = go.Figure()
-        colors = {"A": "#94a3b8", "B": "#60a5fa", "C": "#fbbf24", "M": "#f97316", "X": "#dc2626"}
+        colors = {"A": "#c5d3e3", "B": "#8db8e8", "C": "#4a90d9", "M": "#1f5fa8", "X": "#0b2545"}
         for letter, color in colors.items():
             sub = flares[flares["class_letter"] == letter]
             if sub.empty:
                 continue
             fig.add_trace(go.Scatter(x=sub["begin_time"], y=sub["peak_flux"], mode="markers",
                                       name=f"{letter}-class", marker=dict(size=8, color=color)))
-        fig.add_hline(y=1e-5, line_dash="dash", line_color="#f97316",
+        fig.add_hline(y=1e-5, line_dash="dash", line_color="#1f5fa8",
                       annotation_text="M threshold")
         fig.update_yaxes(type="log", title="peak flux (W/m²)")
         fig.update_layout(height=300, margin=dict(t=30, b=20),

@@ -35,7 +35,7 @@ ROOT = Path(__file__).parent.parent
 RESULTS = ROOT / "evaluation" / "results"
 
 # ----------------------------------------------------------------- style
-C_BEST = "#C8621E"        # best detector / key element
+C_BEST = "#1f5fa8"        # best detector / key element
 C_SUP = "#2B5F8A"         # supervised reference
 C_GREY = "#9AA3AF"        # ordinary detectors
 C_RAW = "#4A5568"         # raw-input baseline

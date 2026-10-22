@@ -58,7 +58,7 @@ def candlestick_chart(df: pd.DataFrame, period: str = "1Y") -> go.Figure:
 def close_line_chart(df: pd.DataFrame, period: str = "1Y") -> go.Figure:
     d = filter_period(df, period)
     fig = go.Figure()
-    for col, color in [("Open", "#5ab7ff"), ("Close", "black"), ("High", "#0078ff"), ("Low", "red")]:
+    for col, color in [("Open", "#5ab7ff"), ("Close", "black"), ("High", "#0078ff"), ("Low", "#0b2545")]:
         fig.add_trace(go.Scatter(x=d.index, y=d[col], mode="lines", name=col, line=dict(width=2, color=color)))
     fig.update_layout(height=450, margin=dict(l=0, r=20, t=20, b=0), plot_bgcolor="white",
                        paper_bgcolor="#e1efff", xaxis_rangeslider_visible=True,
@@ -70,9 +70,9 @@ def rsi_chart(features_df: pd.DataFrame, period: str = "1Y") -> go.Figure:
     """features_df must already have an 'RSI_14' column (finance.price_data.add_technical_indicators)."""
     d = filter_period(features_df, period)
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=d.index, y=d["RSI_14"], name="RSI(14)", line=dict(width=2, color="orange")))
-    fig.add_trace(go.Scatter(x=d.index, y=[70] * len(d), name="Overbought", line=dict(width=2, color="red", dash="dash")))
-    fig.add_trace(go.Scatter(x=d.index, y=[30] * len(d), name="Oversold", line=dict(width=2, color="green", dash="dash")))
+    fig.add_trace(go.Scatter(x=d.index, y=d["RSI_14"], name="RSI(14)", line=dict(width=2, color="#4a90d9")))
+    fig.add_trace(go.Scatter(x=d.index, y=[70] * len(d), name="Overbought", line=dict(width=2, color="#0b2545", dash="dash")))
+    fig.add_trace(go.Scatter(x=d.index, y=[30] * len(d), name="Oversold", line=dict(width=2, color="#1f5fa8", dash="dash")))
     fig.update_layout(yaxis_range=[0, 100], height=220, plot_bgcolor="white", paper_bgcolor="#e1efff",
                        margin=dict(l=0, r=0, t=10, b=0))
     return fig
@@ -82,8 +82,8 @@ def macd_chart(features_df: pd.DataFrame, period: str = "1Y") -> go.Figure:
     """features_df must already have 'MACD'/'MACD_signal' columns."""
     d = filter_period(features_df, period)
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=d.index, y=d["MACD"], name="MACD", line=dict(width=2, color="orange")))
-    fig.add_trace(go.Scatter(x=d.index, y=d["MACD_signal"], name="Signal", line=dict(width=2, color="red", dash="dash")))
+    fig.add_trace(go.Scatter(x=d.index, y=d["MACD"], name="MACD", line=dict(width=2, color="#4a90d9")))
+    fig.add_trace(go.Scatter(x=d.index, y=d["MACD_signal"], name="Signal", line=dict(width=2, color="#0b2545", dash="dash")))
     fig.update_layout(height=220, plot_bgcolor="white", paper_bgcolor="#e1efff", margin=dict(l=0, r=0, t=10, b=0))
     return fig
 
@@ -94,7 +94,7 @@ def moving_average_chart(features_df: pd.DataFrame, period: str = "1Y") -> go.Fi
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=d.index, y=d["Close"], name="Close", line=dict(width=2, color="black")))
     fig.add_trace(go.Scatter(x=d.index, y=d["SMA_7"], name="SMA(7)", line=dict(width=2, color="#0078ff")))
-    fig.add_trace(go.Scatter(x=d.index, y=d["SMA_21"], name="SMA(21)", line=dict(width=2, color="#ff7f0e")))
+    fig.add_trace(go.Scatter(x=d.index, y=d["SMA_21"], name="SMA(21)", line=dict(width=2, color="#0b2545")))
     fig.update_layout(height=450, margin=dict(l=0, r=20, t=20, b=0), plot_bgcolor="white",
                        paper_bgcolor="#e1efff", xaxis_rangeslider_visible=True)
     return fig
@@ -106,10 +106,10 @@ def prediction_comparison_chart(actual: pd.Series, arima_pred: pd.Series, xgb_pr
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=actual.index, y=actual.values, name="Actual", line=dict(width=3, color="black")))
     fig.add_trace(go.Scatter(x=arima_pred.index, y=arima_pred.values, name="ARIMA baseline", line=dict(width=2, color="#5ab7ff", dash="dot")))
-    fig.add_trace(go.Scatter(x=xgb_pred.index, y=xgb_pred.values, name="XGBoost (no sentiment)", line=dict(width=2, color="#ff7f0e", dash="dot")))
+    fig.add_trace(go.Scatter(x=xgb_pred.index, y=xgb_pred.values, name="XGBoost (no sentiment)", line=dict(width=2, color="#13315c", dash="dot")))
     if xgb_sentiment_pred is not None:
         fig.add_trace(go.Scatter(x=xgb_sentiment_pred.index, y=xgb_sentiment_pred.values,
-                                  name="XGBoost + sentiment", line=dict(width=2, color="#2ca02c")))
+                                  name="XGBoost + sentiment", line=dict(width=2, color="#1f5fa8")))
     fig.update_layout(height=450, margin=dict(l=0, r=20, t=20, b=0), plot_bgcolor="white", paper_bgcolor="#e1efff",
                        legend=dict(yanchor="top", xanchor="left"))
     return fig
@@ -130,7 +130,7 @@ def future_forecast_chart(historical_close: pd.Series, forecast_df: pd.DataFrame
     fig.add_trace(go.Scatter(x=forecast_df.index, y=forecast_df["lower_80"], name="80% confidence interval",
                               line=dict(width=0), fill="tonexty", fillcolor="rgba(44,160,44,0.15)"))
     fig.add_trace(go.Scatter(x=forecast_df.index, y=forecast_df["predicted_close"], name="Forecast",
-                              line=dict(width=2, color="#2ca02c", dash="dot")))
+                              line=dict(width=2, color="#1f5fa8", dash="dot")))
     # Give the x-axis labels room, and pad the y-range to the full extent of
     # the band. With b=0 the tick labels had nowhere to sit, so Plotly
     # squeezed the plot area and clipped the bottom of the confidence band --
@@ -141,7 +141,7 @@ def future_forecast_chart(historical_close: pd.Series, forecast_df: pd.DataFrame
     pad = (hi - lo) * 0.06
 
     fig.update_layout(height=460, margin=dict(l=0, r=20, t=40, b=40),
-                      plot_bgcolor="white", paper_bgcolor="#f0fff4",
+                      plot_bgcolor="white", paper_bgcolor="#f5f9ff",
                       title=f"{ticker} -- {len(forecast_df)}-trading-day forecast",
                       yaxis=dict(range=[lo - pad, hi + pad], title="Close"),
                       xaxis=dict(title=""),
@@ -168,11 +168,11 @@ def model_comparison_chart(comparison: dict, ticker: str) -> go.Figure:
 
     styles = {
         "Naive (no change)": dict(color="#9aa0a6", dash="dash", width=2),
-        "ARIMA": dict(color="#d62728", dash="dot", width=2),
-        "XGBoost": dict(color="#ff7f0e", dash="dot", width=2),
-        "XGBoost + FinBERT sentiment": dict(color="#9467bd", dash="dot", width=2),
-        "GPR": dict(color="#2ca02c", dash="solid", width=2),
-        "GPR + FinBERT sentiment": dict(color="#17becf", dash="dashdot", width=2),
+        "ARIMA": dict(color="#0b2545", dash="dot", width=2),
+        "XGBoost": dict(color="#4a90d9", dash="dot", width=2),
+        "XGBoost + FinBERT sentiment": dict(color="#2b5f8a", dash="dot", width=2),
+        "GPR": dict(color="#1f5fa8", dash="solid", width=2),
+        "GPR + FinBERT sentiment": dict(color="#8db8e8", dash="dashdot", width=2),
     }
     metrics = comparison.get("metrics", {})
     for name, series in comparison["models"].items():
@@ -205,7 +205,7 @@ def model_error_bar(comparison: dict) -> go.Figure:
     naive = metrics.get("Naive (no change)", {}).get("rmse")
 
     colors = ["#9aa0a6" if n == "Naive (no change)"
-              else ("#2ca02c" if naive and metrics[n]["rmse"] < naive else "#d62728")
+              else ("#1f5fa8" if naive and metrics[n]["rmse"] < naive else "#0b2545")
               for n in names]
 
     fig = go.Figure(go.Bar(x=names, y=rmses, marker_color=colors,
@@ -233,7 +233,7 @@ def finance_anomaly_chart(features_df: pd.DataFrame, scored_df: pd.DataFrame, ti
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=d.index, y=d["Close"], name="Close", line=dict(width=2, color="black")))
 
-    for severity, color in [("LOW", "#f4d35e"), ("MEDIUM", "#ee964b"), ("HIGH", "#d62728")]:
+    for severity, color in [("LOW", "#a9c8ec"), ("MEDIUM", "#4a90d9"), ("HIGH", "#0b2545")]:
         subset = anomalies[anomalies["severity_label"] == severity]
         if subset.empty:
             continue
@@ -243,14 +243,14 @@ def finance_anomaly_chart(features_df: pd.DataFrame, scored_df: pd.DataFrame, ti
             text=[", ".join(r) for r in subset["reasons"]], hovertemplate="%{x}<br>%{text}<extra></extra>",
         ))
 
-    fig.update_layout(height=450, margin=dict(l=0, r=20, t=30, b=0), plot_bgcolor="white", paper_bgcolor="#fff5f5",
+    fig.update_layout(height=450, margin=dict(l=0, r=20, t=30, b=0), plot_bgcolor="white", paper_bgcolor="#f5f9ff",
                        title=f"{ticker} -- flagged anomalous days", xaxis_rangeslider_visible=True,
                        legend=dict(yanchor="top", xanchor="left"))
     return fig
 
 
 def rmse_comparison_bar(labels: list[str], rmses: list[float]) -> go.Figure:
-    colors = ["#5ab7ff", "#ff7f0e", "#2ca02c"][: len(labels)]
+    colors = ["#8db8e8", "#13315c", "#1f5fa8"][: len(labels)]
     fig = go.Figure(data=[go.Bar(x=labels, y=rmses, marker_color=colors, text=[f"{r:.2f}" for r in rmses], textposition="outside")])
     fig.update_layout(height=320, margin=dict(l=0, r=0, t=20, b=0), plot_bgcolor="white", paper_bgcolor="white",
                        yaxis_title="RMSE (lower is better)")
@@ -261,14 +261,14 @@ def dataset_anomaly_overview_chart(index_df: pd.DataFrame) -> go.Figure:
     """Bar chart of anomaly rate per target across a whole downloaded
     light-curve dataset (astronomy/dataset.py), color-coded by whether the
     underlying data was real (MAST/Kepler) or a synthetic fallback."""
-    colors = ["#2ca02c" if str(s).startswith("real") else "#d62728" for s in index_df["source"]]
+    colors = ["#1f5fa8" if str(s).startswith("real") else "#0b2545" for s in index_df["source"]]
     fig = go.Figure(data=[go.Bar(
         x=index_df["target"], y=index_df["anomaly_rate"], marker_color=colors,
         text=[f"{r:.0%}" for r in index_df["anomaly_rate"]], textposition="outside",
     )])
     fig.update_layout(height=380, margin=dict(l=0, r=0, t=30, b=80), plot_bgcolor="white", paper_bgcolor="white",
                        yaxis_title="Anomaly rate", xaxis_tickangle=-45,
-                       title="Dataset overview -- green = real MAST data, red = synthetic fallback")
+                       title="Dataset overview -- blue = real MAST data, navy = synthetic fallback")
     return fig
 
 
@@ -328,10 +328,10 @@ def lightcurve_anomaly_chart(time, flux, window_size: int, stride: int, anomaly_
     fig.update_layout(
         shapes=[dict(type="rect", xref="x", yref="paper",
                      x0=time[a], x1=time[b], y0=0, y1=1,
-                     fillcolor="red", opacity=0.15, line_width=0, layer="below")
+                     fillcolor="#0b2545", opacity=0.15, line_width=0, layer="below")
                 for a, b in spans],
         height=450, margin=dict(l=0, r=20, t=20, b=0),
-        plot_bgcolor="white", paper_bgcolor="#fff5f5",
+        plot_bgcolor="white", paper_bgcolor="#f5f9ff",
         xaxis_title="Time", yaxis_title="Normalized flux",
         title="Flux vs time (shaded = flagged anomalous region)"
         + (f" -- first {MAX_SHADED_SPANS} of {len(_merge_flagged_spans(anomaly_mask, window_size, stride, len(time)))} shown"
@@ -360,7 +360,7 @@ def lightcurve_zoom_chart(time, flux, centre_index: int, window_size: int,
                              marker=dict(size=3)))
     fig.add_vrect(x0=time[centre_index],
                   x1=time[min(centre_index + window_size, len(time) - 1)],
-                  fillcolor="red", opacity=0.18, line_width=0)
+                  fillcolor="#0b2545", opacity=0.18, line_width=0)
     fig.update_layout(height=320, margin=dict(l=0, r=20, t=40, b=0),
                       plot_bgcolor="white", paper_bgcolor="white",
                       xaxis_title="Time (BKJD days)", yaxis_title="Normalized flux",
@@ -382,7 +382,7 @@ def normalized_lightcurve_chart(time, flux, window_size: int, stride: int, anoma
     z = (flux - flux.mean()) / std if std > 0 else flux * 0.0
 
     fig = go.Figure()
-    for level, color in [(3, "#d62728"), (2, "#ee964b")]:
+    for level, color in [(3, "#0b2545"), (2, "#4a90d9")]:
         fig.add_trace(go.Scatter(x=[time[0], time[-1]], y=[level, level], mode="lines", showlegend=False,
                                   line=dict(width=1, color=color, dash="dash"), hoverinfo="skip"))
         fig.add_trace(go.Scatter(x=[time[0], time[-1]], y=[-level, -level], mode="lines", showlegend=False,
@@ -396,7 +396,7 @@ def normalized_lightcurve_chart(time, flux, window_size: int, stride: int, anoma
             continue
         start_idx = i * stride
         end_idx = min(start_idx + window_size, len(time) - 1)
-        fig.add_vrect(x0=time[start_idx], x1=time[end_idx], fillcolor="red", opacity=0.15, line_width=0)
+        fig.add_vrect(x0=time[start_idx], x1=time[end_idx], fillcolor="#0b2545", opacity=0.15, line_width=0)
 
     fig.update_layout(height=380, margin=dict(l=0, r=20, t=30, b=0), plot_bgcolor="white", paper_bgcolor="#f5f9ff",
                        xaxis_title="Time", yaxis_title="Flux (std deviations from mean)",
@@ -411,15 +411,15 @@ def nav_chart(nav_df: pd.DataFrame, forecast: pd.Series | None = None) -> go.Fig
     fig.add_trace(go.Scatter(x=nav_df.index, y=nav_df["nav"], name="NAV", line=dict(width=2, color="black")))
     if forecast is not None:
         fig.add_trace(go.Scatter(x=forecast.index, y=forecast.values, name="ARIMA forecast (held-out period)",
-                                  line=dict(width=2, color="#2ca02c", dash="dot")))
+                                  line=dict(width=2, color="#1f5fa8", dash="dot")))
     fig.update_layout(height=450, margin=dict(l=0, r=20, t=20, b=0), plot_bgcolor="white",
-                       paper_bgcolor="#f0fff4", xaxis_rangeslider_visible=True)
+                       paper_bgcolor="#f5f9ff", xaxis_rangeslider_visible=True)
     return fig
 
 
 def reconstruction_error_chart(window_ids, errors) -> go.Figure:
     fig = go.Figure()
-    fig.add_trace(go.Bar(x=list(window_ids), y=list(errors), marker_color="#d62728"))
+    fig.add_trace(go.Bar(x=list(window_ids), y=list(errors), marker_color="#0b2545"))
     fig.update_layout(height=280, margin=dict(l=0, r=0, t=20, b=0), plot_bgcolor="white", paper_bgcolor="white",
                        xaxis_title="Window ID", yaxis_title="Autoencoder reconstruction error")
     return fig
@@ -433,12 +433,12 @@ def reconstruction_error_chart(window_ids, errors) -> go.Figure:
 #: floors are deliberately grey: they are the thing to beat, not a competitor.
 DETECTOR_GROUP_COLORS = {
     "floor": "#9aa0a6",
-    "one_liner": "#1f77b4",
-    "threshold": "#17a2b8",
-    "density": "#6f42c1",
-    "reconstruction": "#e8590c",
-    "latent_state": "#2ca02c",
-    "ceiling": "#343a40",
+    "one_liner": "#8db8e8",
+    "threshold": "#4a90d9",
+    "density": "#1f5fa8",
+    "reconstruction": "#13315c",
+    "latent_state": "#6b7280",
+    "ceiling": "#111111",
 }
 
 
@@ -472,7 +472,7 @@ def detector_grid_bar(rows: list[dict], domain: str, metric: str = "pr_auc") -> 
         hovertemplate="%{hovertext}<extra></extra>",
     ))
     if best_floor is not None:
-        fig.add_vline(x=best_floor, line_dash="dash", line_color="#d62728",
+        fig.add_vline(x=best_floor, line_dash="dash", line_color="#0b2545",
                       annotation_text="best no-skill floor — anything left of this "
                                       "has not learned anything",
                       annotation_position="top")
@@ -531,8 +531,8 @@ def detector_domain_scatter(rows: list[dict], metric: str = "pr_auc") -> go.Figu
         hovertemplate="%{text}<br>" + f"{dx}: " + "%{x:.2f}x<br>" + f"{dy}: " + "%{y:.2f}x<extra></extra>",
     ))
     # Lift of 1.0 is chance in either direction.
-    fig.add_vline(x=1.0, line_dash="dot", line_color="#d62728")
-    fig.add_hline(y=1.0, line_dash="dot", line_color="#d62728")
+    fig.add_vline(x=1.0, line_dash="dot", line_color="#0b2545")
+    fig.add_hline(y=1.0, line_dash="dot", line_color="#0b2545")
     fig.update_layout(
         height=520, margin=dict(l=0, r=20, t=60, b=40),
         plot_bgcolor="white", paper_bgcolor="white",
@@ -552,8 +552,8 @@ def audit_verdict_table(audits: dict) -> go.Figure:
               "unrealistic_anomaly_density": "Anomaly density",
               "run_to_failure_bias": "Run-to-failure bias",
               "mislabeled_ground_truth": "Label quality"}
-    shade = {"pass": "#d4edda", "warn": "#fff3cd", "fail": "#f8d7da",
-             "review": "#fff3cd", "insufficient_data": "#e9ecef",
+    shade = {"pass": "#d6e6f7", "warn": "#eef2f7", "fail": "#c5d3e3",
+             "review": "#eef2f7", "insufficient_data": "#e9ecef",
              "not_assessable": "#e9ecef"}
 
     domains = list(audits)
@@ -582,7 +582,7 @@ def series_anomaly_chart(x, y, window_size: int, stride: int, anomaly_mask,
     regions that were actually anomalous drawn underneath.
 
     The second band is what makes this an evidence chart rather than a
-    demo. Red-only shading shows what the detector claimed; overlaying the
+    demo. Shading alone shows what the detector claimed; overlaying the
     ground truth shows where it was right and, more usefully, where it was
     not. A reader can count the misses without being told about them.
 
@@ -598,17 +598,17 @@ def series_anomaly_chart(x, y, window_size: int, stride: int, anomaly_mask,
         for a, b in _merge_flagged_spans(y_true_mask, window_size, stride, len(x))[:MAX_SHADED_SPANS]:
             shapes.append(dict(type="rect", xref="x", yref="paper",
                                x0=x[a], x1=x[b], y0=0, y1=0.06,
-                               fillcolor="#2ca02c", opacity=0.55, line_width=0, layer="below"))
+                               fillcolor="#1f5fa8", opacity=0.55, line_width=0, layer="below"))
     flagged = _merge_flagged_spans(anomaly_mask, window_size, stride, len(x))
     truncated = len(flagged) > MAX_SHADED_SPANS
     for a, b in flagged[:MAX_SHADED_SPANS]:
         shapes.append(dict(type="rect", xref="x", yref="paper",
                            x0=x[a], x1=x[b], y0=0, y1=1,
-                           fillcolor="red", opacity=0.15, line_width=0, layer="below"))
+                           fillcolor="#0b2545", opacity=0.15, line_width=0, layer="below"))
 
     caption = title or "Series with flagged regions"
     if y_true_mask is not None:
-        caption += "  —  red = detector flagged, green strip = actually anomalous"
+        caption += "  —  light shading = detector flagged, blue strip = actually anomalous"
     if truncated:
         caption += f"  (first {MAX_SHADED_SPANS} of {len(flagged)} shown)"
 
@@ -637,10 +637,10 @@ def window_zoom_chart(x, y, start_index: int, window_size: int,
     fig.add_trace(go.Scatter(x=x[lo:hi], y=y[lo:hi], mode="lines",
                              line=dict(width=1.2, color="#0078ff"), name=y_label))
     fig.add_trace(go.Scatter(x=x[w_lo:w_hi], y=y[w_lo:w_hi], mode="lines",
-                             line=dict(width=2.4, color="#d62728"), name="flagged window"))
+                             line=dict(width=2.4, color="#0b2545"), name="flagged window"))
     fig.update_layout(
         shapes=[dict(type="rect", xref="x", yref="paper", x0=x[w_lo], x1=x[w_hi],
-                     y0=0, y1=1, fillcolor="red", opacity=0.10, line_width=0, layer="below")],
+                     y0=0, y1=1, fillcolor="#0b2545", opacity=0.10, line_width=0, layer="below")],
         height=330, margin=dict(l=0, r=20, t=50, b=40),
         plot_bgcolor="white", paper_bgcolor="white",
         title=title or "Flagged window in context", yaxis_title=y_label,
@@ -660,11 +660,11 @@ def feature_deviation_bar(deviation_row, top_k: int = 8) -> go.Figure:
                    key=lambda kv: -abs(kv[1]))[:top_k][::-1]
     names = [k for k, _ in items]
     vals = [v for _, v in items]
-    colors = ["#d62728" if abs(v) >= 2 else "#9aa0a6" for v in vals]
+    colors = ["#0b2545" if abs(v) >= 2 else "#9aa0a6" for v in vals]
     fig = go.Figure(go.Bar(x=vals, y=names, orientation="h", marker_color=colors,
                            text=[f"{v:+.1f}σ" for v in vals], textposition="outside"))
-    fig.add_vline(x=2, line_dash="dot", line_color="#d62728")
-    fig.add_vline(x=-2, line_dash="dot", line_color="#d62728")
+    fig.add_vline(x=2, line_dash="dot", line_color="#0b2545")
+    fig.add_vline(x=-2, line_dash="dot", line_color="#0b2545")
     fig.update_layout(height=max(240, 26 * len(names) + 80),
                       margin=dict(l=0, r=60, t=40, b=30),
                       plot_bgcolor="white", paper_bgcolor="white",
@@ -708,12 +708,12 @@ def dual_series_anomaly_chart(x, real_y, model_y, window_size: int, stride: int,
             # its own y-axis domain instead.
             shapes.append(dict(type="rect", xref="x", yref="y domain",
                                x0=x[a], x1=x[b], y0=0, y1=0.07,
-                               fillcolor="#2ca02c", opacity=0.6, line_width=0, layer="below"))
+                               fillcolor="#1f5fa8", opacity=0.6, line_width=0, layer="below"))
     for a, b in _merge_flagged_spans(anomaly_mask, window_size, stride, len(x))[:MAX_SHADED_SPANS]:
         for axis in ("y", "y2"):
             shapes.append(dict(type="rect", xref="x", yref=f"{axis} domain",
                                x0=x[a], x1=x[b], y0=0, y1=1,
-                               fillcolor="red", opacity=0.14, line_width=0, layer="below"))
+                               fillcolor="#0b2545", opacity=0.14, line_width=0, layer="below"))
 
     fig.update_layout(shapes=shapes, height=560, margin=dict(l=0, r=20, t=60, b=40),
                       plot_bgcolor="white", paper_bgcolor="white", showlegend=False,
@@ -749,7 +749,7 @@ def risk_price_chart(ticker: str, profile: dict, lookback_days: int = 365):
 
     events = profile.get("anomalies", {}).get("events", [])
     for kind, colour, symbol in (("market-wide", "#9aa0a6", "circle"),
-                                 ("company-specific", "#d62728", "diamond")):
+                                 ("company-specific", "#0b2545", "diamond")):
         pts = [e for e in events if e.get("kind") == kind]
         if not pts:
             continue
@@ -799,7 +799,7 @@ def risk_attribution_chart(profile: dict):
     fig.add_trace(go.Bar(x=dates, y=market, name="the market moved",
                          marker_color="#9aa0a6"))
     fig.add_trace(go.Bar(x=dates, y=idio, name="the company moved",
-                         marker_color="#d62728"))
+                         marker_color="#0b2545"))
     fig.add_hline(y=0, line_color="#333", line_width=1)
     fig.update_layout(height=320, margin=dict(l=0, r=20, t=50, b=40),
                       plot_bgcolor="white", paper_bgcolor="white", barmode="relative",
@@ -831,7 +831,7 @@ def volatility_forecast_chart(history: pd.DataFrame, forecast: float, naive: flo
         marker=dict(size=7)))
     fig.add_trace(go.Scatter(
         x=[last, nxt], y=[history["realized_vol"].iloc[-1], forecast], mode="lines+markers",
-        name="HAR+overnight forecast", line=dict(color="#C8621E", width=2.2),
+        name="HAR+overnight forecast", line=dict(color="#1f5fa8", width=2.2),
         marker=dict(size=9)))
 
     fig.update_layout(
@@ -862,7 +862,7 @@ def volatility_backtest_chart(bt: pd.DataFrame, ticker: str) -> go.Figure:
                              line=dict(color="#6B7482", width=1.1, dash="dot")))
     fig.add_trace(go.Scatter(x=bt["date"], y=bt["har_ovn"], mode="lines",
                              name="HAR+overnight forecast",
-                             line=dict(color="#C8621E", width=2.4)))
+                             line=dict(color="#1f5fa8", width=2.4)))
     fig.update_layout(
         title=f"{ticker} — walk-forward backtest, refitted every day",
         yaxis_title="annualised volatility", xaxis_title=None, height=420,
@@ -881,8 +881,8 @@ def volatility_models_chart(bt, models: list, labels: dict, ticker: str) -> go.F
     and always shown: the question is whether a model is closer than doing
     nothing, not whether it hugs the grey line.
     """
-    palette = ["#C8621E", "#2B5F8A", "#1F7A5A", "#8A4FA0", "#B03A48",
-               "#7A6A1F", "#3A6EA5", "#A0522D"]
+    palette = ["#111111", "#1f5fa8", "#0b2545", "#4a90d9", "#13315c",
+               "#8db8e8", "#2b5f8a", "#5b7c99", "#6b7280"]
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=bt["date"], y=bt["actual"], mode="lines",
                              name="actual realized volatility",
@@ -910,8 +910,8 @@ def volatility_models_chart(bt, models: list, labels: dict, ticker: str) -> go.F
 
 def volatility_all_models_chart(df, models: list, labels: dict, ticker: str) -> go.Figure:
     """Every selected model against the realized series for one ticker."""
-    palette = ["#C8621E", "#2B5F8A", "#1F7A5A", "#8A4FA0", "#B03A48",
-               "#7A6A1F", "#3A6EA5", "#A0522D", "#5B7C99"]
+    palette = ["#111111", "#1f5fa8", "#0b2545", "#4a90d9", "#13315c",
+               "#8db8e8", "#2b5f8a", "#5b7c99", "#6b7280"]
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=df["date"], y=df["target"], mode="lines",
                              name="actual realized volatility",
@@ -950,7 +950,7 @@ def volatility_scatter_chart(df, model: str, label: str, ticker: str) -> go.Figu
     lo, hi = float(min(a.min(), p.min())), float(max(a.max(), p.max()))
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=a, y=p, mode="markers", name=label,
-                             marker=dict(size=5, color="#C8621E", opacity=0.45)))
+                             marker=dict(size=5, color="#1f5fa8", opacity=0.45)))
     fig.add_trace(go.Scatter(x=[lo, hi], y=[lo, hi], mode="lines",
                              name="perfect forecast",
                              line=dict(color="#6B7482", width=1.2, dash="dash")))

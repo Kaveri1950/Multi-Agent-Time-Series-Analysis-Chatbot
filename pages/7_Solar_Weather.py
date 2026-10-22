@@ -161,7 +161,7 @@ with tab_flares:
         counts = show["class_letter"].value_counts()
 
         fig = go.Figure()
-        colors = {"A": "#94a3b8", "B": "#60a5fa", "C": "#fbbf24", "M": "#f97316", "X": "#dc2626"}
+        colors = {"A": "#c5d3e3", "B": "#8db8e8", "C": "#4a90d9", "M": "#1f5fa8", "X": "#0b2545"}
         for letter in ("A", "B", "C", "M", "X"):
             sub = show[show["class_letter"] == letter]
             if sub.empty:
@@ -173,9 +173,9 @@ with tab_flares:
                 hovertemplate="%{x}<br>class %{customdata}<br>%{y:.2e} W/m²<extra></extra>",
                 customdata=sub["max_class"],
             ))
-        fig.add_hline(y=1e-5, line_dash="dash", line_color="#f97316",
+        fig.add_hline(y=1e-5, line_dash="dash", line_color="#1f5fa8",
                       annotation_text="M threshold (forecast target)")
-        fig.add_hline(y=1e-4, line_dash="dot", line_color="#dc2626",
+        fig.add_hline(y=1e-4, line_dash="dot", line_color="#0b2545",
                       annotation_text="X threshold (not forecast)")
         fig.update_yaxes(type="log", title="peak flux (W/m²)")
         fig.update_layout(height=380, margin=dict(t=20, b=20), hovermode="closest")
@@ -199,10 +199,10 @@ with tab_flux:
         short_band = flux[flux["energy"] == "0.05-0.4nm"]
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=long_band["time_tag"], y=long_band["flux"],
-                                 name="0.1–0.8 nm (defines class)", line=dict(color="#f97316", width=1)))
+                                 name="0.1–0.8 nm (defines class)", line=dict(color="#111111", width=1)))
         fig.add_trace(go.Scatter(x=short_band["time_tag"], y=short_band["flux"],
                                  name="0.05–0.4 nm", line=dict(color="#60a5fa", width=1)))
-        for level, label, color in ((1e-6, "C", "#fbbf24"), (1e-5, "M", "#f97316"), (1e-4, "X", "#dc2626")):
+        for level, label, color in ((1e-6, "C", "#4a90d9"), (1e-5, "M", "#1f5fa8"), (1e-4, "X", "#0b2545")):
             fig.add_hline(y=level, line_dash="dash", line_color=color, annotation_text=label)
         fig.update_yaxes(type="log", title="flux (W/m²)")
         fig.update_layout(height=380, margin=dict(t=20, b=20))

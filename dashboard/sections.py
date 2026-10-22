@@ -827,7 +827,7 @@ def render_volatility_backtest(ticker: str, n_days: int = 63,
 
     d = r["dispersion"]
     st.info(
-        f"**Why the orange line is smoother than the grey one.** The forecast varies about "
+        f"**Why the blue line is smoother than the grey one.** The forecast varies about "
         f"**{d['ratio']:.0%}** as much as the realized series "
         f"(forecast {d['forecast_range'][0]:.1%}–{d['forecast_range'][1]:.1%}, "
         f"actual {d['actual_range'][0]:.1%}–{d['actual_range'][1]:.1%}). That is deliberate, "

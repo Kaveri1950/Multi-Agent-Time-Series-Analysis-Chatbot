@@ -25,7 +25,7 @@ OUT_DIR = RESULTS / "figures"
 
 # A quiet, print-safe palette. Figures are read on paper and in greyscale, so
 # the two series are separated by lightness as well as hue.
-INK, FLOOR, CEIL, BEST, MUTED = "#1A1C19", "#B8442A", "#2A5751", "#8A6A1F", "#9AA39B"
+INK, FLOOR, CEIL, BEST, MUTED = "#111111", "#0b2545", "#6b7280", "#1f5fa8", "#9AA39B"
 plt.rcParams.update({
     "font.size": 9, "axes.labelsize": 9, "axes.titlesize": 10,
     "figure.dpi": 150, "savefig.dpi": 300, "axes.grid": True,
@@ -103,7 +103,7 @@ def fig_grid(data):
         ax.set_title(label, fontsize=9)
     fig.suptitle("Figure 2  Detector comparison, held-out", x=0.02, ha="left",
                  weight="bold", fontsize=10)
-    fig.text(0.5, 0.005, "red dashed = best no-skill floor; dotted = chance. "
+    fig.text(0.5, 0.005, "navy dashed = best no-skill floor; dotted = chance. "
                          "On Kepler every detector lies within 0.04 of a rule that learned nothing.",
              ha="center", fontsize=6.5, color=MUTED, style="italic")
     fig.tight_layout(rect=(0, 0.03, 1, 0.94))

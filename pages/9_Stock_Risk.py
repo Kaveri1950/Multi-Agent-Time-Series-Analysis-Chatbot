@@ -113,7 +113,7 @@ k[2].metric("Company-specific", a["n_company_specific"],
 if a["events"]:
     ev = pd.DataFrame(a["events"])
     fig = go.Figure()
-    for kind, colour in (("market-wide", "#9aa0a6"), ("company-specific", "#d62728")):
+    for kind, colour in (("market-wide", "#9aa0a6"), ("company-specific", "#0b2545")):
         sub = ev[ev["kind"] == kind]
         if sub.empty:
             continue
@@ -125,7 +125,7 @@ if a["events"]:
         ))
     fig.update_layout(height=320, margin=dict(l=0, r=10, t=40, b=30),
                       plot_bgcolor="white", paper_bgcolor="white", barmode="group",
-                      title="Largest unusual days — red is the company, grey is the market",
+                      title="Largest unusual days — navy is the company, grey is the market",
                       yaxis_title="return (%)",
                       legend=dict(orientation="h", y=1.12, x=0))
     st.plotly_chart(fig, use_container_width=True)

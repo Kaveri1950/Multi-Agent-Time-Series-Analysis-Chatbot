@@ -69,7 +69,7 @@ df = pd.DataFrame(rows).sort_values("QLIKE").reset_index(drop=True)
 
 st.dataframe(
     df.style.format({"QLIKE": "{:.5f}", "MSE": "{:.6f}"})
-      .apply(lambda r: ["background-color: #e8f4ea" if r["in confidence set"] else ""] * len(r),
+      .apply(lambda r: ["background-color: #e6effa" if r["in confidence set"] else ""] * len(r),
              axis=1),
     width="stretch", hide_index=True)
 
