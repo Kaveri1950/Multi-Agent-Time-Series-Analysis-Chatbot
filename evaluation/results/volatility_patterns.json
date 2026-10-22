@@ -1,0 +1,215 @@
+{
+  "generated_at": "2026-10-21T05:32:38+00:00",
+  "n_rows": 73333,
+  "raw": {
+    "rose_today": {
+      "n": 35852,
+      "p_falls_tomorrow": 0.657648108892112,
+      "mean_log_change_tomorrow": -0.16228799626714102
+    },
+    "fell_today": {
+      "n": 37477,
+      "p_falls_tomorrow": 0.3711076126691037,
+      "mean_log_change_tomorrow": 0.15514252309818297
+    },
+    "through_20d_high": {
+      "n": 3819,
+      "p_falls_tomorrow": 0.8991882691804137,
+      "mean_log_change_tomorrow": -0.5130649336618625
+    },
+    "through_20d_low": {
+      "n": 4075,
+      "p_falls_tomorrow": 0.1052760736196319,
+      "mean_log_change_tomorrow": 0.5056299712196773
+    },
+    "any_day": {
+      "n": 73333,
+      "p_falls_tomorrow": 0.5112023236469256,
+      "mean_log_change_tomorrow": -6.274991871702716e-05
+    }
+  },
+  "residuals": {
+    "n": 59743,
+    "states": {
+      "rose_today": {
+        "n": 29193,
+        "direction_accuracy": 0.7116432021374988,
+        "model_calls_fall": 0.7510704620970781,
+        "actually_falls": 0.6599869831808995,
+        "mean_residual_log": {
+          "mean": -0.008224992475199474,
+          "n_days": 1329,
+          "t_stat": -2.7272235897457495,
+          "p_value": 0.006471083407322743
+        }
+      },
+      "fell_today": {
+        "n": 30546,
+        "direction_accuracy": 0.7059844169449355,
+        "model_calls_fall": 0.27460223924572774,
+        "actually_falls": 0.36941007005827275,
+        "mean_residual_log": {
+          "mean": 0.015365451100602723,
+          "n_days": 1328,
+          "t_stat": 4.008708108998632,
+          "p_value": 6.444927382270475e-05
+        }
+      },
+      "through_20d_high": {
+        "n": 3083,
+        "direction_accuracy": 0.9104768083036003,
+        "model_calls_fall": 1.0,
+        "actually_falls": 0.9104768083036003,
+        "mean_residual_log": {
+          "mean": -0.015721595185629985,
+          "n_days": 972,
+          "t_stat": -2.929923683556133,
+          "p_value": 0.003469809088428858
+        }
+      },
+      "through_20d_low": {
+        "n": 3286,
+        "direction_accuracy": 0.9029214850882532,
+        "model_calls_fall": 0.00030432136335970786,
+        "actually_falls": 0.0967741935483871,
+        "mean_residual_log": {
+          "mean": 0.01496928467753493,
+          "n_days": 962,
+          "t_stat": 4.1336051716089415,
+          "p_value": 3.8829356450748174e-05
+        }
+      },
+      "all": {
+        "n": 59743,
+        "direction_accuracy": 0.7087524898314447,
+        "model_calls_fall": 0.5074234638367675,
+        "actually_falls": 0.5114071941482684,
+        "mean_residual_log": {
+          "mean": 0.0038165138557613248,
+          "n_days": 1330,
+          "t_stat": 0.7531145105094584,
+          "p_value": 0.4515144907938006
+        }
+      }
+    },
+    "corr_residual_with_feature": {
+      "d_rv1": -0.036402784003511685,
+      "brk_hi": -0.012003057346744776,
+      "brk_lo": 0.007086283673451716,
+      "dist_hi": 0.005686147521827418,
+      "dist_lo": -0.01988350579759893
+    }
+  },
+  "augmented_ridge": {
+    "n_forecasts": 53275,
+    "base": {
+      "r2_within": 0.23908343489903983,
+      "direction": 0.7096574378226185,
+      "mse_log": 0.14378827604064634
+    },
+    "augmented": {
+      "r2_within": 0.2411612692252063,
+      "direction": 0.7109338338808071,
+      "mse_log": 0.14338423397802932
+    },
+    "diebold_mariano_aug_vs_base": {
+      "n": 1169,
+      "mean_loss_diff": -0.00040722303636378813,
+      "stat": -3.7912175172666798,
+      "p_value": 0.00015757142023953286
+    },
+    "model_confidence_set": [
+      "augmented"
+    ]
+  },
+  "price_levels": {
+    "breach_52w_high": {
+      "n": 3363,
+      "mean_log_vol_vs_stock_norm": 0.02342473093358989,
+      "mean_log_change_tomorrow": -0.06624581374703134,
+      "mean_residual_log": {
+        "mean": 0.07054329034046446,
+        "n_days": 992,
+        "t_stat": 4.977996119379196,
+        "p_value": 7.573606436343669e-07
+      }
+    },
+    "breach_52w_low": {
+      "n": 750,
+      "mean_log_vol_vs_stock_norm": 0.1602981419843479,
+      "mean_log_change_tomorrow": -0.008207301761900808,
+      "mean_residual_log": {
+        "mean": 0.11058939369577465,
+        "n_days": 345,
+        "t_stat": 5.3428128177899605,
+        "p_value": 1.6685748776643802e-07
+      }
+    },
+    "within_2pct_of_high": {
+      "n": 5396,
+      "mean_log_vol_vs_stock_norm": -0.07906330513993061,
+      "mean_log_change_tomorrow": 0.04426109005447275,
+      "mean_residual_log": {
+        "mean": 0.020429757392882438,
+        "n_days": 1173,
+        "t_stat": 1.3155567170296958,
+        "p_value": 0.18858015935975758
+      }
+    },
+    "all": {
+      "n": 59743,
+      "mean_log_vol_vs_stock_norm": -0.09219092069975732,
+      "mean_log_change_tomorrow": -0.00022904298487223563,
+      "mean_residual_log": {
+        "mean": 0.0038165138557613248,
+        "n_days": 1330,
+        "t_stat": 0.7531145105094584,
+        "p_value": 0.4515144907938006
+      }
+    }
+  },
+  "augmented_ridge_price_levels": {
+    "n_forecasts": 53275,
+    "base": {
+      "r2_within": 0.23908343489903983,
+      "direction": 0.7096574378226185,
+      "mse_log": 0.14378827604064634
+    },
+    "augmented": {
+      "r2_within": 0.24095180965894447,
+      "direction": 0.710145471609573,
+      "mse_log": 0.14343622072870377
+    },
+    "diebold_mariano_aug_vs_base": {
+      "n": 1169,
+      "mean_loss_diff": -0.00038713368326636483,
+      "stat": -2.2191322352083134,
+      "p_value": 0.026669306500995305
+    },
+    "model_confidence_set": [
+      "augmented"
+    ]
+  },
+  "augmented_ridge_both": {
+    "n_forecasts": 53275,
+    "base": {
+      "r2_within": 0.23908343489903983,
+      "direction": 0.7096574378226185,
+      "mse_log": 0.14378827604064634
+    },
+    "augmented": {
+      "r2_within": 0.24329657837278662,
+      "direction": 0.7111403097137494,
+      "mse_log": 0.14297313207467718
+    },
+    "diebold_mariano_aug_vs_base": {
+      "n": 1169,
+      "mean_loss_diff": -0.0008541372141004235,
+      "stat": -4.187720534231022,
+      "p_value": 3.029517627273215e-05
+    },
+    "model_confidence_set": [
+      "augmented"
+    ]
+  }
+}
