@@ -1,0 +1,142 @@
+{
+  "generated_at": "2026-10-21T09:34:16+00:00",
+  "coverage": {
+    "nse_announcements": {
+      "first": "2019-01-01",
+      "last": "2026-10-21",
+      "rows": 60905
+    },
+    "nse_events": {
+      "first": "2019-01-09",
+      "last": "2026-11-11",
+      "rows": 1726
+    },
+    "toi_headlines": {
+      "first": "2018-01-01",
+      "last": "2020-06-30",
+      "rows": 2451
+    },
+    "gdelt": {
+      "status": "optional; not fetched in bulk (API rate-limits this machine)"
+    }
+  },
+  "n_rows": 73333,
+  "residuals": {
+    "results_next_session": {
+      "n": 774,
+      "mean_log_change_tomorrow": 0.2674650421873318,
+      "mean_abs_log_change": 0.45562552049456684,
+      "model_bias_log": {
+        "mean": 0.31060679310769873,
+        "n_days": 396,
+        "t_stat": 16.424917975376577,
+        "p_value": 1.4025348948113556e-46
+      }
+    },
+    "results_today": {
+      "n": 775,
+      "mean_log_change_tomorrow": 0.15575337036146536,
+      "mean_abs_log_change": 0.4657087911883768,
+      "model_bias_log": {
+        "mean": 0.3824487207396918,
+        "n_days": 397,
+        "t_stat": 22.84047786836266,
+        "p_value": 2.8491540958554334e-74
+      }
+    },
+    "material_filing_today": {
+      "n": 20282,
+      "mean_log_change_tomorrow": -0.0033324591232916814,
+      "mean_abs_log_change": 0.37781497250638285,
+      "model_bias_log": {
+        "mean": 0.015280542523588252,
+        "n_days": 1329,
+        "t_stat": 2.842376085931819,
+        "p_value": 0.004546360325509803
+      }
+    },
+    "3+_material_filings": {
+      "n": 2253,
+      "mean_log_change_tomorrow": 0.027322273192206162,
+      "mean_abs_log_change": 0.40598053742117657,
+      "model_bias_log": {
+        "mean": 0.12893409019650812,
+        "n_days": 990,
+        "t_stat": 10.881299456422099,
+        "p_value": 3.995578783847501e-26
+      }
+    },
+    "toi_headline_today": {
+      "n": 0
+    },
+    "toi_negative_headline": {
+      "n": 0
+    },
+    "toi_window_no_headline": {
+      "n": 16828,
+      "mean_log_change_tomorrow": -0.0007469266427994553,
+      "mean_abs_log_change": 0.3701060370257035,
+      "model_bias_log": {
+        "mean": -0.005529362817651603,
+        "n_days": 404,
+        "t_stat": -0.6231474028363887,
+        "p_value": 0.5335401490494577
+      }
+    },
+    "all": {
+      "n": 59743,
+      "mean_log_change_tomorrow": -0.00022904298487223563,
+      "mean_abs_log_change": 0.3737565112734525,
+      "model_bias_log": {
+        "mean": 0.0038165138557613248,
+        "n_days": 1330,
+        "t_stat": 0.7531145105094584,
+        "p_value": 0.4515144907938006
+      }
+    }
+  },
+  "ridge_calendar_and_filings": {
+    "n_forecasts": 53275,
+    "base": {
+      "r2_within": 0.23908343489903983,
+      "direction": 0.7096574378226185,
+      "mse_log": 0.14378827604064634
+    },
+    "augmented": {
+      "r2_within": 0.25576527430361196,
+      "direction": 0.7135804786485218,
+      "mse_log": 0.1406823220476565
+    },
+    "diebold_mariano_aug_vs_base": {
+      "n": 1169,
+      "mean_loss_diff": -0.003085096017727051,
+      "stat": -12.743158263032045,
+      "p_value": 0.0
+    },
+    "model_confidence_set": [
+      "augmented"
+    ]
+  },
+  "ridge_all_news": {
+    "n_forecasts": 53275,
+    "base": {
+      "r2_within": 0.23908343489903983,
+      "direction": 0.7096574378226185,
+      "mse_log": 0.14378827604064634
+    },
+    "augmented": {
+      "r2_within": 0.2559377458529125,
+      "direction": 0.7134866259971844,
+      "mse_log": 0.14066564240160137
+    },
+    "diebold_mariano_aug_vs_base": {
+      "n": 1169,
+      "mean_loss_diff": -0.003102919342312295,
+      "stat": -12.856825728799336,
+      "p_value": 0.0
+    },
+    "model_confidence_set": [
+      "augmented"
+    ]
+  }
+}
