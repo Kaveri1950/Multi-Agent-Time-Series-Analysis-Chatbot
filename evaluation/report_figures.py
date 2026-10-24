@@ -185,26 +185,32 @@ def fig_transit():
 
 def fig_routing():
     """Capability filter versus LLM routing."""
-    path = RESULTS / "selection_all.json"
+    path = RESULTS / "selection_with_volatility.json"
     fig, ax = plt.subplots(figsize=(7.2, 2.8))
+    n = 0
     if path.exists():
-        res = json.loads(path.read_text())["results"]
+        order = {"filter_only": 0, "hybrid": 1, "llm_only": 2}
+        sel = json.loads(path.read_text())
+        res = sorted(sel["results"], key=lambda r: order.get(r["strategy"], 9))
         names = {"filter_only": "capability filter", "hybrid": "filter + LLM", "llm_only": "LLM only"}
         labels = [names.get(r["strategy"], r["strategy"]) for r in res]
-        acc = [r["accuracy"] * 100 for r in res]
-        secs = [r["elapsed_seconds"] for r in res]
+        # from the per-question rows: the stored accuracy is rounded to 4 places (0.8085 for 114/141)
+        acc = [100 * sum(q["correct"] for q in sel["rows"][r["strategy"]]) / len(sel["rows"][r["strategy"]])
+               for r in res]
+        per_q = [r["elapsed_seconds"] / r["n"] for r in res]
+        n = res[0]["n"]
         colours = [BEST if r["strategy"] == "filter_only" else MUTED for r in res]
         bars = ax.bar(labels, acc, color=colours, width=0.55)
-        for bar, a, s in zip(bars, acc, secs):
+        for bar, a, s in zip(bars, acc, per_q):
             ax.text(bar.get_x() + bar.get_width() / 2, a + 1.2,
-                    f"{a:.1f}%\n{s / 60:.0f} min" if s > 60 else f"{a:.1f}%\n<1 s",
+                    f"{a:.1f}%\n{s:.1f} s per question" if s >= 0.01 else f"{a:.1f}%\n<0.01 s per question",
                     ha="center", fontsize=7.5)
-        ax.set_ylim(0, 108)
+        ax.set_ylim(0, 112)
         ax.set_ylabel("routing accuracy (%)")
     ax.set_title("Figure 5  Model selection: measured skill beats asking a language model",
                  loc="left", weight="bold")
-    fig.text(0.5, 0.01, "123 labelled queries. Adding the LLM to the filter made it slightly worse "
-                        "and four orders of magnitude slower.",
+    fig.text(0.5, 0.01, f"{n} labelled questions. Adding the LLM on top of the filter made it worse, "
+                        "and much slower.",
              ha="center", fontsize=6.5, color=MUTED, style="italic")
     fig.tight_layout(rect=(0, 0.06, 1, 1))
     return fig

@@ -77,7 +77,8 @@ PREVIEW_DIR = os.environ.get("FIGURE_PREVIEW_DIR")
 
 
 def save_figure(fig, stem: str) -> Path:
-    out = ROOT / f"{stem}.pdf"
+    out = ROOT / "docs" / "figures" / f"{stem}.pdf"
+    out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, **SAVE)
     if PREVIEW_DIR:
         d = Path(PREVIEW_DIR)
