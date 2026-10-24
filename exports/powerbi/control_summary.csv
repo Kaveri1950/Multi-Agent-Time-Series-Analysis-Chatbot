@@ -1,0 +1,10 @@
+check_name,status,severity,rows_failed,rows_tested,fail_pct,limit_pct
+ohlc_consistency,pass,high,0,86000,0.0,0.0
+positive_prices,pass,high,0,812569,0.0,0.0
+no_duplicates,pass,high,0,87921,0.0,0.0
+panels_agree,pass,high,0,86000,0.0,0.1
+extreme_moves,pass,medium,17,812045,0.0021,0.05
+missing_days,pass,medium,91,812660,0.0112,0.5
+freshness,fail,high,1,1,100.0,0.0
+flat_bars,fail,medium,134,86000,0.1558,0.1
+zero_volume,fail,low,1204,812569,0.1482,0.1

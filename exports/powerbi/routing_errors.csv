@@ -1,0 +1,8 @@
+domain,category,query,expected,chosen
+astronomy,adversarial,what's unusual about KIC 5358624's planets,astronomy.koi_lookup,astronomy.isolation_forest
+astronomy,paraphrase,KIC 5358624 planets?,astronomy.koi_lookup,astronomy.isolation_forest
+finance,adversarial,how much error does the price forecast have,finance.arima_backtest,finance.gpr_logged_forecast
+finance,adversarial,was there a flare up in TCS volatility,finance.anomaly_detectors,finance.gpr_logged_forecast
+finance,adversarial,how good will RELIANCE do next month,finance.gpr_logged_forecast,finance.arima_backtest
+finance,paraphrase,can I trust this prediction,finance.arima_backtest,finance.gpr_logged_forecast
+finance,paraphrase,what difference does sentiment make to accuracy,finance.xgboost_sentiment,finance.finbert_sentiment

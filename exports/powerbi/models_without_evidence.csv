@@ -1,0 +1,4 @@
+id,domain,task,method_family
+astronomy.koi_lookup,astronomy,lookup_fact,catalogue
+finance.finbert_sentiment,finance,score_sentiment,deep_learning
+solar.hawkes_expected_count,solar,forecast_event_count,statistical

@@ -1,0 +1,212 @@
+{
+  "generated_at": "2026-10-24T13:31:21+00:00",
+  "panel": {
+    "stocks": 473,
+    "days": 1921,
+    "from": "2019-01-01",
+    "to": "2026-10-09",
+    "ohlc_rows": 86000
+  },
+  "passed": 6,
+  "failed": 3,
+  "checks": [
+    {
+      "check": "ohlc_consistency",
+      "description": "low <= open, close <= high on every bar",
+      "rows_tested": 86000,
+      "rows_failed": 0,
+      "fail_rate": 0.0,
+      "threshold": 0.0,
+      "status": "pass",
+      "severity": "high",
+      "examples": []
+    },
+    {
+      "check": "positive_prices",
+      "description": "every closing price is above zero",
+      "rows_tested": 812569,
+      "rows_failed": 0,
+      "fail_rate": 0.0,
+      "threshold": 0.0,
+      "status": "pass",
+      "severity": "high",
+      "examples": []
+    },
+    {
+      "check": "no_duplicates",
+      "description": "one bar per stock per day",
+      "rows_tested": 87921,
+      "rows_failed": 0,
+      "fail_rate": 0.0,
+      "threshold": 0.0,
+      "status": "pass",
+      "severity": "high",
+      "examples": []
+    },
+    {
+      "check": "flat_bars",
+      "description": "high equals low (no trading range): suspended or stale quote",
+      "rows_tested": 86000,
+      "rows_failed": 134,
+      "fail_rate": 0.001558,
+      "threshold": 0.001,
+      "status": "fail",
+      "severity": "medium",
+      "examples": [
+        {
+          "date": "2020-07-27",
+          "ticker": "YESBANK.NS",
+          "close": 12.3
+        },
+        {
+          "date": "2020-08-11",
+          "ticker": "YESBANK.NS",
+          "close": 15.5
+        },
+        {
+          "date": "2020-08-12",
+          "ticker": "YESBANK.NS",
+          "close": 16.25
+        },
+        {
+          "date": "2020-11-10",
+          "ticker": "YESBANK.NS",
+          "close": 13.5
+        },
+        {
+          "date": "2020-11-11",
+          "ticker": "YESBANK.NS",
+          "close": 14.15
+        }
+      ]
+    },
+    {
+      "check": "extreme_moves",
+      "description": "one-day move beyond +/-40%: unadjusted split or bad print, to review",
+      "rows_tested": 812045,
+      "rows_failed": 17,
+      "fail_rate": 2.1e-05,
+      "threshold": 0.0005,
+      "status": "pass",
+      "severity": "medium",
+      "examples": [
+        {
+          "date": "2020-01-27",
+          "ticker": "PATANJALI.NS",
+          "return": -0.9493
+        },
+        {
+          "date": "2024-01-01",
+          "ticker": "GPIL.NS",
+          "return": -0.795
+        },
+        {
+          "date": "2024-01-01",
+          "ticker": "CGCL.NS",
+          "return": -0.7483
+        },
+        {
+          "date": "2024-01-01",
+          "ticker": "MOTILALOFS.NS",
+          "return": -0.7461
+        },
+        {
+          "date": "2025-05-22",
+          "ticker": "ABFRL.NS",
+          "return": -0.6659
+        }
+      ]
+    },
+    {
+      "check": "missing_days",
+      "description": "no gaps inside a stock's listed history",
+      "rows_tested": 812660,
+      "rows_failed": 91,
+      "fail_rate": 0.000112,
+      "threshold": 0.005,
+      "status": "pass",
+      "severity": "medium",
+      "examples": [
+        {
+          "ticker": "FORCEMOT.NS",
+          "missing_days": 41
+        },
+        {
+          "ticker": "AEGISLOG.NS",
+          "missing_days": 2
+        },
+        {
+          "ticker": "RRKABEL.NS",
+          "missing_days": 2
+        },
+        {
+          "ticker": "360ONE.NS",
+          "missing_days": 1
+        },
+        {
+          "ticker": "3MINDIA.NS",
+          "missing_days": 1
+        }
+      ]
+    },
+    {
+      "check": "zero_volume",
+      "description": "a traded price with zero volume reported",
+      "rows_tested": 812569,
+      "rows_failed": 1204,
+      "fail_rate": 0.001482,
+      "threshold": 0.001,
+      "status": "fail",
+      "severity": "low",
+      "examples": [
+        {
+          "date": "2019-01-07",
+          "ticker": "DALBHARAT.NS"
+        },
+        {
+          "date": "2019-01-08",
+          "ticker": "DALBHARAT.NS"
+        },
+        {
+          "date": "2019-01-09",
+          "ticker": "DALBHARAT.NS"
+        },
+        {
+          "date": "2019-01-10",
+          "ticker": "DALBHARAT.NS"
+        },
+        {
+          "date": "2019-01-11",
+          "ticker": "DALBHARAT.NS"
+        }
+      ]
+    },
+    {
+      "check": "panels_agree",
+      "description": "OHLC close within 1% of the price-panel close",
+      "rows_tested": 86000,
+      "rows_failed": 0,
+      "fail_rate": 0.0,
+      "threshold": 0.001,
+      "status": "pass",
+      "severity": "high",
+      "examples": []
+    },
+    {
+      "check": "freshness",
+      "description": "latest bar no older than 10 calendar days",
+      "rows_tested": 1,
+      "rows_failed": 1,
+      "fail_rate": 1.0,
+      "threshold": 0.0,
+      "status": "fail",
+      "severity": "high",
+      "examples": [
+        {
+          "latest_bar": "2026-10-09",
+          "days_old": 15
+        }
+      ]
+    }
+  ]
+}

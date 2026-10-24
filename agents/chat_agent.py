@@ -1534,6 +1534,24 @@ The user asked: "{focus}". Answer that question directly in 2-4 sentences using 
 
 
 def answer_query(message: str, session_state: dict, backend: str | None = None, model: str | None = None,
+                 image_bytes: bytes | None = None, image_name: str | None = None) -> dict:
+    """Answer, and write one row to the audit log (audit/answer_log.py)."""
+    import time
+
+    from audit import answer_log
+
+    t0 = time.time()
+    try:
+        result = _answer_query(message, session_state, backend=backend, model=model,
+                               image_bytes=image_bytes, image_name=image_name)
+    except Exception as exc:
+        answer_log.record(message, None, time.time() - t0, error=repr(exc))
+        raise
+    answer_log.record(message, result, time.time() - t0)
+    return result
+
+
+def _answer_query(message: str, session_state: dict, backend: str | None = None, model: str | None = None,
                   image_bytes: bytes | None = None, image_name: str | None = None) -> dict:
     """session_state is a plain dict the caller persists across turns
     (Streamlit's st.session_state works directly). Mutated in place with

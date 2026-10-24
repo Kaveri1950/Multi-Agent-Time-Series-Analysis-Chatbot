@@ -1,0 +1,16 @@
+strategy,category,questions,right,accuracy_pct,avg_seconds
+filter_only,ALL,141,134,95.04,0.0
+filter_only,adversarial,18,14,77.78,0.0
+filter_only,canonical,11,11,100.0,0.0
+filter_only,general,10,10,100.0,0.0
+filter_only,paraphrase,102,99,97.06,0.0
+hybrid,ALL,141,114,80.85,22.553
+hybrid,adversarial,18,11,61.11,27.282
+hybrid,canonical,11,10,90.91,39.163
+hybrid,general,10,10,100.0,0.001
+hybrid,paraphrase,102,83,81.37,22.139
+llm_only,ALL,141,92,65.25,26.71
+llm_only,adversarial,18,6,33.33,25.419
+llm_only,canonical,11,9,81.82,77.03
+llm_only,general,10,10,100.0,0.001
+llm_only,paraphrase,102,67,65.69,24.129

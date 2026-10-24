@@ -1,0 +1,10 @@
+run_at,check_name,status,fail_rate
+2026-10-24T13:31:21+00:00,extreme_moves,pass,2.1e-05
+2026-10-24T13:31:21+00:00,flat_bars,fail,0.001558
+2026-10-24T13:31:21+00:00,freshness,fail,1.0
+2026-10-24T13:31:21+00:00,missing_days,pass,0.000112
+2026-10-24T13:31:21+00:00,no_duplicates,pass,0.0
+2026-10-24T13:31:21+00:00,ohlc_consistency,pass,0.0
+2026-10-24T13:31:21+00:00,panels_agree,pass,0.0
+2026-10-24T13:31:21+00:00,positive_prices,pass,0.0
+2026-10-24T13:31:21+00:00,zero_volume,fail,0.001482

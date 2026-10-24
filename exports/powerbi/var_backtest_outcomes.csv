@@ -1,0 +1,3 @@
+method,portfolios,passed,failed,pass_pct,avg_breach_pct
+regime-conditional,40,26,14,65.0,4.75
+unconditional,40,9,30,22.5,3.55
