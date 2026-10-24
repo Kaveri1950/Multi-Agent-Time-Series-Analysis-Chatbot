@@ -17,11 +17,13 @@ jobs:
           python-version: "3.12"
           cache: pip
 
-      - name: Install dependencies (CPU-only torch)
+      # Pinned to the versions the project was tested with (requirements-lock.txt).
+      # Unpinned, pip picks up new major releases (pandas 3.x) the code has never run on.
+      - name: Install dependencies (CPU-only torch, locked versions)
         run: |
           python -m pip install --upgrade pip
-          pip install torch --index-url https://download.pytorch.org/whl/cpu
-          pip install -r requirements.txt
+          pip install torch==2.13.0 --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt -c requirements-lock.txt --extra-index-url https://download.pytorch.org/whl/cpu
 
       # slow    = runs the local LLM (no Ollama here)
       # network = live Yahoo/NSE/NOAA calls, which often block cloud IPs
