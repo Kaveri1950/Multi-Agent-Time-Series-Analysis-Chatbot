@@ -1,0 +1,1471 @@
+{
+  "generated_at": "2026-10-24T13:27:28+00:00",
+  "n_portfolios": 40,
+  "n_holdings": 8,
+  "universe": "100 most liquid NSE names with full history",
+  "seed": 0,
+  "regime_var": {
+    "passed": 26,
+    "partial": 0,
+    "failed": 14
+  },
+  "unconditional_var": {
+    "passed": 9,
+    "partial": 1,
+    "failed": 30
+  },
+  "median_breach_regime": 0.0471,
+  "median_breach_unconditional": 0.0343,
+  "median_diversification_ratio": 1.48,
+  "euler_max_abs_error": 2.220446049250313e-16,
+  "model_portfolios": {
+    "Conservative": {
+      "window": {
+        "from": "2023-09-15",
+        "to": "2026-10-09",
+        "days": 756
+      },
+      "volatility_pct": 12.09,
+      "weighted_average_volatility_pct": 20.61,
+      "diversification_ratio": 1.7,
+      "effective_holdings": 5.0,
+      "average_correlation": 0.18,
+      "beta": 0.38,
+      "var_95_pct": -1.21,
+      "es_95_pct": -1.7,
+      "var_99_pct": -2.04,
+      "es_99_pct": -2.29,
+      "stress": [
+        {
+          "scenario": "COVID crash (Feb\u2013Mar 2020)",
+          "from": "2020-02-19",
+          "to": "2020-03-23",
+          "covered_weight": 1.0,
+          "portfolio_pct": -24.78,
+          "worst_holding": "HDFCBANK",
+          "worst_holding_pct": -37.13
+        },
+        {
+          "scenario": "Russia invades Ukraine (24 Feb 2022)",
+          "from": "2022-02-23",
+          "to": "2022-02-24",
+          "covered_weight": 1.0,
+          "portfolio_pct": -4.0,
+          "worst_holding": "HDFCBANK",
+          "worst_holding_pct": -5.43
+        },
+        {
+          "scenario": "Adani\u2013Hindenburg (Jan\u2013Feb 2023)",
+          "from": "2023-01-24",
+          "to": "2023-02-01",
+          "covered_weight": 1.0,
+          "portfolio_pct": -0.34,
+          "worst_holding": "HDFCBANK",
+          "worst_holding_pct": -4.01
+        },
+        {
+          "scenario": "Election-result day (4 Jun 2024)",
+          "from": "2024-06-03",
+          "to": "2024-06-04",
+          "covered_weight": 1.0,
+          "portfolio_pct": -0.54,
+          "worst_holding": "HDFCBANK",
+          "worst_holding_pct": -5.66
+        },
+        {
+          "scenario": "Global tariff selloff (Apr 2025)",
+          "from": "2025-04-02",
+          "to": "2025-04-07",
+          "covered_weight": 1.0,
+          "portfolio_pct": -2.56,
+          "worst_holding": "TCS",
+          "worst_holding_pct": -7.62
+        }
+      ],
+      "backtest": {
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0326,
+          "kupiec_p": 0.0036,
+          "christoffersen_p": 0.8191,
+          "status": "failed"
+        },
+        "regime": {
+          "n_days": 1167,
+          "breach_rate": 0.0403,
+          "kupiec_p": 0.1151,
+          "christoffersen_p": 0.9369,
+          "status": "passed"
+        },
+        "regime_now": "calm"
+      },
+      "summary": "This portfolio moves about 12.1% a year. Its holdings average 20.6% on their own, so holding them together removes some risk (diversification ratio 1.70). On the worst one day in twenty it loses at least 1.21%, and 1.70% on average on those days. TCS is 20% of the money but 24% of the risk. It moves about 0.38 times as much as the market. Replayed through history, its worst scenario was the COVID crash (Feb\u2013Mar 2020): -24.8%. Its VaR, adjusted for the market's current calm mood, passes both standard backtests (breached on 4.0% of 1167 days against a 5% target). This describes risk, not a recommendation to buy or sell."
+    },
+    "Balanced": {
+      "window": {
+        "from": "2023-09-15",
+        "to": "2026-10-09",
+        "days": 756
+      },
+      "volatility_pct": 13.23,
+      "weighted_average_volatility_pct": 21.46,
+      "diversification_ratio": 1.62,
+      "effective_holdings": 7.7,
+      "average_correlation": 0.29,
+      "beta": 0.56,
+      "var_95_pct": -1.32,
+      "es_95_pct": -1.86,
+      "var_99_pct": -2.06,
+      "es_99_pct": -2.9,
+      "stress": [
+        {
+          "scenario": "COVID crash (Feb\u2013Mar 2020)",
+          "from": "2020-02-19",
+          "to": "2020-03-23",
+          "covered_weight": 1.0,
+          "portfolio_pct": -35.59,
+          "worst_holding": "ICICIBANK",
+          "worst_holding_pct": -47.87
+        },
+        {
+          "scenario": "Russia invades Ukraine (24 Feb 2022)",
+          "from": "2022-02-23",
+          "to": "2022-02-24",
+          "covered_weight": 1.0,
+          "portfolio_pct": -4.72,
+          "worst_holding": "MARUTI",
+          "worst_holding_pct": -5.62
+        },
+        {
+          "scenario": "Adani\u2013Hindenburg (Jan\u2013Feb 2023)",
+          "from": "2023-01-24",
+          "to": "2023-02-01",
+          "covered_weight": 1.0,
+          "portfolio_pct": -1.21,
+          "worst_holding": "HDFCBANK",
+          "worst_holding_pct": -4.01
+        },
+        {
+          "scenario": "Election-result day (4 Jun 2024)",
+          "from": "2024-06-03",
+          "to": "2024-06-04",
+          "covered_weight": 1.0,
+          "portfolio_pct": -5.41,
+          "worst_holding": "LT",
+          "worst_holding_pct": -12.67
+        },
+        {
+          "scenario": "Global tariff selloff (Apr 2025)",
+          "from": "2025-04-02",
+          "to": "2025-04-07",
+          "covered_weight": 1.0,
+          "portfolio_pct": -4.8,
+          "worst_holding": "LT",
+          "worst_holding_pct": -10.28
+        }
+      ],
+      "backtest": {
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.03,
+          "kupiec_p": 0.0007,
+          "christoffersen_p": 0.105,
+          "status": "failed"
+        },
+        "regime": {
+          "n_days": 1167,
+          "breach_rate": 0.0428,
+          "kupiec_p": 0.2508,
+          "christoffersen_p": 0.005,
+          "status": "failed"
+        },
+        "regime_now": "calm"
+      },
+      "summary": "This portfolio moves about 13.2% a year. Its holdings average 21.5% on their own, so holding them together removes some risk (diversification ratio 1.62). On the worst one day in twenty it loses at least 1.32%, and 1.86% on average on those days. RELIANCE is 15% of the money but 17% of the risk. It moves about 0.56 times as much as the market. Replayed through history, its worst scenario was the COVID crash (Feb\u2013Mar 2020): -35.6%. Its VaR, adjusted for the market's current calm mood, fails at least one standard backtest, so treat it as indicative (breached on 4.3% of 1167 days against a 5% target). This describes risk, not a recommendation to buy or sell."
+    },
+    "Aggressive": {
+      "window": {
+        "from": "2023-09-15",
+        "to": "2026-10-09",
+        "days": 756
+      },
+      "volatility_pct": 25.5,
+      "weighted_average_volatility_pct": 35.58,
+      "diversification_ratio": 1.4,
+      "effective_holdings": 5.0,
+      "average_correlation": 0.38,
+      "beta": 1.26,
+      "var_95_pct": -2.49,
+      "es_95_pct": -3.75,
+      "var_99_pct": -4.07,
+      "es_99_pct": -5.92,
+      "stress": [
+        {
+          "scenario": "COVID crash (Feb\u2013Mar 2020)",
+          "from": "2020-02-19",
+          "to": "2020-03-23",
+          "covered_weight": 0.8,
+          "portfolio_pct": -46.5,
+          "worst_holding": "BAJFINANCE",
+          "worst_holding_pct": -53.44
+        },
+        {
+          "scenario": "Russia invades Ukraine (24 Feb 2022)",
+          "from": "2022-02-23",
+          "to": "2022-02-24",
+          "covered_weight": 1.0,
+          "portfolio_pct": -7.08,
+          "worst_holding": "BHEL",
+          "worst_holding_pct": -10.67
+        },
+        {
+          "scenario": "Adani\u2013Hindenburg (Jan\u2013Feb 2023)",
+          "from": "2023-01-24",
+          "to": "2023-02-01",
+          "covered_weight": 1.0,
+          "portfolio_pct": -8.87,
+          "worst_holding": "ADANIENT",
+          "worst_holding_pct": -37.96
+        },
+        {
+          "scenario": "Election-result day (4 Jun 2024)",
+          "from": "2024-06-03",
+          "to": "2024-06-04",
+          "covered_weight": 1.0,
+          "portfolio_pct": -13.5,
+          "worst_holding": "BHEL",
+          "worst_holding_pct": -20.84
+        },
+        {
+          "scenario": "Global tariff selloff (Apr 2025)",
+          "from": "2025-04-02",
+          "to": "2025-04-07",
+          "covered_weight": 1.0,
+          "portfolio_pct": -6.07,
+          "worst_holding": "TATASTEEL",
+          "worst_holding_pct": -16.3
+        }
+      ],
+      "backtest": {
+        "unconditional": {
+          "n_days": 1167,
+          "breach_rate": 0.0343,
+          "kupiec_p": 0.0091,
+          "christoffersen_p": 0.2089,
+          "status": "failed"
+        },
+        "regime": {
+          "n_days": 1167,
+          "breach_rate": 0.0574,
+          "kupiec_p": 0.2559,
+          "christoffersen_p": 0.6555,
+          "status": "passed"
+        },
+        "regime_now": "calm"
+      },
+      "summary": "This portfolio moves about 25.5% a year. Its holdings average 35.6% on their own, so holding them together removes some risk (diversification ratio 1.40). On the worst one day in twenty it loses at least 2.49%, and 3.75% on average on those days. BHEL is 20% of the money but 25% of the risk. It moves about 1.26 times as much as the market. Replayed through history, its worst scenario was the COVID crash (Feb\u2013Mar 2020): -46.5%. Its VaR, adjusted for the market's current calm mood, passes both standard backtests (breached on 5.7% of 1167 days against a 5% target). This describes risk, not a recommendation to buy or sell."
+    }
+  },
+  "portfolios": [
+    {
+      "portfolio": 0,
+      "holdings": [
+        "IDFCFIRSTB",
+        "TMPV",
+        "HDFCBANK",
+        "SAIL",
+        "BEL",
+        "SAMMAANCAP",
+        "BAJFINANCE",
+        "ADANIGREEN"
+      ],
+      "volatility_pct": 22.0,
+      "var_95_pct": -2.13,
+      "diversification_ratio": 1.45,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0386,
+        "kupiec_p": 0.0622,
+        "christoffersen_p": 0.8389,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0283,
+        "kupiec_p": 0.0002,
+        "christoffersen_p": 0.3206,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 1,
+      "holdings": [
+        "BEL",
+        "BHARTIARTL",
+        "SAIL",
+        "APOLLOHOSP",
+        "TMPV",
+        "MCX",
+        "GAIL",
+        "ICICIBANK"
+      ],
+      "volatility_pct": 20.61,
+      "var_95_pct": -1.8,
+      "diversification_ratio": 1.57,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0377,
+        "kupiec_p": 0.0443,
+        "christoffersen_p": 0.766,
+        "status": "failed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0283,
+        "kupiec_p": 0.0002,
+        "christoffersen_p": 0.9445,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 2,
+      "holdings": [
+        "SAIL",
+        "POWERGRID",
+        "MCX",
+        "SUZLON",
+        "WIPRO",
+        "CIPLA",
+        "BANKBARODA",
+        "BAJAJFINSV"
+      ],
+      "volatility_pct": 20.75,
+      "var_95_pct": -2.03,
+      "diversification_ratio": 1.52,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0523,
+        "kupiec_p": 0.7238,
+        "christoffersen_p": 0.6445,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0343,
+        "kupiec_p": 0.0091,
+        "christoffersen_p": 0.6019,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 3,
+      "holdings": [
+        "IDFCFIRSTB",
+        "TITAN",
+        "CDSL",
+        "IDEA",
+        "SHRIRAMFIN",
+        "HCLTECH",
+        "CIPLA",
+        "ADANIENSOL"
+      ],
+      "volatility_pct": 22.77,
+      "var_95_pct": -2.2,
+      "diversification_ratio": 1.48,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0514,
+        "kupiec_p": 0.8254,
+        "christoffersen_p": 0.0404,
+        "status": "failed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0334,
+        "kupiec_p": 0.0058,
+        "christoffersen_p": 0.1842,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 4,
+      "holdings": [
+        "TVSMOTOR",
+        "ADANIPORTS",
+        "INDIGO",
+        "HINDCOPPER",
+        "SBILIFE",
+        "DIVISLAB",
+        "FEDERALBNK",
+        "LUPIN"
+      ],
+      "volatility_pct": 21.2,
+      "var_95_pct": -1.95,
+      "diversification_ratio": 1.47,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0514,
+        "kupiec_p": 0.8254,
+        "christoffersen_p": 0.5065,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0317,
+        "kupiec_p": 0.0022,
+        "christoffersen_p": 0.4718,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 5,
+      "holdings": [
+        "ADANIPOWER",
+        "POWERGRID",
+        "TVSMOTOR",
+        "HINDALCO",
+        "BANKBARODA",
+        "CDSL",
+        "INDIGO",
+        "TMPV"
+      ],
+      "volatility_pct": 22.89,
+      "var_95_pct": -2.34,
+      "diversification_ratio": 1.44,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.054,
+        "kupiec_p": 0.5373,
+        "christoffersen_p": 0.371,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.036,
+        "kupiec_p": 0.0211,
+        "christoffersen_p": 0.6945,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 6,
+      "holdings": [
+        "FEDERALBNK",
+        "HINDALCO",
+        "PNB",
+        "SAIL",
+        "BHEL",
+        "SUZLON",
+        "VBL",
+        "VEDL"
+      ],
+      "volatility_pct": 26.6,
+      "var_95_pct": -2.66,
+      "diversification_ratio": 1.44,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0437,
+        "kupiec_p": 0.3135,
+        "christoffersen_p": 0.0841,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.036,
+        "kupiec_p": 0.0211,
+        "christoffersen_p": 0.2643,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 7,
+      "holdings": [
+        "UPL",
+        "LT",
+        "POWERGRID",
+        "BHARTIARTL",
+        "HDFCBANK",
+        "HAL",
+        "BEL",
+        "DMART"
+      ],
+      "volatility_pct": 16.92,
+      "var_95_pct": -1.76,
+      "diversification_ratio": 1.56,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0446,
+        "kupiec_p": 0.3853,
+        "christoffersen_p": 0.0316,
+        "status": "failed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.03,
+        "kupiec_p": 0.0007,
+        "christoffersen_p": 0.105,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 8,
+      "holdings": [
+        "MOTHERSON",
+        "DLF",
+        "NESTLEIND",
+        "CANBK",
+        "IDFCFIRSTB",
+        "AXISBANK",
+        "CHOLAFIN",
+        "CIPLA"
+      ],
+      "volatility_pct": 19.99,
+      "var_95_pct": -2.13,
+      "diversification_ratio": 1.48,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0463,
+        "kupiec_p": 0.5543,
+        "christoffersen_p": 0.0455,
+        "status": "failed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0249,
+        "kupiec_p": 0.0,
+        "christoffersen_p": 0.7499,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 9,
+      "holdings": [
+        "DLF",
+        "BAJFINANCE",
+        "IDFCFIRSTB",
+        "COCHINSHIP",
+        "NATIONALUM",
+        "FEDERALBNK",
+        "JSWSTEEL",
+        "BANKBARODA"
+      ],
+      "volatility_pct": 23.28,
+      "var_95_pct": -2.28,
+      "diversification_ratio": 1.46,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0403,
+        "kupiec_p": 0.1151,
+        "christoffersen_p": 0.1603,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0334,
+        "kupiec_p": 0.0058,
+        "christoffersen_p": 0.1842,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 10,
+      "holdings": [
+        "NATIONALUM",
+        "PNB",
+        "TECHM",
+        "BANDHANBNK",
+        "GRASIM",
+        "BRITANNIA",
+        "BEL",
+        "DRREDDY"
+      ],
+      "volatility_pct": 19.02,
+      "var_95_pct": -1.92,
+      "diversification_ratio": 1.52,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.048,
+        "kupiec_p": 0.7507,
+        "christoffersen_p": 0.17,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0308,
+        "kupiec_p": 0.0013,
+        "christoffersen_p": 0.9117,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 11,
+      "holdings": [
+        "DLF",
+        "HINDPETRO",
+        "BPCL",
+        "PFC",
+        "HAL",
+        "LUPIN",
+        "CHOLAFIN",
+        "JUBLFOOD"
+      ],
+      "volatility_pct": 27.08,
+      "var_95_pct": -2.62,
+      "diversification_ratio": 1.3,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0566,
+        "kupiec_p": 0.3138,
+        "christoffersen_p": 0.3007,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0454,
+        "kupiec_p": 0.4658,
+        "christoffersen_p": NaN,
+        "status": "partial"
+      }
+    },
+    {
+      "portfolio": 12,
+      "holdings": [
+        "ULTRACEMCO",
+        "IOC",
+        "SAIL",
+        "NATIONALUM",
+        "SBIN",
+        "HEROMOTOCO",
+        "CIPLA",
+        "RELIANCE"
+      ],
+      "volatility_pct": 19.15,
+      "var_95_pct": -1.85,
+      "diversification_ratio": 1.49,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0446,
+        "kupiec_p": 0.3853,
+        "christoffersen_p": 0.2752,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.03,
+        "kupiec_p": 0.0007,
+        "christoffersen_p": 0.3926,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 13,
+      "holdings": [
+        "INDUSTOWER",
+        "TRENT",
+        "M&M",
+        "BHEL",
+        "AXISBANK",
+        "BSE",
+        "BEL",
+        "VBL"
+      ],
+      "volatility_pct": 22.39,
+      "var_95_pct": -2.42,
+      "diversification_ratio": 1.51,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0583,
+        "kupiec_p": 0.2061,
+        "christoffersen_p": 0.0003,
+        "status": "failed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0437,
+        "kupiec_p": 0.3135,
+        "christoffersen_p": 0.0908,
+        "status": "passed"
+      }
+    },
+    {
+      "portfolio": 14,
+      "holdings": [
+        "SBIN",
+        "SAMMAANCAP",
+        "ADANIGREEN",
+        "M&M",
+        "PNB",
+        "JINDALSTEL",
+        "MCX",
+        "GRASIM"
+      ],
+      "volatility_pct": 25.57,
+      "var_95_pct": -2.58,
+      "diversification_ratio": 1.43,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0531,
+        "kupiec_p": 0.6273,
+        "christoffersen_p": 0.6912,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0437,
+        "kupiec_p": 0.3135,
+        "christoffersen_p": 0.2605,
+        "status": "passed"
+      }
+    },
+    {
+      "portfolio": 15,
+      "holdings": [
+        "PNB",
+        "NATIONALUM",
+        "HAL",
+        "VBL",
+        "COALINDIA",
+        "LUPIN",
+        "BAJFINANCE",
+        "PERSISTENT"
+      ],
+      "volatility_pct": 20.88,
+      "var_95_pct": -1.97,
+      "diversification_ratio": 1.51,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.048,
+        "kupiec_p": 0.7507,
+        "christoffersen_p": 0.1812,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0377,
+        "kupiec_p": 0.0443,
+        "christoffersen_p": 0.3278,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 16,
+      "holdings": [
+        "CDSL",
+        "TATAPOWER",
+        "MCX",
+        "IDFCFIRSTB",
+        "BPCL",
+        "VBL",
+        "MOTHERSON",
+        "TITAN"
+      ],
+      "volatility_pct": 20.4,
+      "var_95_pct": -2.01,
+      "diversification_ratio": 1.41,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.048,
+        "kupiec_p": 0.7507,
+        "christoffersen_p": 0.0048,
+        "status": "failed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0343,
+        "kupiec_p": 0.0091,
+        "christoffersen_p": 0.0552,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 17,
+      "holdings": [
+        "POWERGRID",
+        "BAJFINANCE",
+        "HDFCBANK",
+        "BANKBARODA",
+        "GRASIM",
+        "RELIANCE",
+        "CHOLAFIN",
+        "BAJAJFINSV"
+      ],
+      "volatility_pct": 17.86,
+      "var_95_pct": -1.72,
+      "diversification_ratio": 1.44,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.042,
+        "kupiec_p": 0.1971,
+        "christoffersen_p": 0.2064,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0257,
+        "kupiec_p": 0.0,
+        "christoffersen_p": 0.7984,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 18,
+      "holdings": [
+        "DIXON",
+        "ULTRACEMCO",
+        "SAMMAANCAP",
+        "TMPV",
+        "HDFCBANK",
+        "WIPRO",
+        "NAUKRI",
+        "TECHM"
+      ],
+      "volatility_pct": 22.29,
+      "var_95_pct": -2.09,
+      "diversification_ratio": 1.52,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.036,
+        "kupiec_p": 0.0211,
+        "christoffersen_p": 0.6668,
+        "status": "failed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0283,
+        "kupiec_p": 0.0002,
+        "christoffersen_p": 0.3206,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 19,
+      "holdings": [
+        "TVSMOTOR",
+        "HAL",
+        "INDIGO",
+        "AUROPHARMA",
+        "PERSISTENT",
+        "MOTHERSON",
+        "ONGC",
+        "POWERGRID"
+      ],
+      "volatility_pct": 20.72,
+      "var_95_pct": -2.1,
+      "diversification_ratio": 1.56,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0531,
+        "kupiec_p": 0.6273,
+        "christoffersen_p": 0.0051,
+        "status": "failed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0411,
+        "kupiec_p": 0.1521,
+        "christoffersen_p": 0.056,
+        "status": "passed"
+      }
+    },
+    {
+      "portfolio": 20,
+      "holdings": [
+        "DLF",
+        "M&M",
+        "BSE",
+        "PERSISTENT",
+        "MCX",
+        "TITAN",
+        "ADANIPORTS",
+        "TRENT"
+      ],
+      "volatility_pct": 23.45,
+      "var_95_pct": -2.3,
+      "diversification_ratio": 1.41,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0454,
+        "kupiec_p": 0.4658,
+        "christoffersen_p": 0.1132,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0351,
+        "kupiec_p": 0.014,
+        "christoffersen_p": 0.2356,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 21,
+      "holdings": [
+        "HDFCBANK",
+        "INDUSTOWER",
+        "ASHOKLEY",
+        "ITC",
+        "ADANIPOWER",
+        "MARUTI",
+        "NESTLEIND",
+        "HINDPETRO"
+      ],
+      "volatility_pct": 15.61,
+      "var_95_pct": -1.59,
+      "diversification_ratio": 1.52,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0437,
+        "kupiec_p": 0.3135,
+        "christoffersen_p": 0.0841,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0343,
+        "kupiec_p": 0.0091,
+        "christoffersen_p": 0.0019,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 22,
+      "holdings": [
+        "ADANIENT",
+        "VEDL",
+        "BANDHANBNK",
+        "INDIGO",
+        "ADANIPOWER",
+        "COCHINSHIP",
+        "BEL",
+        "SBILIFE"
+      ],
+      "volatility_pct": 29.42,
+      "var_95_pct": -2.85,
+      "diversification_ratio": 1.34,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0651,
+        "kupiec_p": 0.0232,
+        "christoffersen_p": 0.3506,
+        "status": "failed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0557,
+        "kupiec_p": 0.38,
+        "christoffersen_p": 0.0324,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 23,
+      "holdings": [
+        "BANKBARODA",
+        "BHEL",
+        "SUZLON",
+        "MOTHERSON",
+        "ULTRACEMCO",
+        "HINDALCO",
+        "NTPC",
+        "BAJAJ-AUTO"
+      ],
+      "volatility_pct": 18.84,
+      "var_95_pct": -1.82,
+      "diversification_ratio": 1.4,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0454,
+        "kupiec_p": 0.4658,
+        "christoffersen_p": 0.3063,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0326,
+        "kupiec_p": 0.0036,
+        "christoffersen_p": 0.1508,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 24,
+      "holdings": [
+        "WIPRO",
+        "RECLTD",
+        "BAJFINANCE",
+        "ADANIENT",
+        "NTPC",
+        "ADANIENSOL",
+        "SUZLON",
+        "BANDHANBNK"
+      ],
+      "volatility_pct": 24.56,
+      "var_95_pct": -2.34,
+      "diversification_ratio": 1.48,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0471,
+        "kupiec_p": 0.6497,
+        "christoffersen_p": 0.3928,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.036,
+        "kupiec_p": 0.0211,
+        "christoffersen_p": 0.6461,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 25,
+      "holdings": [
+        "TCS",
+        "AMBUJACEM",
+        "RELIANCE",
+        "INDUSINDBK",
+        "TITAN",
+        "IOC",
+        "VBL",
+        "CIPLA"
+      ],
+      "volatility_pct": 18.33,
+      "var_95_pct": -1.93,
+      "diversification_ratio": 1.49,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0591,
+        "kupiec_p": 0.1639,
+        "christoffersen_p": 0.5519,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0454,
+        "kupiec_p": 0.4658,
+        "christoffersen_p": 0.6999,
+        "status": "passed"
+      }
+    },
+    {
+      "portfolio": 26,
+      "holdings": [
+        "VEDL",
+        "ZEEL",
+        "INDUSINDBK",
+        "KOTAKBANK",
+        "BPCL",
+        "TCS",
+        "LUPIN",
+        "APOLLOHOSP"
+      ],
+      "volatility_pct": 17.77,
+      "var_95_pct": -1.99,
+      "diversification_ratio": 1.75,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0471,
+        "kupiec_p": 0.6497,
+        "christoffersen_p": 0.6876,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0437,
+        "kupiec_p": 0.3135,
+        "christoffersen_p": 0.8696,
+        "status": "passed"
+      }
+    },
+    {
+      "portfolio": 27,
+      "holdings": [
+        "JSWSTEEL",
+        "ONGC",
+        "NATIONALUM",
+        "CIPLA",
+        "CANBK",
+        "BEL",
+        "PFC",
+        "CDSL"
+      ],
+      "volatility_pct": 22.46,
+      "var_95_pct": -2.23,
+      "diversification_ratio": 1.48,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0506,
+        "kupiec_p": 0.9306,
+        "christoffersen_p": 0.094,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0394,
+        "kupiec_p": 0.0855,
+        "christoffersen_p": 0.1401,
+        "status": "passed"
+      }
+    },
+    {
+      "portfolio": 28,
+      "holdings": [
+        "MCX",
+        "BAJAJFINSV",
+        "LT",
+        "NATIONALUM",
+        "ASHOKLEY",
+        "AMBUJACEM",
+        "NTPC",
+        "HAL"
+      ],
+      "volatility_pct": 27.32,
+      "var_95_pct": -2.69,
+      "diversification_ratio": 1.35,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0523,
+        "kupiec_p": 0.7238,
+        "christoffersen_p": 0.1342,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0403,
+        "kupiec_p": 0.1151,
+        "christoffersen_p": 0.4375,
+        "status": "passed"
+      }
+    },
+    {
+      "portfolio": 29,
+      "holdings": [
+        "INFY",
+        "JSWSTEEL",
+        "MOTHERSON",
+        "COFORGE",
+        "DRREDDY",
+        "BSE",
+        "ITC",
+        "APOLLOHOSP"
+      ],
+      "volatility_pct": 24.85,
+      "var_95_pct": -2.24,
+      "diversification_ratio": 1.39,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0497,
+        "kupiec_p": 0.9625,
+        "christoffersen_p": 0.0077,
+        "status": "failed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0351,
+        "kupiec_p": 0.014,
+        "christoffersen_p": 0.0144,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 30,
+      "holdings": [
+        "ADANIENT",
+        "SUNPHARMA",
+        "APOLLOHOSP",
+        "NESTLEIND",
+        "DLF",
+        "VEDL",
+        "BANDHANBNK",
+        "TRENT"
+      ],
+      "volatility_pct": 18.5,
+      "var_95_pct": -1.82,
+      "diversification_ratio": 1.71,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0523,
+        "kupiec_p": 0.7238,
+        "christoffersen_p": 0.3035,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0394,
+        "kupiec_p": 0.0855,
+        "christoffersen_p": 0.8632,
+        "status": "passed"
+      }
+    },
+    {
+      "portfolio": 31,
+      "holdings": [
+        "HEROMOTOCO",
+        "PERSISTENT",
+        "BSE",
+        "ONGC",
+        "WIPRO",
+        "HINDPETRO",
+        "GAIL",
+        "DRREDDY"
+      ],
+      "volatility_pct": 17.25,
+      "var_95_pct": -1.64,
+      "diversification_ratio": 1.61,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0411,
+        "kupiec_p": 0.1521,
+        "christoffersen_p": 0.9858,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0351,
+        "kupiec_p": 0.014,
+        "christoffersen_p": 0.0655,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 32,
+      "holdings": [
+        "RBLBANK",
+        "BAJFINANCE",
+        "YESBANK",
+        "CHOLAFIN",
+        "FEDERALBNK",
+        "SBILIFE",
+        "TRENT",
+        "DLF"
+      ],
+      "volatility_pct": 24.95,
+      "var_95_pct": -2.49,
+      "diversification_ratio": 1.37,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0351,
+        "kupiec_p": 0.014,
+        "christoffersen_p": 0.0655,
+        "status": "failed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0274,
+        "kupiec_p": 0.0001,
+        "christoffersen_p": 0.8959,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 33,
+      "holdings": [
+        "JSWSTEEL",
+        "PERSISTENT",
+        "PFC",
+        "DIVISLAB",
+        "TITAN",
+        "COFORGE",
+        "BAJAJFINSV",
+        "HINDUNILVR"
+      ],
+      "volatility_pct": 16.54,
+      "var_95_pct": -1.75,
+      "diversification_ratio": 1.55,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0471,
+        "kupiec_p": 0.6497,
+        "christoffersen_p": 0.0038,
+        "status": "failed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0334,
+        "kupiec_p": 0.0058,
+        "christoffersen_p": 0.0091,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 34,
+      "holdings": [
+        "SAIL",
+        "IDEA",
+        "TITAN",
+        "JSWSTEEL",
+        "BHEL",
+        "ADANIPORTS",
+        "BEL",
+        "RECLTD"
+      ],
+      "volatility_pct": 30.03,
+      "var_95_pct": -2.7,
+      "diversification_ratio": 1.25,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0411,
+        "kupiec_p": 0.1521,
+        "christoffersen_p": 0.4267,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0317,
+        "kupiec_p": 0.0022,
+        "christoffersen_p": 0.865,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 35,
+      "holdings": [
+        "SBIN",
+        "PERSISTENT",
+        "SAMMAANCAP",
+        "APOLLOHOSP",
+        "CIPLA",
+        "NATIONALUM",
+        "TRENT",
+        "DLF"
+      ],
+      "volatility_pct": 18.81,
+      "var_95_pct": -1.96,
+      "diversification_ratio": 1.53,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0437,
+        "kupiec_p": 0.3135,
+        "christoffersen_p": 0.2461,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0334,
+        "kupiec_p": 0.0058,
+        "christoffersen_p": 0.5352,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 36,
+      "holdings": [
+        "BANKBARODA",
+        "AXISBANK",
+        "INDIGO",
+        "HINDUNILVR",
+        "SAMMAANCAP",
+        "YESBANK",
+        "IDFCFIRSTB",
+        "VEDL"
+      ],
+      "volatility_pct": 21.32,
+      "var_95_pct": -2.17,
+      "diversification_ratio": 1.47,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0334,
+        "kupiec_p": 0.0058,
+        "christoffersen_p": 0.7742,
+        "status": "failed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0249,
+        "kupiec_p": 0.0,
+        "christoffersen_p": NaN,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 37,
+      "holdings": [
+        "TMPV",
+        "FEDERALBNK",
+        "VBL",
+        "TECHM",
+        "DLF",
+        "HINDCOPPER",
+        "TITAN",
+        "PFC"
+      ],
+      "volatility_pct": 20.69,
+      "var_95_pct": -2.04,
+      "diversification_ratio": 1.58,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0463,
+        "kupiec_p": 0.5543,
+        "christoffersen_p": 0.0005,
+        "status": "failed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0343,
+        "kupiec_p": 0.0091,
+        "christoffersen_p": 0.0115,
+        "status": "failed"
+      }
+    },
+    {
+      "portfolio": 38,
+      "holdings": [
+        "MCX",
+        "TRENT",
+        "SHRIRAMFIN",
+        "COFORGE",
+        "TATASTEEL",
+        "BAJAJ-AUTO",
+        "INDUSINDBK",
+        "ADANIENSOL"
+      ],
+      "volatility_pct": 20.85,
+      "var_95_pct": -2.1,
+      "diversification_ratio": 1.5,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.054,
+        "kupiec_p": 0.5373,
+        "christoffersen_p": 0.7149,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0403,
+        "kupiec_p": 0.1151,
+        "christoffersen_p": 0.9369,
+        "status": "passed"
+      }
+    },
+    {
+      "portfolio": 39,
+      "holdings": [
+        "DIVISLAB",
+        "ADANIPOWER",
+        "CANBK",
+        "DIXON",
+        "EICHERMOT",
+        "HCLTECH",
+        "PFC",
+        "INFY"
+      ],
+      "volatility_pct": 18.71,
+      "var_95_pct": -1.75,
+      "diversification_ratio": 1.62,
+      "regime": {
+        "n_days": 1167,
+        "breach_rate": 0.0531,
+        "kupiec_p": 0.6273,
+        "christoffersen_p": 0.1286,
+        "status": "passed"
+      },
+      "unconditional": {
+        "n_days": 1167,
+        "breach_rate": 0.0437,
+        "kupiec_p": 0.3135,
+        "christoffersen_p": 0.0237,
+        "status": "failed"
+      }
+    }
+  ]
+}
