@@ -52,18 +52,21 @@ except ValueError as exc:
     st.stop()
 
 with right:
-    m = st.columns(4)
-    m[0].metric("Annual volatility", f"{a['volatility_pct']:.1f}%",
-                delta=f"holdings alone {a['weighted_average_volatility_pct']:.1f}%",
-                delta_color="off")
-    m[1].metric("95% one-day VaR", f"{a['var_95_pct']:.2f}%",
-                delta=f"ES {a['es_95_pct']:.2f}%", delta_color="off",
-                help="On the worst 1 day in 20 the portfolio loses at least this much.")
-    m[2].metric("Beta", f"{a['beta']:.2f}", help="Moves this many times as much as the market.")
-    m[3].metric("Diversification ratio", f"{a['diversification_ratio']:.2f}",
-                help="Holdings' average volatility divided by the portfolio's. Above 1 means "
-                     "holding them together removes risk.")
     st.markdown(a["summary"])
+
+m = st.columns(4)
+m[0].metric("Annual volatility", f"{a['volatility_pct']:.1f}%",
+            delta=f"holdings alone {a['weighted_average_volatility_pct']:.1f}%",
+            delta_color="off")
+m[1].metric("95% one-day VaR", f"{a['var_95_pct']:.2f}%",
+            delta=f"ES {a['es_95_pct']:.2f}%", delta_color="off",
+            help="On the worst 1 day in 20 the portfolio loses at least this much.")
+m[2].metric("Beta", f"{a['beta']:.2f}",
+            help="Moves this many times as much as the market. The market here is an "
+                 "equal-weighted index of the liquid NSE stocks in the panel, not the Nifty 50.")
+m[3].metric("Diversification ratio", f"{a['diversification_ratio']:.2f}",
+            help="Holdings' average volatility divided by the portfolio's. Above 1 means "
+                 "holding them together removes risk.")
 
 st.subheader("Where the risk comes from")
 h = pd.DataFrame(a["holdings"])
@@ -83,6 +86,23 @@ st.dataframe(h.rename(columns={"ticker": "holding", "weight_pct": "weight %",
                                "volatility_pct": "own volatility %",
                                "risk_contribution_pct": "share of risk %"}),
              width="stretch", hide_index=True)
+
+st.subheader("Risk by industry")
+sec = pd.DataFrame(a.get("sectors", []))
+if len(sec) > 1:
+    fig = go.Figure()
+    fig.add_trace(go.Bar(y=sec["sector"], x=sec["weight_pct"], name="share of money",
+                         orientation="h", marker_color=GREY))
+    fig.add_trace(go.Bar(y=sec["sector"], x=sec["risk_contribution_pct"], name="share of risk",
+                         orientation="h", marker_color=NAVY))
+    fig.update_layout(barmode="group", height=60 + 40 * len(sec), margin=dict(l=0, r=10, t=10, b=30),
+                      xaxis_title="%", legend=dict(orientation="h", y=1.08, x=0),
+                      yaxis=dict(autorange="reversed"))
+    st.plotly_chart(fig, width="stretch")
+    st.caption("Industries from NSE's Nifty 500 list. Because the risk contributions add up exactly, "
+               "an industry's share of risk is the sum of its holdings' shares.")
+elif len(sec) == 1:
+    st.info(f"Every holding is in one industry: {sec.iloc[0]['sector']}. All the risk is concentrated there.")
 
 st.subheader("Stress tests: real shocks replayed")
 s = pd.DataFrame(a["stress"])

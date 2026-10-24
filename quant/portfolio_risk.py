@@ -28,6 +28,9 @@ Run:  python -m quant.portfolio_risk
 
 from __future__ import annotations
 
+from functools import lru_cache
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 
@@ -56,6 +59,35 @@ MODEL_PORTFOLIOS = {
     "Aggressive": {"ADANIENT.NS": 0.2, "TATASTEEL.NS": 0.2, "BAJFINANCE.NS": 0.2,
                    "IRFC.NS": 0.2, "BHEL.NS": 0.2},
 }
+
+
+SECTORS_PATH = Path(__file__).parent.parent / "finance" / "nifty500_sectors.csv"
+
+
+@lru_cache(maxsize=1)
+def sector_map() -> dict[str, str]:
+    """NSE industry per symbol, from the exchange's Nifty 500 list (finance/nifty500_sectors.csv)."""
+    if not SECTORS_PATH.exists():
+        return {}
+    d = pd.read_csv(SECTORS_PATH)
+    return dict(zip(d["Symbol"], d["Industry"]))
+
+
+def sector_breakdown(holdings_rows: list[dict]) -> list[dict]:
+    """Money and risk by NSE industry. Euler contributions are additive, so a
+    sector's share of risk is exactly the sum of its holdings' shares."""
+    sectors = sector_map()
+    out: dict[str, dict] = {}
+    for h in holdings_rows:
+        s = sectors.get(h["ticker"], "Unclassified")
+        row = out.setdefault(s, {"sector": s, "holdings": [], "weight_pct": 0.0,
+                                 "risk_contribution_pct": 0.0})
+        row["holdings"].append(h["ticker"])
+        row["weight_pct"] += h["weight_pct"]
+        row["risk_contribution_pct"] += h["risk_contribution_pct"]
+    rows = [{**r, "weight_pct": round(r["weight_pct"], 1),
+             "risk_contribution_pct": round(r["risk_contribution_pct"], 1)} for r in out.values()]
+    return sorted(rows, key=lambda r: -r["risk_contribution_pct"])
 
 
 def _returns(tickers: list[str]) -> tuple[pd.DataFrame, pd.Series]:
@@ -176,6 +208,7 @@ def analyse(holdings: dict[str, float], with_backtest: bool = True) -> dict:
     holdings_rows.sort(key=lambda x: -x["risk_contribution_pct"])
     out = {
         "holdings": holdings_rows,
+        "sectors": sector_breakdown(holdings_rows),
         "window": {"from": str(port.index[0].date()), "to": str(port.index[-1].date()),
                    "days": int(len(port))},
         "volatility_pct": round(sigma * 100, 2),
@@ -209,6 +242,10 @@ def summary(a: dict) -> str:
         f"{top['risk_contribution_pct']:.0f}% of the risk.",
         f"It moves about {a['beta']:.2f} times as much as the market.",
     ]
+    sec = [s for s in a.get("sectors", []) if s["sector"] != "Unclassified"]
+    if len(a.get("sectors", [])) > 1 and sec:
+        parts.insert(3, f"By industry, {sec[0]['sector']} is {sec[0]['weight_pct']:.0f}% of the "
+                        f"money and {sec[0]['risk_contribution_pct']:.0f}% of the risk.")
     if worst:
         parts.append(f"Replayed through history, its worst scenario was the {worst['scenario']}: "
                      f"{worst['portfolio_pct']:+.1f}%.")
@@ -235,6 +272,8 @@ def facts_for_llm(a: dict) -> str:
              f"- beta {a['beta']}; diversification ratio {a['diversification_ratio']}"]
     lines += [f"- {h['ticker']}: weight {h['weight_pct']}%, share of risk "
               f"{h['risk_contribution_pct']}%" for h in a["holdings"]]
+    lines += [f"- industry {s['sector']}: weight {s['weight_pct']}%, share of risk "
+              f"{s['risk_contribution_pct']}%" for s in a.get("sectors", [])]
     lines += [f"- scenario {s['scenario']}: {s['portfolio_pct']}%" for s in a["stress"]
               if s.get("portfolio_pct") is not None]
     return "\n".join(lines)

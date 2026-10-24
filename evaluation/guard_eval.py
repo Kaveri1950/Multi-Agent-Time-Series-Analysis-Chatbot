@@ -82,7 +82,11 @@ def main():
     from quant.portfolio_risk import MODEL_PORTFOLIOS, analyse, facts_for_llm
 
     rng = np.random.default_rng(SEED)
-    blocks = {name: facts_for_llm(analyse(h, with_backtest=False)) for name, h in MODEL_PORTFOLIOS.items()}
+    # Industry lines were added to the fact block after this evaluation was run; they are
+    # left out so the experiment (and evaluation/results/guard_eval.json) stays reproducible.
+    blocks = {name: "\n".join(line for line in facts_for_llm(analyse(h, with_backtest=False)).splitlines()
+                              if not line.startswith("- industry"))
+              for name, h in MODEL_PORTFOLIOS.items()}
 
     trials = {k: {"n": 0, "flagged": 0} for k in ("verbatim", "rounded") + CATCH + BLIND}
     misses = {k: [] for k in CATCH}
