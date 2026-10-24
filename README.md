@@ -16,6 +16,8 @@ The main idea is in how the model is picked. Every model is listed in a registry
 | Volatility Benchmark | Why the forecasting target was changed from price to volatility, and the model comparison |
 | Stock Risk | Volatility, VaR/ES, beta, drawdown, market regime, and unusual days split into market vs company moves |
 | Risk Analysis | Market risk today, 50 stocks ranked by forecast volatility, and each number marked passed / failed / untested |
+| Portfolio Risk | A whole portfolio: volatility, VaR/ES, each holding's share of the risk, real-crash stress tests, VaR backtest, client summary |
+| Filing Search | Search 60,905 NSE corporate filings in plain English |
 | Market Screener | Nifty 50/100/500 or Sensex 30 ranked by 1-day return and RSI |
 | Mutual Funds | Search about 38,000 Indian schemes; NAV history, returns and an ARIMA forecast |
 | Anomaly Benchmark | The detector comparison on both datasets, with a live demo |
@@ -128,6 +130,39 @@ The exact p-values move with new data: after the 9 Oct refresh they are 0.831 an
 - Box Least Squares period search is implemented (`astronomy/transit_search.py`) but doesn't have a committed result file yet.
 - Solar flares: a Hawkes process (each flare raises the short-term chance of another) gets TSS 0.49 on the last test block. On a recent 61-day hindcast, NOAA's own forecast and simple persistence both did better.
 
+### 7. Portfolio risk
+
+`quant/portfolio_risk.py` takes holdings and weights and returns volatility, VaR/ES, beta, diversification ratio, and each holding's share of the risk (an Euler allocation, so the shares add up exactly to the portfolio's volatility). It also replays five real shocks on the portfolio: the COVID crash, Russia invading Ukraine, Adani–Hindenburg, the 2024 election-result day and the April 2025 tariff selloff.
+
+Backtested on 40 random 8-stock portfolios (`evaluation/portfolio_validation.py`):
+
+| 95% VaR method | Passed | Partial | Failed |
+|---|---|---|---|
+| Regime-conditional | **26** | 0 | 14 |
+| Plain historical | 9 | 1 | 30 |
+
+Limitation: weights are held fixed through history, and the regime VaR still fails on 14 of the 40 mixes, so the page shows each portfolio's own result.
+
+### 8. Audit controls
+
+- **Data quality** (`audit/data_quality.py`): 9 rule-based checks on the price data (473 stocks, 86,000 OHLC bars). The latest run passed 6 and failed 3: flat bars 0.16% against a 0.10% limit, zero-volume days 0.15% against 0.10%, and the data being more than 10 days old. It also flagged 17 one-day moves beyond ±40% for review, which include unadjusted corporate actions. Nothing is repaired automatically.
+- **Answer log** (`audit/answer_log.py`): every chatbot answer is logged with the model chosen, task, number-guard corrections and time taken.
+- **SQL and Power BI** (`audit/warehouse.py`, `audit/queries.sql`): the results go into one SQLite database with 9 audit queries, and each query is exported as a CSV in `exports/powerbi/`.
+- **Testing the number guard** (`evaluation/guard_eval.py`): 416 errors were injected into answers built from real portfolio figures. It caught 75.5% and flagged none of 84 correct answers. It can't catch sign flips, a figure swapped for another real figure, or changes under 5%, because it matches against any number in the facts.
+
+### 9. Searching company filings
+
+`finance/filing_search.py` embeds the NSE filings (60,905, of which 34,657 are unique) with MiniLM and searches them with FAISS. On 18 plain-English queries, scored against the exchange's own filing category (which isn't indexed):
+
+| Method | Precision@10 |
+|---|---|
+| Keyword (TF-IDF) | 50.0% |
+| Meaning (MiniLM) | **63.9%** |
+| Hybrid | 63.3% |
+| Random pick | 1.6% |
+
+This is a lower bound, because relevant filings filed under a generic category like "Updates" count as misses.
+
 ## Running it
 
 Python 3.12. Ollama with `llama3` is needed for chatbot answers. MongoDB is optional; it's used for chat history and the forecast log.
@@ -141,7 +176,7 @@ streamlit run app.py
 
 Data comes from free sources (yfinance, NSE, api.mfapi.in, NASA Exoplanet Archive, NOAA) and is cached in `data/cache/`, which is not in the repo. Settings are read from environment variables: `BTP_LLM_BACKEND` (`ollama`, `openai` or `claude`), `BTP_OLLAMA_MODEL`, `MONGODB_URI`.
 
-Tests: `pytest -m "not slow"` (61 tests pass; some need internet). The slow tests call the LLM.
+Tests: `pytest -m "not slow"` (68 tests pass; some need internet). The slow tests call the LLM.
 
 ## Folder layout
 
@@ -154,6 +189,8 @@ astronomy/    Kepler loading, KOI labels, transit search
 solar/        NOAA data, flare features, Hawkes model
 evaluation/   question set, experiments, results/
 rag/          sentence embeddings + FAISS for the explainer
+audit/       data-quality controls, chatbot answer log, SQL warehouse and queries
+exports/     Power BI-ready CSVs from the audit queries
 pages/ views/ dashboard/   Streamlit UI
 tests/
 ```

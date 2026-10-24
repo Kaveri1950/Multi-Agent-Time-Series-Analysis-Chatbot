@@ -1,0 +1,713 @@
+{
+  "generated_at": "2026-10-24T14:41:30+00:00",
+  "index_size": 34657,
+  "n_queries": 18,
+  "k": 10,
+  "label_source": "NSE announcement category (not indexed)",
+  "mean_base_rate": 0.01599163869412304,
+  "methods": {
+    "keyword": {
+      "mean_p_at_10": 0.5,
+      "mean_mrr": 0.6129629629629629,
+      "queries_with_p10_at_least_half": 9
+    },
+    "dense": {
+      "mean_p_at_10": 0.6388888888888888,
+      "mean_mrr": 0.6799299299299298,
+      "queries_with_p10_at_least_half": 13
+    },
+    "hybrid": {
+      "mean_p_at_10": 0.6333333333333334,
+      "mean_mrr": 0.6825579644685336,
+      "queries_with_p10_at_least_half": 13
+    }
+  },
+  "queries": [
+    {
+      "query": "credit rating agency revised or reaffirmed the company's debt rating",
+      "categories": [
+        "Credit Rating",
+        "Credit Rating- New",
+        "Credit Rating- Others",
+        "Credit Rating- Revision"
+      ],
+      "relevant_in_index": 224,
+      "base_rate": 0.006463340739244597,
+      "keyword": {
+        "p_at_10": 1.0,
+        "mrr": 1.0,
+        "top3": [
+          "Shriram Finance Limited has informed the Exchange about Credit Rating- New International Credit Rating by Japan Credit Rating Agency, Ltd.",
+          "Vedanta Limited has informed the Exchange about Credit Rating",
+          "ICICI Bank Limited has informed the Exchange about Credit Rating"
+        ]
+      },
+      "dense": {
+        "p_at_10": 1.0,
+        "mrr": 1.0,
+        "top3": [
+          "Vedanta Limited has informed the Exchange about Credit Rating- Revision",
+          "Sammaan Capital Limited has informed the Exchange about Credit Rating- Revision",
+          "Larsen & Toubro Limited has informed the Exchange about Credit Rating- Revision"
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 1.0,
+        "mrr": 1.0,
+        "top3": [
+          "Vedanta Limited has informed the Exchange about Credit Rating",
+          "Vedanta Limited has informed the Exchange regarding Credit Rating",
+          "Vedanta Limited has informed the Exchange about Credit Rating- Revision"
+        ]
+      }
+    },
+    {
+      "query": "company is buying another business or taking a stake in it",
+      "categories": [
+        "Acquisition",
+        "Update-Acquisition/Scheme/Sale/Disposal/Reg30-XBRL"
+      ],
+      "relevant_in_index": 539,
+      "base_rate": 0.015552413653807311,
+      "keyword": {
+        "p_at_10": 0.3,
+        "mrr": 0.25,
+        "top3": [
+          "Maruti Suzuki India Limited has informed the Exchange regarding a press release dated May 22, 2020, titled \"Buy Now Pay Later: Maruti Suzuki",
+          "RELIANCE : The Exchange has sought clarification from Reliance Industries Limited with respect to recent news item captioned India's Relianc",
+          "RELIANCE : The Exchange has sought clarification from Reliance Industries Limited with respect to recent news item captioned India's Relianc"
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.7,
+        "mrr": 0.5,
+        "top3": [
+          "Adani Enterprises Limited has informed the Exchange about Disinvestment of a Joint Venture company by a wholly owned subsidiary of the Compa",
+          "Investment in Jio Finance Platform and Service Limited, wholly owned subsidiary of the Company",
+          "Incorporation of a Joint Venture Company"
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 0.6,
+        "mrr": 0.5,
+        "top3": [
+          "Shriram Finance Limited has informed the Exchange about sale/transfer of the Company s stake in subsidiary",
+          "Bharti Airtel Limited has informed the Exchange about Acquisition of stake in Voicezen India Private Limited",
+          "Agreement for acquisition of 100% stake of Ocean Sparkle Limited"
+        ]
+      }
+    },
+    {
+      "query": "an independent director stepped down from the board",
+      "categories": [
+        "Cessation",
+        "Change in Director(s)",
+        "Resignation",
+        "Resignation of Director/KMP/SMP",
+        "Resignation of Independent director",
+        "Retirement"
+      ],
+      "relevant_in_index": 471,
+      "base_rate": 0.013590328072250916,
+      "keyword": {
+        "p_at_10": 0.9,
+        "mrr": 1.0,
+        "top3": [
+          "Intimation for Cessation of Independent Director of the Company.",
+          "BSE LIMITED has informed the Exchange about Resignation of Independent director.",
+          "AXIS BANK LIMITED has informed the Exchange about Resignation of Independent director."
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.9,
+        "mrr": 1.0,
+        "top3": [
+          "Intimation for Cessation of Independent Director of the Company.",
+          "Resignation of Director of the Company",
+          "BSE LIMITED has informed the Exchange about Resignation of Independent director."
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 1.0,
+        "mrr": 1.0,
+        "top3": [
+          "Intimation for Cessation of Independent Director of the Company.",
+          "BSE LIMITED has informed the Exchange about Resignation of Independent director.",
+          "AXIS BANK LIMITED has informed the Exchange about Resignation of Independent director."
+        ]
+      }
+    },
+    {
+      "query": "shareholder lost physical share certificates, duplicate requested",
+      "categories": [
+        "Issue of Duplicate Share Certificate",
+        "Loss of Share Certificates",
+        "Loss of share certificate"
+      ],
+      "relevant_in_index": 1452,
+      "base_rate": 0.0418962980061748,
+      "keyword": {
+        "p_at_10": 0.9,
+        "mrr": 1.0,
+        "top3": [
+          "Loss of Share Certificates",
+          "Tata Steel Limited has informed the Exchange about loss of share certificates and issue of duplicate share certificates to shareholders.",
+          "Tata Steel Limited has informed the Exchange about loss of share certificates and issue of duplicate share certificates to the shareholders"
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.9,
+        "mrr": 1.0,
+        "top3": [
+          "Loss of Share Certificates",
+          "Loss of share certificate(s)",
+          "Loss of Share Certificate(s)"
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 0.9,
+        "mrr": 1.0,
+        "top3": [
+          "Loss of Share Certificates",
+          "Tata Steel Limited has informed the Exchange about loss of share certificates and issue of duplicate share certificates to the shareholders",
+          "Intimation of loss of share certificates and effecting issue of duplicate share certificates through Letter of Confirmation"
+        ]
+      }
+    },
+    {
+      "query": "company will repurchase its own shares from shareholders",
+      "categories": [
+        "Buyback",
+        "Buyback - Open Market",
+        "Buyback - others",
+        "Closure of Buy Back",
+        "Post Buyback Public Announcement",
+        "Public Announcement - Buyback of Shares"
+      ],
+      "relevant_in_index": 72,
+      "base_rate": 0.0020775023804714774,
+      "keyword": {
+        "p_at_10": 0.0,
+        "mrr": 0.0,
+        "top3": [
+          "Shriram Finance Limited has informed the Exchange about Update on repurchase/ buyback/ partial redemption ( Letter of Buyback Offer of Deben",
+          "Shriram Finance Limited has informed the Exchange about meeting of the Banking & Finance Committee of the Company will be held on Friday, Ju",
+          "Letter to the Shareholders- Notice of Meeting of Equity Shareholders"
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.0,
+        "mrr": 0.005405405405405406,
+        "top3": [
+          "Cancellation and reduction of the share capital of the Company consequent to the forfeiture and cancellation of partly paid-up equity shares",
+          "Summary of the Proceedings of the NCLT convened Meeting of Equity Shareholders held on 12 August, 2025",
+          "Pursuant to Regulation 39(3) of the Securities and Exchange Board of India (Listing Obligations and Disclosure Requirements) Regulations, 20"
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 0.0,
+        "mrr": 0.0027100271002710027,
+        "top3": [
+          "Shriram Finance Limited has informed the Exchange about Update on repurchase/ buyback/ partial redemption ( Letter of Buyback Offer of Deben",
+          "Cancellation and reduction of the share capital of the Company consequent to the forfeiture and cancellation of partly paid-up equity shares",
+          "Shriram Finance Limited has informed the Exchange about meeting of the Banking & Finance Committee of the Company will be held on Friday, Ju"
+        ]
+      }
+    },
+    {
+      "query": "interim dividend declared per equity share",
+      "categories": [
+        "Date of payment of dividend",
+        "Dividend",
+        "Dividend Updates"
+      ],
+      "relevant_in_index": 510,
+      "base_rate": 0.014715641861672967,
+      "keyword": {
+        "p_at_10": 0.7,
+        "mrr": 0.5,
+        "top3": [
+          "Vedanta Limited has informed the Exchange that the Company has fixed Record Date as March 7, 2020 for the purpose of First Interim dividend,",
+          "Wipro Limited has informed the Exchange that Board of Directors at its meeting held on January 12, 2022, declared Interim Dividend of 1 per ",
+          "Wipro Limited has informed the Exchange that Board of Directors at its meeting held on January 12, 2024, declared Interim Dividend of Re. 1 "
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.9,
+        "mrr": 1.0,
+        "top3": [
+          "We would like to inform you that at the Board Meeting held today, the Directors have declared a second interim dividend of \ufffd\ufffd\ufffd8 per Equity S",
+          "We would like to inform you that at the Board Meeting held today, the Directors have declared a third interim dividend of &#8377;8 and a spe",
+          "Pursuant to Regulation 29 of Listing Regulations, Notice is hereby given that the Board of Directors of the Company (the Board ) on Friday, "
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 0.7,
+        "mrr": 0.3333333333333333,
+        "top3": [
+          "The record date for payment of interim dividend, if declared, will be Tuesday, 1st November, 2022.",
+          "Sun Pharmaceutical Industries Limited has informed the Exchange that Record date for the purpose of Interim Dividend, if declared, is 31-Jan",
+          "ITC Limited has informed the Exchange that Board of Directors at its meeting held on February 11, 2021, declared Interim Dividend of 5 per e"
+        ]
+      }
+    },
+    {
+      "query": "merger of group companies under a scheme sanctioned by the tribunal",
+      "categories": [
+        "Amalgamation/Merger",
+        "Corp Restructuring - others",
+        "Demerger",
+        "NCLT/ Court Convened Meeting",
+        "Other Restructuring",
+        "Restructuring",
+        "Scheme of Arrangement"
+      ],
+      "relevant_in_index": 194,
+      "base_rate": 0.0055977147473814815,
+      "keyword": {
+        "p_at_10": 0.4,
+        "mrr": 1.0,
+        "top3": [
+          "Sun Pharmaceutical Industries Limited has informed the Exchange about Scheme of Arrangement sanctioned by Hon'ble National Company Law Tribu",
+          "ITC Limited has informed the Exchange about Amalgamation/MergerWe write to advise in terms of Regulation 30 of the SEBI (Listing Obligations",
+          "Shriram Transport Finance Company Limited has informed the Exchange with reference to the captioned subject, we wish to inform you that purs"
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.8,
+        "mrr": 1.0,
+        "top3": [
+          "Order from the Hon ble National Company Law Tribunal, Mumbai Bench in thematter of Scheme of Amalgamation amongst Tata Steel Limited and The",
+          "Sun Pharmaceutical Industries Limited has informed the Exchange about Scheme of Arrangement sanctioned by Hon'ble National Company Law Tribu",
+          "In continuation to our letter no. APL/SEC/51/2024-25/3 dated 24th January 2025, wherein it was informed that the Hon'ble National Company La"
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 1.0,
+        "mrr": 1.0,
+        "top3": [
+          "Sun Pharmaceutical Industries Limited has informed the Exchange about Scheme of Arrangement sanctioned by Hon'ble National Company Law Tribu",
+          "ITC Limited has informed the Exchange about Amalgamation/MergerFurther to our letters dated 4th September, 2020 and 30th September, 2020 on ",
+          "In continuation to our letter no. APL/SEC/51/2024-25/3 dated 24th January 2025, wherein it was informed that the Hon'ble National Company La"
+        ]
+      }
+    },
+    {
+      "query": "won a large new order or contract from a customer",
+      "categories": [
+        "Awarding of order(s)/contract(s)",
+        "Awarding orders/contract",
+        "Bagging orders/contract",
+        "Bagging/Receiving of orders/contracts"
+      ],
+      "relevant_in_index": 75,
+      "base_rate": 0.002164064979657789,
+      "keyword": {
+        "p_at_10": 0.5,
+        "mrr": 1.0,
+        "top3": [
+          "Tata Power Company Limited has informed the Exchange about Awarding of order(s)/contract(s)",
+          "Bharat Electronics Limited has informed the Exchange about Awarding of order(s)/contract(s)",
+          "HCL Technologies Limited has informed the Exchange regarding a press release dated February 13, 2019, titled \"HCL Technologies (HCL) has won"
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.8,
+        "mrr": 1.0,
+        "top3": [
+          "Bharat Electronics Limited has informed the Exchange about Awarding of order(s)/contract(s)",
+          "Bharat Heavy Electricals Limited has informed the Exchange about Awarding orders/contract - Additional information regarding the order as pe",
+          "Larsen & Toubro Limited has informed the Exchange about Bagging orders/contract - L&T Wins (Large*) Contract from Indian Oil Corporation"
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 0.7,
+        "mrr": 1.0,
+        "top3": [
+          "Bharat Electronics Limited has informed the Exchange about Awarding of order(s)/contract(s)",
+          "Larsen & Toubro Limited has informed the Exchange about Bagging orders/contract - L&T Wins (Large*) Contract from Indian Oil Corporation",
+          "Tata Power Company Limited has informed the Exchange about Awarding of order(s)/contract(s)"
+        ]
+      }
+    },
+    {
+      "query": "stock options granted to employees under the incentive plan",
+      "categories": [
+        "Allotment of ESOP/ESPS",
+        "ESOP/ESOS/ESPS",
+        "ESOP/ESPS/SBEB Scheme"
+      ],
+      "relevant_in_index": 1987,
+      "base_rate": 0.05733329486106703,
+      "keyword": {
+        "p_at_10": 0.7,
+        "mrr": 1.0,
+        "top3": [
+          "HDFC Bank Limited has informed the Exchange regarding Cancellation of stock options granted under Employee Stock Option Scheme - ESOS 42",
+          "Swiggy Limited has informed the Exchange about the grant of stock options under Swiggy Employees Stock Option Plan 2024",
+          "Wipro Limited has informed the Exchange regarding Grant of 62630 Stock Options."
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.3,
+        "mrr": 0.2,
+        "top3": [
+          "Grant of Employee Stock Options",
+          "Dr. Reddy's Laboratories Limited has informed the Exchange regarding 'Grant of stock options to the eligible employee(s) under the Employees",
+          "Dr. Reddy's Laboratories Limited has informed the Exchange regarding 'Grant of Employee Stock options'."
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 0.3,
+        "mrr": 0.3333333333333333,
+        "top3": [
+          "Dr. Reddy's Laboratories Limited has informed the Exchange about Grant of Stock Options to the eligible employees under the Employee Stock O",
+          "Grant of Employee Stock Options",
+          "HDFC Bank Limited has informed the Exchange regarding Grant of stock options under Employee Stock Option Scheme - ESOS 60 and Restricted Sto"
+        ]
+      }
+    },
+    {
+      "query": "exchange sought clarification on a media report about the company",
+      "categories": [
+        "Clarification",
+        "News Clarification",
+        "News Verification",
+        "Price movement",
+        "Reply to Clarification Sought",
+        "Rumour Verification - Regulation 30(11)",
+        "Spurt in Volume"
+      ],
+      "relevant_in_index": 1129,
+      "base_rate": 0.03257639149378192,
+      "keyword": {
+        "p_at_10": 0.3,
+        "mrr": 0.3333333333333333,
+        "top3": [
+          "ICICI Bank Limited has informed the Exchange regarding 'Clarification on Media Article'.",
+          "Indusind Bank Limited has informed the Exchange regarding 'Clarification on Media Article'.",
+          "One 97 Communications Limited has informed the Exchange about Clarification regarding media report dated September 9, 2026"
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.8,
+        "mrr": 0.5,
+        "top3": [
+          "A media statement issued by the Company is attached.",
+          "The Exchange had sought clarification from the Company with respect to news item captioned \"US FDA Finds quality, data issues at Dadra plant",
+          "One 97 Communications Limited has informed the Exchange about Clarification regarding media report dated September 9, 2026"
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 0.6,
+        "mrr": 1.0,
+        "top3": [
+          "One 97 Communications Limited has informed the Exchange about Clarification regarding media report dated September 9, 2026",
+          "Indusind Bank Limited has informed the Exchange regarding 'Clarification on Media Article'.",
+          "The Exchange has sought clarification from Dr. Reddy's Laboratories Limited with respect to recent news item captioned US regulators inspect"
+        ]
+      }
+    },
+    {
+      "query": "statutory auditors of the company changed",
+      "categories": [
+        "Change in Auditors",
+        "Resignation of Statutory Auditor"
+      ],
+      "relevant_in_index": 42,
+      "base_rate": 0.001211876388608362,
+      "keyword": {
+        "p_at_10": 0.2,
+        "mrr": 0.5,
+        "top3": [
+          "BSE Limited has informed the Exchange regarding appointment of Statutory Auditors of the Company",
+          "One 97 Communications Limited has informed the Exchange regarding appointment of Statutory Auditors of the company.",
+          "ITC Limited has informed the Exchange regarding 'Re-appointment of Statutory Auditors'."
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.5,
+        "mrr": 0.3333333333333333,
+        "top3": [
+          "One 97 Communications Limited has informed the Exchange regarding 'Change in Statutory Auditors in Material Subsidiaryof the Company'.",
+          "Hindustan Aeronautics Limited has informed the Exchange regarding 'Change of status of Statutory Auditors'.",
+          "Bharat Electronics Limited has informed the Exchange regarding Change in Auditors of the company."
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 0.5,
+        "mrr": 0.2,
+        "top3": [
+          "Hindustan Aeronautics Limited has informed the Exchange regarding 'Change of status of Statutory Auditors'.",
+          "BSE Limited has informed the Exchange regarding appointment of Statutory Auditors of the Company",
+          "Bharat Heavy Electricals Limited has informed the Exchange about the appointment of Statutory Auditors of the company w.e.f. 01-Apr-2022"
+        ]
+      }
+    },
+    {
+      "query": "window for insiders to trade in the shares is closed until results",
+      "categories": [
+        "Closure of trading window",
+        "Trading Window"
+      ],
+      "relevant_in_index": 129,
+      "base_rate": 0.0037221917650113972,
+      "keyword": {
+        "p_at_10": 0.2,
+        "mrr": 0.125,
+        "top3": [
+          "A meeting of the Board of Directors of the Company will be held on Thursday, 4th May 2023 to consider inter alia:i) the Audited Financial Re",
+          "ICICI Bank Limited has informed the Exchange regarding 'Inadvertent trade by Designated Person'.",
+          "Netweb Technologies India Limited has informed the Exchange regarding 'Disclosure regard ng violation of Code of Conduct to Regulate, Monito"
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.9,
+        "mrr": 1.0,
+        "top3": [
+          "We would like to inform you that in terms of the \ufffd\ufffd\ufffdCode of Conduct on Prohibition of Insider Trading\ufffd\ufffd\ufffd of the Company, the \ufffd\ufffd\ufffdTrading Wind",
+          "As per the Company's Insider Trading Code to regulate, monitor and report trading by Designated Persons of the Company, the Trading Window f",
+          "Sub: Intimation of closure of trading window Pursuant to the Company's Securities Dealing Code, the Trading Window for dealing in the Compan"
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 0.9,
+        "mrr": 1.0,
+        "top3": [
+          "Sub: Intimation of closure of trading window Pursuant to the Company's Securities Dealing Code, the Trading Window for dealing in the Compan",
+          "Pursuant to the provisions of the SEBI (Prohibition of Insider Trading) Regulations, 2015, the Trading Window will be closed from July 1, 20",
+          "Further to our earlier letter dated June 25, 2020 and pursuant to the provisions of the SEBI (Prohibition of Insider Trading) Regulations, 2"
+        ]
+      }
+    },
+    {
+      "query": "regulator imposed a penalty or passed an order against the company",
+      "categories": [
+        "Action(s) initiated or orders passed",
+        "Action(s) taken or orders passed",
+        "Litigations/Disputes/Regulatory actions",
+        "Pendency of Litigation(s)/dispute(s) or the outcome impacting the Company"
+      ],
+      "relevant_in_index": 142,
+      "base_rate": 0.004097296361485414,
+      "keyword": {
+        "p_at_10": 0.3,
+        "mrr": 0.2,
+        "top3": [
+          "State Bank Of India has informed the Exchange regarding 'Disclosure under Regulation 30 of SEBI (LODR) Regulations, 2015 - RBI imposed a pen",
+          "Axis Bank Limited has informed the Exchange regarding 'Competition Commission of India (\"CCI\") vide its letter dated August 17, 2023, has im",
+          "Indusind Bank Limited has informed the Exchange regarding 'Monetary penalty imposed on the Bank by RBI on October 16,2020'."
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.4,
+        "mrr": 0.16666666666666666,
+        "top3": [
+          "Bharat Heavy Electricals Limited has informed the Exchange regarding 'Order for penalty from the office of the Additional Director General o",
+          "The Exchange has sought clarification from InterGlobe Aviation Limited with respect to recent news item captioned DGCA imposes penalty of &#",
+          "Bharat Heavy Electricals Limited has informed the Exchange regarding 'Order in respect of demand on account of penalty '."
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 0.2,
+        "mrr": 0.3333333333333333,
+        "top3": [
+          "Pursuant to Regulation 30 read with Schedule III of SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015, we intimate th",
+          "Bharat Heavy Electricals Limited has informed the Exchange regarding 'Order in respect of demand on account of penalty '.",
+          "Shriram Finance Limited has informed the Exchange about Imposition of Penalty order received by GST authority"
+        ]
+      }
+    },
+    {
+      "query": "transcript of the earnings conference call with analysts",
+      "categories": [
+        "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "Recording of Analysts/Institutional Investor Meet/Con. Call",
+        "Schedule of Analysts/Institutional Investor Meet/Con. Call",
+        "Transcript of Analysts/Institutional Investor Meet/Con. Call"
+      ],
+      "relevant_in_index": 2148,
+      "base_rate": 0.061978821017399086,
+      "keyword": {
+        "p_at_10": 1.0,
+        "mrr": 1.0,
+        "top3": [
+          "Swiggy Limited has informed the Exchange about Transcript of the Earnings Conference Call for Analysts and Investors conducted on December03",
+          "Vedanta Limited has informed the Exchange about Transcript of Earnings Conference Call",
+          "Swiggy Limited has informed the Exchange about Transcript of the Earnings Conference Call for Analysts and Investors held on May 08, 2026"
+        ]
+      },
+      "dense": {
+        "p_at_10": 1.0,
+        "mrr": 1.0,
+        "top3": [
+          "Transcript of earnings conference call conducted on November 11, 2022",
+          "Transcript of the Earnings Conference Call for the quarter ended 30th June, 2026",
+          "Transcript of the Earnings Conference Call for the quarter ended 31st December, 2025"
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 1.0,
+        "mrr": 1.0,
+        "top3": [
+          "Transcript of the Earnings Conference Call for the quarter ended 30th June, 2026",
+          "One 97 Communications Limited has informed the Exchange about Transcript of the earnings conference call",
+          "Transcript of the Earnings Conference Call for the quarter ended 31st December, 2025"
+        ]
+      }
+    },
+    {
+      "query": "issue of bonus shares or split of the face value",
+      "categories": [
+        "Bonus",
+        "Split of shares",
+        "Stock split"
+      ],
+      "relevant_in_index": 23,
+      "base_rate": 0.000663646593761722,
+      "keyword": {
+        "p_at_10": 0.3,
+        "mrr": 0.125,
+        "top3": [
+          "Wipro Limited has informed the Exchange regarding Notice of Postal Ballot for issue of Bonus Shares",
+          "Outcome of the Board Meeting held on 4th August, 2022 \ufffd\ufffd\ufffd Approval for Issue of Bonus Shares and Holding of 68th Annual General Meeting (AGM",
+          "HDFC Bank Limited has informed the Exchange regarding update on the issuance of Bonus Shares."
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.5,
+        "mrr": 1.0,
+        "top3": [
+          "Allotment of bonus equity shares",
+          "BSE Limited has informed the Exchange about Allotment of Bonus Equity Shares",
+          "Bajaj Finserv Limited has informed the Exchange about Allotment of Bonus Equity Shares"
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 0.5,
+        "mrr": 0.3333333333333333,
+        "top3": [
+          "HDFC Bank Limited has informed the Exchange about update on the issuance of Bonus Shares",
+          "Wipro Limited has informed the Exchange regarding Notice of Postal Ballot for issue of Bonus Shares",
+          "Allotment of bonus equity shares"
+        ]
+      }
+    },
+    {
+      "query": "new chief financial officer or senior management appointed",
+      "categories": [
+        "Appointment",
+        "Change in Company Secretary/Compliance Officer",
+        "Change in Directors/ Key Managerial Personnel/ Auditor/ Compliance Officer/ Share Transfer Agent",
+        "Change in Management"
+      ],
+      "relevant_in_index": 717,
+      "base_rate": 0.020688461205528464,
+      "keyword": {
+        "p_at_10": 0.7,
+        "mrr": 1.0,
+        "top3": [
+          "Maruti Suzuki India Limited has informed the Exchange about change in Chief Financial Officer",
+          "Indian Renewable Energy Development Agency Limited has informed the Exchange about change in Chief Compliance Officer and Senior Management ",
+          "Yes Bank Limited has informed the Exchange about appointment of Mr. Pankaj Sharma as Chief Strategy and Transformation Officer (Senior Manag"
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.6,
+        "mrr": 0.3333333333333333,
+        "top3": [
+          "Update on Appointment of New Managing Director & CEO of the Bank",
+          "With reference to the captioned subject, we wish to inform you of the following changes in the Key Managerial Personnel / Senior Management ",
+          "Sun Pharmaceutical Industries Limited has informed the Exchange about change in Key Managerial Personnel - Chief Financial Officer"
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 0.9,
+        "mrr": 1.0,
+        "top3": [
+          "State Bank Of India has informed the Exchange about change in Senior Management: Chief Risk Officer",
+          "Sun Pharmaceutical Industries Limited has informed the Exchange about change in Key Managerial Personnel - Chief Financial Officer",
+          "Yes Bank Limited has informed the Exchange about change in Management- Appointment of Mr. Rajat Chhalani as Chief Compliance Officer and Sen"
+        ]
+      }
+    },
+    {
+      "query": "raising money from institutions through a share placement",
+      "categories": [
+        "Issue of Securities",
+        "Preferential Issue",
+        "Preferential issue",
+        "Qualified Institutional Placement",
+        "Raising of Funds",
+        "Rights Issue"
+      ],
+      "relevant_in_index": 98,
+      "base_rate": 0.002827711573419511,
+      "keyword": {
+        "p_at_10": 0.1,
+        "mrr": 0.5,
+        "top3": [
+          "Indian Renewable Energy Development Agency Limited has informed the Exchange regarding 'Approval of the Alternative Mechanism for raising of",
+          "Adani Enterprises Limited has informed the Exchange about Qualified institutions placement of equity shares at face value Re. 1 each",
+          "Bajaj Finance Limited has informed the Exchange regarding 'press release dated 10 November 2023 relating to Qualified Institutions Placement"
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.3,
+        "mrr": 1.0,
+        "top3": [
+          "Intimation regarding Qualified Institutional Placement of equity shares of face value &#8377;1 each of the Company",
+          "Allotment of Equity Shares to all Eligible Qualified Institutional Buyers.",
+          "Swiggy Limited has informed the Exchange about Qualified Institutional Placement of Equity Shares"
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 0.3,
+        "mrr": 1.0,
+        "top3": [
+          "Adani Enterprises Limited has informed the Exchange about Qualified institutions placement of equity shares at face value Re. 1 each",
+          "Swiggy Limited has informed the Exchange about Qualified Institutions Placement of Equity Shares - (a) Issue closure (b) Issue Price and (c)",
+          "Kotak Mahindra Bank Limited has informed the Exchange regarding 'Qualified institutions placement of equity shares of face value &#8377; 5 e"
+        ]
+      }
+    },
+    {
+      "query": "strike or fire disrupted operations at a plant",
+      "categories": [
+        "Closure of operations",
+        "Disruption of Operations",
+        "Disruption of operations",
+        "Strikes/Lockouts/Disturbances"
+      ],
+      "relevant_in_index": 24,
+      "base_rate": 0.0006925007934904926,
+      "keyword": {
+        "p_at_10": 0.5,
+        "mrr": 0.5,
+        "top3": [
+          "Hindalco Industries Limited has informed the Exchange about Strike Off of Wholly Owned Subsidiary",
+          "Bank's Strike - Regulation 30 of SEBI (LODR) Regulations, 2015",
+          "Disclosure under Regulation 30 of SEBI (LODR) Regulations, 2015 - Bank Strike"
+        ]
+      },
+      "dense": {
+        "p_at_10": 0.2,
+        "mrr": 0.2,
+        "top3": [
+          "Asian Paints Limited has informed the Exchange regarding 'This is to inform you that there was a minor fire incident in the under-constructi",
+          "Asian Paints Limited has informed the Exchange regarding 'This is to inform you that a fire broke out at the Company's paint manufacturing f",
+          "ASIANPAINT: The Exchange has sought clarification from Asian Paints Limited with respect to announcement dated 08-Apr-2019, inter-alia stati"
+        ]
+      },
+      "hybrid": {
+        "p_at_10": 0.3,
+        "mrr": 0.25,
+        "top3": [
+          "Asian Paints Limited has informed the Exchange regarding 'This is to inform you that a fire broke out at the Company's paint manufacturing f",
+          "ASIANPAINT: The Exchange has sought clarification from Asian Paints Limited with respect to announcement dated 08-Apr-2019, inter-alia stati",
+          "ASIANPAINT: The Exchange had sought clarification from Asian Paints Limited with respect to announcement dated 08-Apr-2019, inter-alia stati"
+        ]
+      }
+    }
+  ]
+}
