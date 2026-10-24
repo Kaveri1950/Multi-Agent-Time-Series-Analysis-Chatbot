@@ -14,7 +14,7 @@ These CSVs are produced by `python -m audit.warehouse`, which loads the project'
 | `chatbot_answers_by_model.csv` | Chatbot answers per model: count, speed, guard corrections, errors |
 | `chatbot_guard_events.csv` | Every answer where the number guard caught a figure not in the computed facts |
 
-The chatbot files fill up as the chatbot is used; every answer is logged by `audit/answer_log.py`.
+The chatbot files fill up as the chatbot is used; every answer is logged by `audit/answer_log.py`. The committed copies come from 16 questions asked with `python -m evaluation.answer_log_run` (risk, forecasts, anomalies, solar, Kepler, and two that no model should answer). In those 16 answers the number guard didn't have to correct anything, so `chatbot_guard_events.csv` has only its header. That's a result, not a missing file. How often the guard catches invented numbers is measured separately in `evaluation/results/guard_eval.json`.
 
 | Chart | Drawn from |
 |---|---|

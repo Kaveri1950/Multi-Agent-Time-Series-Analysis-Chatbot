@@ -1,5 +1,6 @@
 """Load the project's evidence into one SQLite database, run the audit queries,
-and export each result as a CSV that Power BI (or Excel) can read directly.
+export each result as a CSV in exports/audit/, and draw the audit charts from
+those CSVs (audit/charts.py).
 
 Tables
   data_quality_checks  one row per control per run (appended, so history builds up)
