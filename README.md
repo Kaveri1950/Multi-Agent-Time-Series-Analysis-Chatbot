@@ -154,8 +154,14 @@ Limitation: weights are held fixed through history, and the regime VaR still fai
 
 - **Data quality** (`audit/data_quality.py`): 9 rule-based checks on the price data (473 stocks, 86,000 OHLC bars). The latest run passed 6 and failed 3: flat bars 0.16% against a 0.10% limit, zero-volume days 0.15% against 0.10%, and the data being more than 10 days old. It also flagged 17 one-day moves beyond ±40% for review, which include unadjusted corporate actions. Nothing is repaired automatically.
 - **Answer log** (`audit/answer_log.py`): every chatbot answer is logged with the model chosen, task, number-guard corrections, time taken and the full trace. Answers that skip the selector (the market ranking, multi-day price forecasts) are labelled "fixed path" rather than left blank. The Audit page shows the log.
-- **SQL and Power BI** (`audit/warehouse.py`, `audit/queries.sql`): the results go into one SQLite database with 9 audit queries, and each query is exported as a CSV in `exports/powerbi/` (with a guide to building the Power BI report).
+- **SQL and charts** (`audit/warehouse.py`, `audit/queries.sql`, `audit/charts.py`): the results go into one SQLite database with 9 audit queries. Each query is exported as a CSV in `exports/audit/`, and the charts below are drawn straight from those CSVs. `python -m audit.warehouse` rebuilds all of it.
 - **Testing the number guard** (`evaluation/guard_eval.py`): 416 errors were injected into answers built from real portfolio figures. It caught 75.5% and flagged none of 84 correct answers. It can't catch sign flips, a figure swapped for another real figure, or changes under 5%, because it matches against any number in the facts.
+
+![Audit overview: data-quality controls, model selection accuracy, VaR backtests and routing exceptions](docs/figures/audit_dashboard.png)
+
+| VaR backtest per portfolio | Which VaR method passes |
+|---|---|
+| ![VaR breach rate vs volatility for 40 portfolios](docs/figures/audit_var_backtest.png) | ![Passed and failed backtests by VaR method](docs/figures/audit_var_outcomes.png) |
 
 ### 9. Searching company filings
 
@@ -199,7 +205,7 @@ solar/        NOAA data, flare features, Hawkes model
 evaluation/   question set, experiments, results/
 rag/          sentence embeddings + FAISS for the explainer
 audit/       data-quality controls, chatbot answer log, SQL warehouse and queries
-exports/     Power BI-ready CSVs from the audit queries
+exports/     CSV results of the audit queries
 docs/        data dictionary, screenshots, report figures
 pages/ views/ dashboard/   Streamlit UI
 tests/

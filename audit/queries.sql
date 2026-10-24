@@ -1,6 +1,6 @@
 -- Audit queries over data/cache/audit/audit.db (built by `python -m audit.warehouse`).
 -- Each block starts with "-- name: <id>"; audit/warehouse.py runs every one and
--- writes its result to exports/powerbi/<id>.csv.
+-- writes its result to exports/audit/<id>.csv.
 
 -- name: control_summary
 -- Latest data-quality run: which controls failed, how badly, and how serious.

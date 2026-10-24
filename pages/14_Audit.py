@@ -11,7 +11,7 @@ from audit.answer_log import DB_PATH
 
 ROOT = Path(__file__).parent.parent
 DQ = ROOT / "evaluation" / "results" / "data_quality.json"
-EXPORTS = ROOT / "exports" / "powerbi"
+EXPORTS = ROOT / "exports" / "audit"
 
 st.title("🧾 Audit")
 st.caption("Controls on the data every model depends on, and a record of every chatbot answer. "

@@ -1,6 +1,6 @@
 # Data dictionary
 
-Every dataset the project reads or writes, with its source, columns, refresh command and known issues. All raw data is cached under `data/cache/` (not committed; rebuilt by the commands below). Committed outputs are under `evaluation/results/` and `exports/powerbi/`.
+Every dataset the project reads or writes, with its source, columns, refresh command and known issues. All raw data is cached under `data/cache/` (not committed; rebuilt by the commands below). Committed outputs are under `evaluation/results/` and `exports/audit/`.
 
 Sizes and counts are from the cache as of 24 Oct 2026.
 
@@ -53,7 +53,7 @@ Sizes and counts are from the cache as of 24 Oct 2026.
 |---|---|---|---|
 | Forecast log | `data/cache/finance/forecast_log.parquet` | 120 logged price forecasts with naive, ARIMA and GP predictions and the actual close | the forecast pages, then `finance.forecast_log` |
 | Audit database | `data/cache/audit/audit.db` (SQLite) | tables `data_quality_checks` (appended each run), `model_registry`, `routing_eval`, `var_backtests`, `chat_answers` (one row per chatbot answer: time, question, domain, task, model, guard corrections, seconds, status) | `python -m audit.warehouse`; `chat_answers` fills live |
-| Power BI exports | `exports/powerbi/*.csv` | the result of each query in `audit/queries.sql` | `python -m audit.warehouse` |
+| Audit query exports | `exports/audit/*.csv` | the result of each query in `audit/queries.sql` | `python -m audit.warehouse` |
 | Evaluation results | `evaluation/results/*.json` | one file per experiment; every number in the README comes from one of these | the script named at the top of each `evaluation/*.py` |
 
 ## Conventions

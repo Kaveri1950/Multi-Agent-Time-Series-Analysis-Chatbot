@@ -23,7 +23,7 @@ from audit.answer_log import DB_PATH, connect
 ROOT = Path(__file__).parent.parent
 RESULTS = ROOT / "evaluation" / "results"
 QUERIES = Path(__file__).parent / "queries.sql"
-EXPORTS = ROOT / "exports" / "powerbi"
+EXPORTS = ROOT / "exports" / "audit"
 ROUTING_FILE = RESULTS / "selection_with_volatility.json"
 
 
@@ -118,6 +118,9 @@ def main():
     for row in con.execute(queries()["var_backtest_outcomes"]):
         print("  ", row)
     con.close()
+
+    from audit import charts
+    charts.main()
 
 
 if __name__ == "__main__":
