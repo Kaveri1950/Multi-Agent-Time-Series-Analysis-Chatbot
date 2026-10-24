@@ -6,6 +6,12 @@ A Streamlit app with a chatbot that answers questions about three kinds of time 
 
 The main idea is in how the model is picked. Every model is listed in a registry along with the inputs it needs and the score it got on held-out data. A question is mapped to a task (forecast, anomaly, risk, lookup, and so on), models that can't run on the available inputs are removed, and the one with the best measured score is used. A local LLM (Llama 3 through Ollama) writes the final answer from the computed numbers, and in the chatbot it also reads the question to pick out the stock or star name. It doesn't choose the model and doesn't calculate anything.
 
+| Portfolio Risk | Audit |
+|---|---|
+| ![Portfolio Risk page](docs/screenshots/portfolio_risk.png) | ![Audit page](docs/screenshots/audit.png) |
+| **Risk Analysis** | **Filing Search** |
+| ![Risk Analysis page](docs/screenshots/risk_analysis.png) | ![Filing Search page](docs/screenshots/filing_search.png) |
+
 ## What's in the app
 
 | Page | What it does |
@@ -18,6 +24,7 @@ The main idea is in how the model is picked. Every model is listed in a registry
 | Risk Analysis | Market risk today, 50 stocks ranked by forecast volatility, and each number marked passed / failed / untested |
 | Portfolio Risk | A whole portfolio: volatility, VaR/ES, each holding's share of the risk, real-crash stress tests, VaR backtest, client summary |
 | Filing Search | Search 60,905 NSE corporate filings in plain English |
+| Audit | Data-quality controls and their exceptions, the model selector's mistakes, and a log of every chatbot answer |
 | Market Screener | Nifty 50/100/500 or Sensex 30 ranked by 1-day return and RSI |
 | Mutual Funds | Search about 38,000 Indian schemes; NAV history, returns and an ARIMA forecast |
 | Anomaly Benchmark | The detector comparison on both datasets, with a live demo |
@@ -132,7 +139,7 @@ The exact p-values move with new data: after the 9 Oct refresh they are 0.831 an
 
 ### 7. Portfolio risk
 
-`quant/portfolio_risk.py` takes holdings and weights and returns volatility, VaR/ES, beta, diversification ratio, and each holding's share of the risk (an Euler allocation, so the shares add up exactly to the portfolio's volatility). It also replays five real shocks on the portfolio: the COVID crash, Russia invading Ukraine, Adani–Hindenburg, the 2024 election-result day and the April 2025 tariff selloff.
+`quant/portfolio_risk.py` takes holdings and weights and returns volatility, VaR/ES, beta, diversification ratio, and each holding's share of the risk (an Euler allocation, so the shares add up exactly to the portfolio's volatility). Risk is also grouped by NSE industry; because the contributions add up, an industry's share is exact. It also replays five real shocks on the portfolio: the COVID crash, Russia invading Ukraine, Adani–Hindenburg, the 2024 election-result day and the April 2025 tariff selloff.
 
 Backtested on 40 random 8-stock portfolios (`evaluation/portfolio_validation.py`):
 
@@ -146,8 +153,8 @@ Limitation: weights are held fixed through history, and the regime VaR still fai
 ### 8. Audit controls
 
 - **Data quality** (`audit/data_quality.py`): 9 rule-based checks on the price data (473 stocks, 86,000 OHLC bars). The latest run passed 6 and failed 3: flat bars 0.16% against a 0.10% limit, zero-volume days 0.15% against 0.10%, and the data being more than 10 days old. It also flagged 17 one-day moves beyond ±40% for review, which include unadjusted corporate actions. Nothing is repaired automatically.
-- **Answer log** (`audit/answer_log.py`): every chatbot answer is logged with the model chosen, task, number-guard corrections and time taken.
-- **SQL and Power BI** (`audit/warehouse.py`, `audit/queries.sql`): the results go into one SQLite database with 9 audit queries, and each query is exported as a CSV in `exports/powerbi/`.
+- **Answer log** (`audit/answer_log.py`): every chatbot answer is logged with the model chosen, task, number-guard corrections, time taken and the full trace. Answers that skip the selector (the market ranking, multi-day price forecasts) are labelled "fixed path" rather than left blank. The Audit page shows the log.
+- **SQL and Power BI** (`audit/warehouse.py`, `audit/queries.sql`): the results go into one SQLite database with 9 audit queries, and each query is exported as a CSV in `exports/powerbi/` (with a guide to building the Power BI report).
 - **Testing the number guard** (`evaluation/guard_eval.py`): 416 errors were injected into answers built from real portfolio figures. It caught 75.5% and flagged none of 84 correct answers. It can't catch sign flips, a figure swapped for another real figure, or changes under 5%, because it matches against any number in the facts.
 
 ### 9. Searching company filings
@@ -176,7 +183,9 @@ streamlit run app.py
 
 Data comes from free sources (yfinance, NSE, api.mfapi.in, NASA Exoplanet Archive, NOAA) and is cached in `data/cache/`, which is not in the repo. Settings are read from environment variables: `BTP_LLM_BACKEND` (`ollama`, `openai` or `claude`), `BTP_OLLAMA_MODEL`, `MONGODB_URI`.
 
-Tests: `pytest -m "not slow"` (68 tests pass; some need internet). The slow tests call the LLM.
+Tests: `pytest -m "not slow"` (72 tests pass; some need internet). The slow tests call the LLM. CI (GitHub Actions) runs `pytest -m "not slow and not network"`. Tests that need the cached price data skip themselves when it isn't there.
+
+Exact package versions are in `requirements-lock.txt`. Every dataset, its source, columns, refresh command and known issues are listed in [docs/data-dictionary.md](docs/data-dictionary.md).
 
 ## Folder layout
 
@@ -191,6 +200,7 @@ evaluation/   question set, experiments, results/
 rag/          sentence embeddings + FAISS for the explainer
 audit/       data-quality controls, chatbot answer log, SQL warehouse and queries
 exports/     Power BI-ready CSVs from the audit queries
+docs/        data dictionary, screenshots, report figures
 pages/ views/ dashboard/   Streamlit UI
 tests/
 ```
@@ -202,7 +212,7 @@ tests/
 - The detector comparison uses 40 of the 440 downloaded Kepler stars.
 - With the local LLM on CPU, a full chatbot answer takes about 5 to 7 minutes.
 - Volatility jumps on results days are under-forecast. Calendar features help a little, but they aren't in the served model yet.
-- Dependencies are not pinned, and there is no CI yet.
+- CI runs on Linux without the cached data, so the tests that need prices or live sources only run locally.
 
 ## Licence
 

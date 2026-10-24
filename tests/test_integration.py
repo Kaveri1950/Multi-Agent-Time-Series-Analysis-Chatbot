@@ -7,6 +7,7 @@ import numpy as np
 import pytest
 
 
+@pytest.mark.network
 def test_price_data():
     from finance.price_data import add_technical_indicators, get_price_history
 
@@ -16,6 +17,7 @@ def test_price_data():
     assert "RSI_14" in feats.columns
 
 
+@pytest.mark.network
 def test_price_model_arima_and_xgboost():
     from finance.price_data import add_technical_indicators, get_price_history
     from finance.price_model import compare_with_without_sentiment
@@ -27,6 +29,7 @@ def test_price_model_arima_and_xgboost():
     assert result["xgboost_no_sentiment_rmse"] > 0
 
 
+@pytest.mark.network
 def test_finance_anomaly_detector():
     """Regression + real-data validation for finance/anomaly_detector.py
     (Phase 1 of the finance anomaly detection plan). Checks structure, that
@@ -320,6 +323,7 @@ def test_text_embeddings_and_vector_store():
     assert results[0]["text"] == "Apple stock rallies"
 
 
+@pytest.mark.network
 def test_india_index_constituents():
     from finance.india_universe import fetch_index_constituents, get_index_ticker
 
@@ -334,6 +338,7 @@ def test_india_index_constituents():
     assert get_index_ticker("sensex") == "^BSESN"
 
 
+@pytest.mark.network
 def test_mutual_fund_nav_and_returns():
     from finance.mutual_funds import compute_returns, get_nav_history, get_scheme_meta
 
@@ -424,6 +429,7 @@ def test_chat_agent_india_index_and_mutual_fund():
     assert any("reusing cached mutual fund data" in line for line in followup["trace"])
 
 
+@pytest.mark.network
 def test_ticker_resolution_ambiguous_and_exact():
     """Doesn't assert on the exact set of candidates Yahoo's live search
     returns for "reliance" -- observed in testing that this genuinely
@@ -444,6 +450,7 @@ def test_ticker_resolution_ambiguous_and_exact():
     assert aapl["symbol"] == "AAPL"
 
 
+@pytest.mark.network
 def test_price_forecast_future():
     from finance.price_data import get_price_history
     from finance.price_model import forecast_future

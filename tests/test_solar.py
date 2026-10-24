@@ -162,6 +162,7 @@ def test_solar_region_parser_and_delta_flag():
 # live NOAA tests -- structure and plausible ranges only
 # --------------------------------------------------------------------------
 
+@pytest.mark.network
 def test_live_noaa_probabilities_are_the_baseline():
     """The project is scored against NOAA's own forecast, so this endpoint
     working is load-bearing for the whole evaluation story."""
@@ -176,6 +177,7 @@ def test_live_noaa_probabilities_are_the_baseline():
     assert df["x_class_1_day"].between(0, 100).all()
 
 
+@pytest.mark.network
 def test_live_recent_flares():
     from solar.flare_data import fetch_recent_flares
 
@@ -186,6 +188,7 @@ def test_live_recent_flares():
     assert df["begin_time"].is_monotonic_increasing
 
 
+@pytest.mark.network
 def test_live_daily_indices():
     from solar.flare_data import fetch_daily_indices
 
@@ -197,6 +200,7 @@ def test_live_daily_indices():
 
 
 @pytest.mark.slow
+@pytest.mark.network
 def test_historical_year_matches_known_totals():
     """2014 was near solar maximum. Pinning the real totals catches a parser
     regression that silently drops or duplicates rows -- a class of bug that

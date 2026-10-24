@@ -24,6 +24,7 @@ def test_each_sub_question_reaches_its_task(tcs):
     assert not any(r["fallback_used"] for r in tcs["routing"])
 
 
+@pytest.mark.needs_data
 def test_every_figure_carries_a_status_and_its_evidence(tcs):
     assert tcs["ticker"] == "TCS.NS"
     for role, comp in tcs["components"].items():
@@ -35,12 +36,14 @@ def test_every_figure_carries_a_status_and_its_evidence(tcs):
             assert f["value"] is not None, f
 
 
+@pytest.mark.needs_data
 def test_limits_are_in_the_output_not_a_footnote(tcs):
     text = to_text(tcs)
     for stated in ("70.9%", "74.1%", "0.247", "0.533", "never which way"):
         assert stated in text, stated
 
 
+@pytest.mark.needs_data
 def test_intervals_nest_and_contain_the_forecast(tcs):
     point = figure(tcs, "volatility", "forecast_vol_pct")["value"]
     lo80, hi80 = figure(tcs, "volatility", "interval_80_pct")["value"]
@@ -57,6 +60,7 @@ def test_var_verdict_is_the_stocks_own_not_the_proxys():
     assert _var_verdict({"testable": False, "why": "too short"})[0] == UNTESTED
 
 
+@pytest.mark.needs_data
 def test_a_ticker_outside_the_volatility_panel_degrades_one_component():
     a = assess_stock_risk("PIDILITIND.NS")
     assert "error" in a["components"]["volatility"]
@@ -79,6 +83,7 @@ def market():
     return assess_market_risk(["TCS.NS", "IRFC.NS", "ZEEL.NS", "LT.NS", "PIDILITIND.NS"])
 
 
+@pytest.mark.needs_data
 def test_market_is_ranked_by_forecast_volatility_alone(market):
     vols = [r["forecast_vol_pct"] for r in market["ranking"]]
     assert vols == sorted(vols, reverse=True)
@@ -86,10 +91,12 @@ def test_market_is_ranked_by_forecast_volatility_alone(market):
     assert market["ranked_by"] == "forecast_vol_pct"
 
 
+@pytest.mark.needs_data
 def test_market_reports_what_it_could_not_rank(market):
     assert [u["ticker"] for u in market["unranked"]] == ["PIDILITIND.NS"]
 
 
+@pytest.mark.needs_data
 def test_market_states_how_little_the_model_adds_to_the_order(market):
     ranking = next(f for f in market["figures"] if f["key"] == "ranking")
     assert "trailing 66-day" in ranking["evidence"] and "small" in ranking["evidence"]
@@ -97,6 +104,7 @@ def test_market_states_how_little_the_model_adds_to_the_order(market):
         assert f["status"] in STATUSES and len(f["evidence"]) > 20
 
 
+@pytest.mark.needs_data
 def test_each_row_carries_its_own_var_verdict(market):
     by = {r["ticker"]: r for r in market["ranking"]}
     assert by["TCS.NS"]["var_status"] == PASSED
@@ -117,6 +125,7 @@ def test_market_questions_route_before_the_single_stock_path(question, market):
     assert bool(_MARKET_RISK_PATTERN.search(question)) is market
 
 
+@pytest.mark.needs_data
 def test_chat_facts_state_what_var_means_and_unsign_volatility_bands(tcs):
     from agents.risk_composition import chat_facts, status_table
 

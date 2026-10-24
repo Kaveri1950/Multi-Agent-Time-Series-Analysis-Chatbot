@@ -46,6 +46,7 @@ arch              # GARCH, for volatility-standardised residuals
 stumpy            # matrix profile: discord and motif discovery
 joblib            # parallel grid runs and on-disk regime cache
 pymongo           # precomputed astronomy results, chat history, forecast log
+PyWavelets        # wavelet features in quant/advanced_models.py
 scipy             # Kupiec / Christoffersen tests, KS audit
 pyarrow           # parquet caches
 reportlab         # local PDF build of the report (evaluation/build_report_pdf.py)
