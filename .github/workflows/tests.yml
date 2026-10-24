@@ -21,9 +21,16 @@ jobs:
       # Unpinned, pip picks up new major releases (pandas 3.x) the code has never run on.
       - name: Install dependencies (CPU-only torch, locked versions)
         run: |
+          set -o pipefail
           python -m pip install --upgrade pip
-          pip install torch==2.13.0 --index-url https://download.pytorch.org/whl/cpu
-          pip install -r requirements.txt -c requirements-lock.txt --extra-index-url https://download.pytorch.org/whl/cpu
+          {
+            pip install torch==2.13.0 --index-url https://download.pytorch.org/whl/cpu &&
+            pip install -r requirements.txt -c requirements-lock.txt --extra-index-url https://download.pytorch.org/whl/cpu
+          } 2>&1 | tee install.log || {
+            # surface the reason as an annotation, readable without opening the log
+            echo "::error title=install failed::$(grep -iE 'error|conflict|not find|no matching' install.log | tail -15 | sed ':a;N;$!ba;s/\n/%0A/g')"
+            exit 1
+          }
 
       # slow    = runs the local LLM (no Ollama here)
       # network = live Yahoo/NSE/NOAA calls, which often block cloud IPs
@@ -31,4 +38,9 @@ jobs:
       - name: Run tests
         env:
           PYTHONPATH: .
-        run: pytest -q -m "not slow and not network" -rs
+        run: |
+          set -o pipefail
+          pytest -q -m "not slow and not network" -rs 2>&1 | tee pytest.log || {
+            echo "::error title=tests failed::$(grep -E '^(FAILED|ERROR)|Error:|^E  ' pytest.log | tail -20 | sed ':a;N;$!ba;s/\n/%0A/g')"
+            exit 1
+          }
