@@ -7,9 +7,9 @@ This is where the pieces meet. The order matters and is not arbitrary:
                   step that reasons about data it has never seen.
 
     2. SELECT     among detectors that CAN run, pick by measured out-of-sample
-                  skill. Not by asking a language model: on 123 labelled
-                  queries the capability filter scored 95.9% against the LLM's
-                  83.7%, in under a second against 41 minutes.
+                  skill. Not by asking a language model: on 141 labelled
+                  questions the capability filter scored 95.0% against the
+                  LLM's 65.2%, in under 0.01 s per question against about 27 s.
 
     3. ASSESS     compute the risk picture -- how much it moves, how much of
                   that is the market, what a bad day looks like now.
