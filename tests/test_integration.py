@@ -503,6 +503,12 @@ def test_finance_pipeline_handles_insufficient_data_without_crashing(monkeypatch
     # separate binding in its own namespace -- patch it there, not on the
     # source module, or the monkeypatch would silently do nothing.
     monkeypatch.setattr(finance_node_module, "get_price_history", lambda ticker, start=None, end=None: tiny_df)
+    # The test is about degrading gracefully, not about the LLM's wording, so
+    # the explainer's LLM call is stubbed: it then runs where no Ollama server
+    # exists (CI) and still exercises every node of the graph.
+    import agents.nodes.explainer_node as explainer_node_module
+    monkeypatch.setattr(explainer_node_module, "call_llm",
+                        lambda prompt, system=None, **kw: "Not enough price history to analyse this ticker.")
 
     result = run(ticker="SPARSE.NS")
     assert result["domain"] == "finance"
