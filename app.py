@@ -25,6 +25,7 @@ pg = st.navigation([
     st.Page("pages/10_Volatility_Benchmark.py", title="Volatility Benchmark", icon="📉"),
     st.Page("pages/11_Risk_Analysis.py", title="Risk Analysis", icon="🧭"),
     st.Page("pages/13_Filing_Search.py", title="Filing Search", icon="🗂️"),
+    st.Page("pages/14_Audit.py", title="Audit", icon="🧾"),
     st.Page("pages/4_Chatbot.py", title="Chatbot", icon="💬"),
 ])
 pg.run()

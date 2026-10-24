@@ -1,1 +1,11 @@
 model_id,domain,answers,avg_seconds,answers_corrected,errors
+finance.volatility_forecast + finance.volatility_price_range + finance.risk_profile + finance.market_regime + finance.anomaly_detectors,finance,5,149.9,0,0
+(not routed),general,2,104.35,0,0
+gaussian_process_forecast,finance,2,46.04,0,0
+astronomy.isolation_forest,astronomy,1,144.13,0,0
+astronomy.koi_lookup,astronomy,1,0.05,0,0
+finance.anomaly_detectors,finance,1,136.57,0,0
+finance.risk_profile,finance,1,55.73,0,0
+market_risk_ranking,finance,1,93.67,0,0
+solar.hawkes_expected_count,solar,1,2.07,0,0
+solar.hawkes_probability,solar,1,74.25,0,0

@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 
 from audit import answer_log, data_quality, warehouse
-from quant.portfolio_risk import normalise, risk_contributions
+from quant.portfolio_risk import normalise, risk_contributions, sector_breakdown
 
 
 def test_check_status_follows_threshold():
@@ -26,6 +26,29 @@ def test_parse_reads_selector_and_guard_from_trace():
     assert row["model_id"] == "finance.risk_composition"
     assert row["selector_strategy"] == "filter_only"
     assert row["guard_flags"] == 2 and row["guard_figures"] == "12.5, 3%"
+
+
+def test_parse_records_every_model_in_a_risk_composition():
+    row = answer_log.parse({"domain": "finance", "trace": [
+        "[risk] volatility: 'how volatile' -> task forecast_volatility -> finance.volatility_forecast (2 feasible)",
+        "[risk] tail_risk: 'what is the VaR' -> task assess_risk -> finance.risk_profile (1 feasible)",
+        "[risk] anomalies: 'unusual days' -> task detect_anomaly -> finance.anomaly_detectors (3 feasible)"]})
+    assert row["selector_strategy"] == "composition"
+    assert row["model_id"] == ("finance.volatility_forecast + finance.risk_profile + "
+                               "finance.anomaly_detectors")
+
+
+def test_parse_labels_paths_that_skip_the_selector():
+    gp = answer_log.parse({"trace": ["[chat] computed 10-trading-day Gaussian Process forecast for 'SBIN.NS': x"]})
+    market = answer_log.parse({"trace": ["[risk] market assessment computed 2026-10-24, 50 names ranked"]})
+    assert (gp["model_id"], gp["selector_strategy"]) == ("gaussian_process_forecast", "fixed path")
+    assert market["model_id"] == "market_risk_ranking"
+
+
+def test_tests_write_to_a_private_log():
+    from pathlib import Path
+    real = Path(__file__).parent.parent / "data" / "cache" / "audit"
+    assert answer_log.DB_PATH.parent.resolve() != real.resolve()
 
 
 def test_parse_handles_unrouted_and_missing_results():
@@ -66,6 +89,17 @@ def test_euler_contributions_sum_to_portfolio_volatility():
         x = rng.normal(size=(200, 5))
         cov, w = np.cov(x, rowvar=False), rng.dirichlet(np.ones(5))
         assert risk_contributions(cov, w).sum() == pytest.approx(np.sqrt(w @ cov @ w), abs=1e-12)
+
+
+def test_sector_breakdown_sums_holdings_and_keeps_unknowns():
+    rows = [{"ticker": "TCS", "weight_pct": 30.0, "risk_contribution_pct": 35.0},
+            {"ticker": "INFY", "weight_pct": 20.0, "risk_contribution_pct": 25.0},
+            {"ticker": "NOT_A_STOCK", "weight_pct": 50.0, "risk_contribution_pct": 40.0}]
+    out = {r["sector"]: r for r in sector_breakdown(rows)}
+    assert out["Information Technology"]["weight_pct"] == 50.0
+    assert out["Information Technology"]["risk_contribution_pct"] == 60.0
+    assert out["Unclassified"]["holdings"] == ["NOT_A_STOCK"]
+    assert sum(r["risk_contribution_pct"] for r in out.values()) == pytest.approx(100.0)
 
 
 def test_normalise_adds_suffix_and_rescales():
