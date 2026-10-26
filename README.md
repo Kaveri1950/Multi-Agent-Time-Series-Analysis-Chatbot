@@ -110,6 +110,8 @@ On a 120-day walk-forward log for 3 stocks, nothing beats "tomorrow = today":
 | ARIMA | 30.10 | 47.5% |
 | Gaussian Process | 36.83 | 44.2% |
 
+News sentiment doesn't change this. XGBoost was run with and without a FinBERT sentiment feature (the day's average tone of Times of India headlines about the company, 2,451 headlines) on 12 stocks × 4 thirty-day windows in 2019–2020, 44 cases (`finbert_ablation.json`). Sentiment lowered the error in 19 of 44, with a median change of 0.00% (Wilcoxon p = 0.83). The model gave the feature 0.4% of its importance, because only 9.7% of training days had any headline. Neither version beat the naive forecast in any case. Reproduce: `python -m evaluation.finbert_ablation`.
+
 Daily returns have almost no autocorrelation (about +0.01), but volatility does (about +0.5). So the forecasting target became tomorrow's volatility (Garman-Klass).
 
 ### 4. Volatility forecasting

@@ -1,0 +1,481 @@
+{
+  "generated_at": "2026-10-26T08:33:45+00:00",
+  "headlines": 2451,
+  "headline_span": "2018-01-01 -> 2020-06-30",
+  "n_cases": 44,
+  "symbols": [
+    "SBIN",
+    "INDIGO",
+    "PAYTM",
+    "INFY",
+    "MARUTI",
+    "YESBANK",
+    "TCS",
+    "LT",
+    "RELIANCE",
+    "ITC",
+    "BHARTIARTL",
+    "WIPRO"
+  ],
+  "window_ends": [
+    "2019-09-30",
+    "2019-12-31",
+    "2020-03-31",
+    "2020-06-30"
+  ],
+  "test_size": 30,
+  "finbert_lower_rmse_in": 19,
+  "median_relative_change_pct": 0.0,
+  "mean_relative_change_pct": 0.42,
+  "wilcoxon_p": 0.8307,
+  "mean_sentiment_importance": 0.0041,
+  "median_share_of_training_days_with_news": 0.0974,
+  "xgb_beats_naive_in": 0,
+  "xgb_finbert_beats_naive_in": 0,
+  "median_rmse_ratio_to_naive": {
+    "xgb": 2.717,
+    "xgb_finbert": 2.707
+  },
+  "cases": [
+    {
+      "symbol": "SBIN",
+      "test_end": "2019-09-30",
+      "rmse_naive": 8.17,
+      "rmse_xgb": 11.3924,
+      "rmse_xgb_finbert": 11.219,
+      "sentiment_importance": 0.0017000000225380063,
+      "training_days": 130,
+      "training_days_with_news": 33
+    },
+    {
+      "symbol": "SBIN",
+      "test_end": "2019-12-31",
+      "rmse_naive": 5.313,
+      "rmse_xgb": 12.2276,
+      "rmse_xgb_finbert": 12.3928,
+      "sentiment_importance": 0.002400000113993883,
+      "training_days": 191,
+      "training_days_with_news": 45
+    },
+    {
+      "symbol": "SBIN",
+      "test_end": "2020-03-31",
+      "rmse_naive": 11.764,
+      "rmse_xgb": 45.4413,
+      "rmse_xgb_finbert": 45.3843,
+      "sentiment_importance": 0.0035000001080334187,
+      "training_days": 254,
+      "training_days_with_news": 57
+    },
+    {
+      "symbol": "SBIN",
+      "test_end": "2020-06-30",
+      "rmse_naive": 4.427,
+      "rmse_xgb": 26.3143,
+      "rmse_xgb_finbert": 26.0206,
+      "sentiment_importance": 0.002300000051036477,
+      "training_days": 313,
+      "training_days_with_news": 72
+    },
+    {
+      "symbol": "INDIGO",
+      "test_end": "2019-09-30",
+      "rmse_naive": 31.458,
+      "rmse_xgb": 119.3026,
+      "rmse_xgb_finbert": 119.3124,
+      "sentiment_importance": 0.0066999997943639755,
+      "training_days": 130,
+      "training_days_with_news": 29
+    },
+    {
+      "symbol": "INDIGO",
+      "test_end": "2019-12-31",
+      "rmse_naive": 25.605,
+      "rmse_xgb": 109.7906,
+      "rmse_xgb_finbert": 109.7693,
+      "sentiment_importance": 0.003000000026077032,
+      "training_days": 191,
+      "training_days_with_news": 42
+    },
+    {
+      "symbol": "INDIGO",
+      "test_end": "2020-03-31",
+      "rmse_naive": 45.183,
+      "rmse_xgb": 166.2235,
+      "rmse_xgb_finbert": 164.7415,
+      "sentiment_importance": 0.014399999752640724,
+      "training_days": 254,
+      "training_days_with_news": 50
+    },
+    {
+      "symbol": "INDIGO",
+      "test_end": "2020-06-30",
+      "rmse_naive": 36.213,
+      "rmse_xgb": 45.9486,
+      "rmse_xgb_finbert": 47.6378,
+      "sentiment_importance": 0.0044999998062849045,
+      "training_days": 313,
+      "training_days_with_news": 58
+    },
+    {
+      "symbol": "INFY",
+      "test_end": "2019-09-30",
+      "rmse_naive": 10.967,
+      "rmse_xgb": 53.9284,
+      "rmse_xgb_finbert": 54.2211,
+      "sentiment_importance": 0.006000000052154064,
+      "training_days": 130,
+      "training_days_with_news": 11
+    },
+    {
+      "symbol": "INFY",
+      "test_end": "2019-12-31",
+      "rmse_naive": 6.366,
+      "rmse_xgb": 6.7651,
+      "rmse_xgb_finbert": 7.0733,
+      "sentiment_importance": 0.006800000090152025,
+      "training_days": 191,
+      "training_days_with_news": 23
+    },
+    {
+      "symbol": "INFY",
+      "test_end": "2020-03-31",
+      "rmse_naive": 23.881,
+      "rmse_xgb": 62.9322,
+      "rmse_xgb_finbert": 62.7516,
+      "sentiment_importance": 0.008799999952316284,
+      "training_days": 254,
+      "training_days_with_news": 27
+    },
+    {
+      "symbol": "INFY",
+      "test_end": "2020-06-30",
+      "rmse_naive": 11.571,
+      "rmse_xgb": 14.9798,
+      "rmse_xgb_finbert": 14.7618,
+      "sentiment_importance": 0.00430000014603138,
+      "training_days": 313,
+      "training_days_with_news": 31
+    },
+    {
+      "symbol": "MARUTI",
+      "test_end": "2019-09-30",
+      "rmse_naive": 183.641,
+      "rmse_xgb": 471.0271,
+      "rmse_xgb_finbert": 470.1951,
+      "sentiment_importance": 0.0,
+      "training_days": 130,
+      "training_days_with_news": 10
+    },
+    {
+      "symbol": "MARUTI",
+      "test_end": "2019-12-31",
+      "rmse_naive": 85.856,
+      "rmse_xgb": 263.6273,
+      "rmse_xgb_finbert": 265.924,
+      "sentiment_importance": 0.005100000184029341,
+      "training_days": 191,
+      "training_days_with_news": 15
+    },
+    {
+      "symbol": "MARUTI",
+      "test_end": "2020-03-31",
+      "rmse_naive": 261.421,
+      "rmse_xgb": 747.4605,
+      "rmse_xgb_finbert": 747.3269,
+      "sentiment_importance": 0.007799999788403511,
+      "training_days": 254,
+      "training_days_with_news": 20
+    },
+    {
+      "symbol": "MARUTI",
+      "test_end": "2020-06-30",
+      "rmse_naive": 110.268,
+      "rmse_xgb": 350.6936,
+      "rmse_xgb_finbert": 344.0203,
+      "sentiment_importance": 0.00419999985024333,
+      "training_days": 313,
+      "training_days_with_news": 23
+    },
+    {
+      "symbol": "YESBANK",
+      "test_end": "2019-09-30",
+      "rmse_naive": 4.115,
+      "rmse_xgb": 32.096,
+      "rmse_xgb_finbert": 32.2597,
+      "sentiment_importance": 0.00039999998989515007,
+      "training_days": 130,
+      "training_days_with_news": 10
+    },
+    {
+      "symbol": "YESBANK",
+      "test_end": "2019-12-31",
+      "rmse_naive": 2.937,
+      "rmse_xgb": 5.9917,
+      "rmse_xgb_finbert": 6.0236,
+      "sentiment_importance": 0.0003000000142492354,
+      "training_days": 191,
+      "training_days_with_news": 22
+    },
+    {
+      "symbol": "YESBANK",
+      "test_end": "2020-03-31",
+      "rmse_naive": 6.886,
+      "rmse_xgb": 15.0719,
+      "rmse_xgb_finbert": 15.1525,
+      "sentiment_importance": 0.00019999999494757503,
+      "training_days": 254,
+      "training_days_with_news": 29
+    },
+    {
+      "symbol": "YESBANK",
+      "test_end": "2020-06-30",
+      "rmse_naive": 0.569,
+      "rmse_xgb": 1.2747,
+      "rmse_xgb_finbert": 1.4305,
+      "sentiment_importance": 9.999999747378752e-05,
+      "training_days": 313,
+      "training_days_with_news": 42
+    },
+    {
+      "symbol": "TCS",
+      "test_end": "2019-09-30",
+      "rmse_naive": 22.269,
+      "rmse_xgb": 29.8946,
+      "rmse_xgb_finbert": 30.2552,
+      "sentiment_importance": 0.01140000019222498,
+      "training_days": 130,
+      "training_days_with_news": 13
+    },
+    {
+      "symbol": "TCS",
+      "test_end": "2019-12-31",
+      "rmse_naive": 27.076,
+      "rmse_xgb": 30.3682,
+      "rmse_xgb_finbert": 30.4644,
+      "sentiment_importance": 0.007899999618530273,
+      "training_days": 191,
+      "training_days_with_news": 17
+    },
+    {
+      "symbol": "TCS",
+      "test_end": "2020-03-31",
+      "rmse_naive": 59.263,
+      "rmse_xgb": 153.1264,
+      "rmse_xgb_finbert": 154.5806,
+      "sentiment_importance": 0.00279999990016222,
+      "training_days": 254,
+      "training_days_with_news": 22
+    },
+    {
+      "symbol": "TCS",
+      "test_end": "2020-06-30",
+      "rmse_naive": 31.044,
+      "rmse_xgb": 41.2729,
+      "rmse_xgb_finbert": 41.312,
+      "sentiment_importance": 0.003800000064074993,
+      "training_days": 313,
+      "training_days_with_news": 26
+    },
+    {
+      "symbol": "LT",
+      "test_end": "2019-09-30",
+      "rmse_naive": 32.872,
+      "rmse_xgb": 46.9335,
+      "rmse_xgb_finbert": 47.0123,
+      "sentiment_importance": 0.001500000013038516,
+      "training_days": 130,
+      "training_days_with_news": 26
+    },
+    {
+      "symbol": "LT",
+      "test_end": "2019-12-31",
+      "rmse_naive": 13.259,
+      "rmse_xgb": 21.7093,
+      "rmse_xgb_finbert": 21.9366,
+      "sentiment_importance": 0.002400000113993883,
+      "training_days": 191,
+      "training_days_with_news": 28
+    },
+    {
+      "symbol": "LT",
+      "test_end": "2020-03-31",
+      "rmse_naive": 41.374,
+      "rmse_xgb": 275.951,
+      "rmse_xgb_finbert": 273.4356,
+      "sentiment_importance": 0.004399999976158142,
+      "training_days": 254,
+      "training_days_with_news": 29
+    },
+    {
+      "symbol": "LT",
+      "test_end": "2020-06-30",
+      "rmse_naive": 20.458,
+      "rmse_xgb": 69.2525,
+      "rmse_xgb_finbert": 70.1569,
+      "sentiment_importance": 0.0019000000320374966,
+      "training_days": 313,
+      "training_days_with_news": 30
+    },
+    {
+      "symbol": "RELIANCE",
+      "test_end": "2019-09-30",
+      "rmse_naive": 10.222,
+      "rmse_xgb": 14.1717,
+      "rmse_xgb_finbert": 14.3046,
+      "sentiment_importance": 0.009600000455975533,
+      "training_days": 130,
+      "training_days_with_news": 9
+    },
+    {
+      "symbol": "RELIANCE",
+      "test_end": "2019-12-31",
+      "rmse_naive": 9.574,
+      "rmse_xgb": 53.9453,
+      "rmse_xgb_finbert": 53.7394,
+      "sentiment_importance": 0.002099999925121665,
+      "training_days": 191,
+      "training_days_with_news": 11
+    },
+    {
+      "symbol": "RELIANCE",
+      "test_end": "2020-03-31",
+      "rmse_naive": 28.067,
+      "rmse_xgb": 71.2836,
+      "rmse_xgb_finbert": 71.3643,
+      "sentiment_importance": 0.003000000026077032,
+      "training_days": 254,
+      "training_days_with_news": 17
+    },
+    {
+      "symbol": "RELIANCE",
+      "test_end": "2020-06-30",
+      "rmse_naive": 14.076,
+      "rmse_xgb": 48.1082,
+      "rmse_xgb_finbert": 47.6997,
+      "sentiment_importance": 0.010099999606609344,
+      "training_days": 313,
+      "training_days_with_news": 24
+    },
+    {
+      "symbol": "ITC",
+      "test_end": "2019-09-30",
+      "rmse_naive": 3.306,
+      "rmse_xgb": 5.1083,
+      "rmse_xgb_finbert": 5.1083,
+      "sentiment_importance": 0.0,
+      "training_days": 130,
+      "training_days_with_news": 7
+    },
+    {
+      "symbol": "ITC",
+      "test_end": "2019-12-31",
+      "rmse_naive": 1.834,
+      "rmse_xgb": 6.0507,
+      "rmse_xgb_finbert": 6.0507,
+      "sentiment_importance": 0.0,
+      "training_days": 191,
+      "training_days_with_news": 12
+    },
+    {
+      "symbol": "ITC",
+      "test_end": "2020-03-31",
+      "rmse_naive": 5.664,
+      "rmse_xgb": 29.9681,
+      "rmse_xgb_finbert": 30.0086,
+      "sentiment_importance": 0.0003000000142492354,
+      "training_days": 254,
+      "training_days_with_news": 20
+    },
+    {
+      "symbol": "ITC",
+      "test_end": "2020-06-30",
+      "rmse_naive": 3.38,
+      "rmse_xgb": 11.7948,
+      "rmse_xgb_finbert": 11.7948,
+      "sentiment_importance": 0.0,
+      "training_days": 313,
+      "training_days_with_news": 23
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "test_end": "2019-09-30",
+      "rmse_naive": 6.476,
+      "rmse_xgb": 7.1888,
+      "rmse_xgb_finbert": 7.2481,
+      "sentiment_importance": 0.0006000000284984708,
+      "training_days": 130,
+      "training_days_with_news": 13
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "test_end": "2019-12-31",
+      "rmse_naive": 10.57,
+      "rmse_xgb": 75.5585,
+      "rmse_xgb_finbert": 74.8725,
+      "sentiment_importance": 0.008799999952316284,
+      "training_days": 191,
+      "training_days_with_news": 22
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "test_end": "2020-03-31",
+      "rmse_naive": 18.606,
+      "rmse_xgb": 41.7281,
+      "rmse_xgb_finbert": 41.2181,
+      "sentiment_importance": 0.0006000000284984708,
+      "training_days": 254,
+      "training_days_with_news": 27
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "test_end": "2020-06-30",
+      "rmse_naive": 14.921,
+      "rmse_xgb": 41.7656,
+      "rmse_xgb_finbert": 41.5816,
+      "sentiment_importance": 0.0006000000284984708,
+      "training_days": 313,
+      "training_days_with_news": 29
+    },
+    {
+      "symbol": "WIPRO",
+      "test_end": "2019-09-30",
+      "rmse_naive": 1.327,
+      "rmse_xgb": 8.2458,
+      "rmse_xgb_finbert": 8.1225,
+      "sentiment_importance": 0.006500000134110451,
+      "training_days": 130,
+      "training_days_with_news": 15
+    },
+    {
+      "symbol": "WIPRO",
+      "test_end": "2019-12-31",
+      "rmse_naive": 1.142,
+      "rmse_xgb": 2.3311,
+      "rmse_xgb_finbert": 2.3508,
+      "sentiment_importance": 0.01209999993443489,
+      "training_days": 191,
+      "training_days_with_news": 18
+    },
+    {
+      "symbol": "WIPRO",
+      "test_end": "2020-03-31",
+      "rmse_naive": 3.348,
+      "rmse_xgb": 20.0878,
+      "rmse_xgb_finbert": 20.0635,
+      "sentiment_importance": 0.007400000002235174,
+      "training_days": 254,
+      "training_days_with_news": 21
+    },
+    {
+      "symbol": "WIPRO",
+      "test_end": "2020-06-30",
+      "rmse_naive": 2.326,
+      "rmse_xgb": 13.0069,
+      "rmse_xgb_finbert": 12.9527,
+      "sentiment_importance": 0.0012000000569969416,
+      "training_days": 313,
+      "training_days_with_news": 24
+    }
+  ]
+}
