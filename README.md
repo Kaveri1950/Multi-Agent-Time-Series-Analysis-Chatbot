@@ -50,6 +50,19 @@ Questions like "what is RSI?" don't run any model. They are answered directly.
 
 All of these are on held-out or walk-forward data. Result files are in `evaluation/results/`.
 
+### Earlier findings and what changed
+
+The project is ongoing, and some first-round numbers have since been re-measured. They are listed here with their source so that both versions can be checked.
+
+| Topic | Earlier finding | Source | Current result |
+|---|---|---|---|
+| Model selection | 95.9% (filter) / 95.1% (filter + LLM) / 83.7% (LLM) on 123 questions | `selection_all.json` | 95.0% / 80.9% / 65.2% on 141 questions. Some expected answers pointed to an outdated model; after fixing them and adding risk and volatility questions the gap to the LLM widened (section 1) |
+| Anomaly benchmark size | "22 models, including LSTM autoencoders" | the 22 rows of `anomaly_grid.json` | The 22 equity rows are 18 detector settings plus 4 reference rows (2 no-skill floors, 1 supervised ceiling, 1 ensemble). The LSTM autoencoder was scored separately, on Kepler only (section 2) |
+| Kepler data | 440 light curves | the downloaded cache | 440 are downloaded; the detector grid runs on 40 of them (384,281 windows); the BLS check below covers all 440 |
+| Regime VaR backtest | Kupiec p = 0.273 (95%), 0.861 (99%), data to 21 Sep 2026 | `python -m quant.risk` | 0.831 and 0.229 after the October data refresh. Passes in both runs, and under 10 HMM seeds (section 5) |
+| Price forecasting | Naive RMSE 36.2 vs XGBoost 50.5, GP 65.8, ARIMA 123.7: no model beat "no change" | first README, commit `c2e093e` (one 30-day test window; the run's result file was not kept) | Same conclusion on the 120-day forecast log: naive 30.21, ARIMA 30.10, GP 36.83 (section 3) |
+| BLS period search | "Within 1% of the published period for 60.9% of targets" | a report draft; no result file was saved at the time | Reproduced on all 440 downloaded targets (`bls_recovery.json`): period within 1% for **60.9%** (exact period 50.5%, the rest a harmonic such as P/2 or 2P); significant peak (SDE ≥ 7) for 91.4% |
+
 ### 1. Picking the model: rules vs LLM
 
 141 labelled questions (11 canonical, 102 paraphrases, 18 tricky near-misses, 10 that no model should answer).
@@ -63,8 +76,6 @@ All of these are on held-out or walk-forward data. Result files are in `evaluati
 On the 18 tricky questions the filter got 77.8% and the LLM alone 33.3%. Adding the LLM on top of the filter made it worse, not better.
 
 Limitation: I wrote both the rules and the questions, so 95% is an optimistic number. A fresh question set written by someone else would be a fairer test.
-
-Earlier version: on the first 123-question set the numbers were 95.9% / 95.1% / 83.7% (`selection_all.json`). Some expected answers in that set pointed to an old model. After fixing the labels and adding risk and volatility questions, the current numbers are the ones above.
 
 Reproduce: `python -m evaluation.run_selection --strategies filter_only`
 
@@ -134,7 +145,7 @@ The exact p-values move with new data: after the 9 Oct refresh they are 0.831 an
 ### 6. Astronomy and solar
 
 - A Lomb-Scargle check sorts series into periodic or one-off: 9 of 10 Kepler stars come out periodic and 10 of 10 stocks one-off.
-- Box Least Squares period search is implemented (`astronomy/transit_search.py`) but doesn't have a committed result file yet.
+- Box Least Squares period search (`astronomy/transit_search.py`): All 440 downloaded targets (`bls_recovery.json`): period within 1% for **60.9%** (exact period 50.5%, the rest a harmonic such as P/2 or 2P); significant peak (SDE ≥ 7) for 91.4%. Reproduce: `python -m evaluation.bls_recovery`.
 - Solar flares: a Hawkes process (each flare raises the short-term chance of another) gets TSS 0.49 on the last test block. On a recent 61-day hindcast, NOAA's own forecast and simple persistence both did better.
 
 ### 7. Portfolio risk
