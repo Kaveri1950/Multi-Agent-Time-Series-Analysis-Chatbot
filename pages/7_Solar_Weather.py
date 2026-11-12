@@ -16,11 +16,12 @@ import streamlit as st
 from solar.flare_data import ARCHIVE_DIR, class_at_least, fetch_xray_flux, load_archive
 from solar.forecast import current_forecast, load_model
 
-st.title("☀️ Solar Weather — Flare Forecasting")
+st.title("☀️ Solar Weather — Flares and Sunspots")
 st.caption("Real GOES/NOAA SWPC data, no API key. Forecasts P(M-class-or-larger flare in the next 24h) "
            "Two models on the same target: a Hawkes self-exciting point process and a Gaussian "
            "Process classifier, both fitted on the 1996–2026 GOES catalogue (Cycles 23–25) and "
-           "scored against NOAA SWPC's own operational forecast.")
+           "scored against NOAA SWPC's own operational forecast. Further down: the daily sunspot "
+           "number from SIDC/SILSO, forecast 1–27 days ahead and checked against what was recorded.")
 
 
 # --------------------------------------------------------------------------
@@ -66,14 +67,15 @@ persist = next((b for b in fc["baselines"] if b["name"].startswith("persistence"
 gp = fc.get("gp") or {}
 gp_prob = gp.get("probability")
 
-# Both models are shown, deliberately. The GP scores better (Brier 0.148 vs
-# 0.158, TSS 0.239 vs 0.163 over 57 days against NOAA's outcomes) but says
+# Both models are shown, deliberately. The GP scores better (Brier 0.143 vs
+# 0.157, TSS 0.221 vs 0.096 over 89 days against NOAA's outcomes) but says
 # nothing about mechanism; the Hawkes parameters ARE the physical result.
 # Two models disagreeing is information rather than a problem to hide.
 c1, c2, c3, c4, c5 = st.columns(5)
 c1.metric("GP classifier", f"{gp_prob:.0%}" if gp_prob is not None else "n/a",
-          help="Gaussian Process over 39 daily features. The better-scoring of the two: "
-               "Brier 0.148 vs Hawkes 0.158, and TSS 0.239 vs NOAA's own 0.231.")
+          help="Gaussian Process over 39 daily features. The better-scoring of the two over "
+               "89 days (2026-07-23 to 11-11): Brier 0.143 vs Hawkes 0.157, and TSS 0.221 "
+               "vs NOAA's own 0.194. NOAA is still better calibrated (Brier 0.123).")
 c2.metric("Hawkes process", f"{prob:.0%}" if prob is not None else "n/a",
           help="Self-exciting point process. Scores slightly worse than the GP but is the "
                "interpretable one — its branching ratio and half-life are the physics result.")
@@ -263,7 +265,17 @@ else:
 
 
 # ==========================================================================
-# 5. the accruing archive
+# 5. sunspot number forecast (SILSO), predicted vs actual
+# ==========================================================================
+
+st.divider()
+from dashboard.sunspot_view import render as render_sunspots  # noqa: E402
+
+render_sunspots()
+
+
+# ==========================================================================
+# 6. the accruing archive
 # ==========================================================================
 
 st.divider()
@@ -277,16 +289,17 @@ a2.metric("Flare events archived", len(flare_arch))
 a3.metric("Archive location", "data/cache/solar/")
 
 st.info(
-    "**Why this exists.** Every NOAA endpoint is a rolling 7–30 day window and NOAA does not "
-    "backfill — no bulk archive covers 2021–2026, and Solar Cycle 25 peaked in 2024–25. So the most "
-    "relevant years are exactly the ones missing from the training data. `harvest_daily()` appends "
-    "each day's snapshot locally, building a genuine holdout set the model has never seen. "
-    "Run it daily:\n\n```\npython -c \"from solar.flare_data import harvest_daily; harvest_daily()\"\n```",
+    "**Why this exists.** The flare catalogue itself is complete to the present (the GOES event "
+    "lists on Hesperia), but NOAA's own daily forecasts and the daily solar indices are rolling "
+    "7–30 day windows that NOAA does not backfill. `harvest_daily()` appends each day's snapshot "
+    "locally; it is the only record of NOAA's forecasts there is to score against. A day it does "
+    "not run is lost for good (2026-09-21 to 10-12 already is). Run it daily:\n\n"
+    "```\npython -c \"from solar.flare_data import harvest_daily; harvest_daily()\"\n```",
     icon="📥")
 
 
 # ==========================================================================
-# 6. caveats -- last, and not collapsed by default
+# 7. caveats -- last, and not collapsed by default
 # ==========================================================================
 
 st.divider()

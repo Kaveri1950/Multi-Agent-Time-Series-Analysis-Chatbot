@@ -1,0 +1,313 @@
+{
+  "generated_at": "2026-11-12T15:26:41+00:00",
+  "data": {
+    "source": "SILSO daily total sunspot number (sidc.be/SILSO)",
+    "span": "1900-01-01 -> 2026-10-31",
+    "n_days": 46325,
+    "provisional_from": "2026-07-01"
+  },
+  "design": {
+    "test_start": "2010-01-01",
+    "refit_years": 2,
+    "n_blocks": 9,
+    "horizons": [
+      1,
+      7,
+      14,
+      27
+    ],
+    "arima_order": [
+      2,
+      1,
+      2
+    ],
+    "lstm_window": 54,
+    "transform": "sqrt",
+    "note": "walk-forward; each block trained only on origins whose target precedes the block"
+  },
+  "by_horizon": {
+    "1": {
+      "n": 6147,
+      "scores": {
+        "persistence": {
+          "mae": 9.611,
+          "rmse": 13.605,
+          "mae_skill_vs_persistence": 0.0
+        },
+        "recurrence27": {
+          "mae": 28.52,
+          "rmse": 39.44,
+          "mae_skill_vs_persistence": -1.9674
+        },
+        "mean27": {
+          "mae": 21.692,
+          "rmse": 29.709,
+          "mae_skill_vs_persistence": -1.257
+        },
+        "arima": {
+          "mae": 9.339,
+          "rmse": 13.146,
+          "mae_skill_vs_persistence": 0.0283
+        },
+        "xgboost": {
+          "mae": 9.337,
+          "rmse": 13.06,
+          "mae_skill_vs_persistence": 0.0285
+        },
+        "lstm": {
+          "mae": 10.228,
+          "rmse": 14.187,
+          "mae_skill_vs_persistence": -0.0642
+        },
+        "ensemble": {
+          "mae": 9.61,
+          "rmse": 13.397,
+          "mae_skill_vs_persistence": 0.0001
+        }
+      },
+      "best_model": "xgboost",
+      "best_baseline": "persistence",
+      "dm_best_model_vs_best_baseline": {
+        "n": 6147,
+        "mean_loss_diff": -0.274215,
+        "stat": -4.745335,
+        "p_value": 2e-06
+      }
+    },
+    "7": {
+      "n": 6141,
+      "scores": {
+        "persistence": {
+          "mae": 29.57,
+          "rmse": 40.955,
+          "mae_skill_vs_persistence": 0.0
+        },
+        "recurrence27": {
+          "mae": 28.535,
+          "rmse": 39.457,
+          "mae_skill_vs_persistence": 0.035
+        },
+        "mean27": {
+          "mae": 24.143,
+          "rmse": 33.104,
+          "mae_skill_vs_persistence": 0.1835
+        },
+        "arima": {
+          "mae": 23.239,
+          "rmse": 31.991,
+          "mae_skill_vs_persistence": 0.2141
+        },
+        "xgboost": {
+          "mae": 22.932,
+          "rmse": 31.609,
+          "mae_skill_vs_persistence": 0.2245
+        },
+        "lstm": {
+          "mae": 22.989,
+          "rmse": 31.629,
+          "mae_skill_vs_persistence": 0.2226
+        },
+        "ensemble": {
+          "mae": 22.804,
+          "rmse": 31.403,
+          "mae_skill_vs_persistence": 0.2288
+        }
+      },
+      "best_model": "ensemble",
+      "best_baseline": "mean27",
+      "dm_best_model_vs_best_baseline": {
+        "n": 6141,
+        "mean_loss_diff": -1.339904,
+        "stat": -3.979021,
+        "p_value": 7e-05
+      }
+    },
+    "14": {
+      "n": 6134,
+      "scores": {
+        "persistence": {
+          "mae": 32.746,
+          "rmse": 44.903,
+          "mae_skill_vs_persistence": 0.0
+        },
+        "recurrence27": {
+          "mae": 28.564,
+          "rmse": 39.479,
+          "mae_skill_vs_persistence": 0.1277
+        },
+        "mean27": {
+          "mae": 24.556,
+          "rmse": 33.603,
+          "mae_skill_vs_persistence": 0.2501
+        },
+        "arima": {
+          "mae": 24.021,
+          "rmse": 33.024,
+          "mae_skill_vs_persistence": 0.2664
+        },
+        "xgboost": {
+          "mae": 23.72,
+          "rmse": 32.811,
+          "mae_skill_vs_persistence": 0.2756
+        },
+        "lstm": {
+          "mae": 23.663,
+          "rmse": 32.605,
+          "mae_skill_vs_persistence": 0.2774
+        },
+        "ensemble": {
+          "mae": 23.541,
+          "rmse": 32.491,
+          "mae_skill_vs_persistence": 0.2811
+        }
+      },
+      "best_model": "ensemble",
+      "best_baseline": "mean27",
+      "dm_best_model_vs_best_baseline": {
+        "n": 6134,
+        "mean_loss_diff": -1.015231,
+        "stat": -3.241977,
+        "p_value": 0.001193
+      }
+    },
+    "27": {
+      "n": 6121,
+      "scores": {
+        "persistence": {
+          "mae": 28.59,
+          "rmse": 39.512,
+          "mae_skill_vs_persistence": 0.0
+        },
+        "recurrence27": {
+          "mae": 28.59,
+          "rmse": 39.512,
+          "mae_skill_vs_persistence": 0.0
+        },
+        "mean27": {
+          "mae": 25.592,
+          "rmse": 34.894,
+          "mae_skill_vs_persistence": 0.1049
+        },
+        "arima": {
+          "mae": 24.531,
+          "rmse": 33.66,
+          "mae_skill_vs_persistence": 0.142
+        },
+        "xgboost": {
+          "mae": 24.383,
+          "rmse": 33.487,
+          "mae_skill_vs_persistence": 0.1471
+        },
+        "lstm": {
+          "mae": 24.449,
+          "rmse": 33.473,
+          "mae_skill_vs_persistence": 0.1448
+        },
+        "ensemble": {
+          "mae": 24.241,
+          "rmse": 33.264,
+          "mae_skill_vs_persistence": 0.1521
+        }
+      },
+      "best_model": "ensemble",
+      "best_baseline": "mean27",
+      "dm_best_model_vs_best_baseline": {
+        "n": 6121,
+        "mean_loss_diff": -1.351084,
+        "stat": -3.334622,
+        "p_value": 0.000859
+      }
+    }
+  },
+  "mae_by_cycle": {
+    "1": {
+      "cycle24_2010_2019": {
+        "n": 3652,
+        "persistence": 8.812,
+        "recurrence27": 25.159,
+        "mean27": 19.226,
+        "arima": 8.571,
+        "xgboost": 8.638,
+        "lstm": 9.621,
+        "ensemble": 8.941
+      },
+      "cycle25_2020_on": {
+        "n": 2495,
+        "persistence": 10.781,
+        "recurrence27": 33.44,
+        "mean27": 25.302,
+        "arima": 10.463,
+        "xgboost": 10.36,
+        "lstm": 11.116,
+        "ensemble": 10.588
+      }
+    },
+    "7": {
+      "cycle24_2010_2019": {
+        "n": 3652,
+        "persistence": 25.875,
+        "recurrence27": 25.155,
+        "mean27": 21.333,
+        "arima": 20.504,
+        "xgboost": 20.252,
+        "lstm": 20.275,
+        "ensemble": 20.108
+      },
+      "cycle25_2020_on": {
+        "n": 2489,
+        "persistence": 34.992,
+        "recurrence27": 33.495,
+        "mean27": 28.267,
+        "arima": 27.252,
+        "xgboost": 26.863,
+        "lstm": 26.972,
+        "ensemble": 26.759
+      }
+    },
+    "14": {
+      "cycle24_2010_2019": {
+        "n": 3652,
+        "persistence": 28.629,
+        "recurrence27": 25.155,
+        "mean27": 21.652,
+        "arima": 21.244,
+        "xgboost": 20.913,
+        "lstm": 20.805,
+        "ensemble": 20.694
+      },
+      "cycle25_2020_on": {
+        "n": 2482,
+        "persistence": 38.803,
+        "recurrence27": 33.581,
+        "mean27": 28.829,
+        "arima": 28.108,
+        "xgboost": 27.849,
+        "lstm": 27.868,
+        "ensemble": 27.73
+      }
+    },
+    "27": {
+      "cycle24_2010_2019": {
+        "n": 3652,
+        "persistence": 25.124,
+        "recurrence27": 25.124,
+        "mean27": 22.061,
+        "arima": 21.52,
+        "xgboost": 21.4,
+        "lstm": 21.468,
+        "ensemble": 21.256
+      },
+      "cycle25_2020_on": {
+        "n": 2469,
+        "persistence": 33.717,
+        "recurrence27": 33.717,
+        "mean27": 30.814,
+        "arima": 28.984,
+        "xgboost": 28.795,
+        "lstm": 28.859,
+        "ensemble": 28.656
+      }
+    }
+  },
+  "runtime_s": 3738.5
+}

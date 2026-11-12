@@ -43,7 +43,8 @@ _RISK = re.compile(r"\[risk\] [^:]+: .* -> task (\S+) -> (\S+) \(")
 # paths that do not go through the selector, logged as such rather than left blank
 _FIXED = ((re.compile(r"\[risk\] market assessment"), "assess_market_risk", "market_risk_ranking"),
           (re.compile(r"Gaussian Process forecast|reusing cached \d+-day forecast"),
-           "forecast_value", "gaussian_process_forecast"))
+           "forecast_value", "gaussian_process_forecast"),
+          (re.compile(r"\[solar\] sunspot forecast"), "forecast_value", "solar.sunspot_forecast"))
 
 
 def connect(path: Path | None = None) -> sqlite3.Connection:

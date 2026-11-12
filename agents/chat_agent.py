@@ -588,9 +588,9 @@ def _answer_solar_query(focus: str, session_state: dict, backend: str | None = N
                 "domain": "solar", "trace": trace, "retrieved_context": [], "chart": None}
 
     # The chatbot quotes the GP classifier, not Hawkes. It is the better
-    # forecaster of the two -- Brier 0.148 against 0.158, TSS 0.239 against
-    # 0.163 over 57 days scored on NOAA's own outcomes -- and it beats NOAA's
-    # operational TSS of 0.231. The Hawkes model stays on the dashboard
+    # forecaster of the two -- Brier 0.143 against 0.157, TSS 0.221 against
+    # 0.096 over 89 days scored on NOAA's own outcomes -- and it beats NOAA's
+    # operational TSS of 0.194. The Hawkes model stays on the dashboard
     # because its parameters are the interpretable result (branching ratio
     # 0.84, 22-hour excitation half-life), but a chat answer should lead with
     # whichever model actually predicts best.
@@ -607,8 +607,9 @@ def _answer_solar_query(focus: str, session_state: dict, backend: str | None = N
         if skill.get("brier") is not None:
             result["skill"] = {"brier": skill["brier"], "tss": skill.get("tss"),
                                "note": "held-out tail of the training period; scored against "
-                                       "NOAA's outcomes over 57 archived days it reached "
-                                       "Brier 0.148 / TSS 0.239 vs NOAA's 0.131 / 0.231"}
+                                       "NOAA's outcomes over 89 archived days (2026-07-23 to "
+                                       "11-11) it reached Brier 0.143 / TSS 0.221 vs NOAA's "
+                                       "0.123 / 0.194"}
         trace.append(f"[solar] answering with the GP classifier ({gp['probability']:.1%}), "
                      f"the better-scoring of the two models")
     elif gp.get("error"):
@@ -896,6 +897,72 @@ def _answer_logged_forecast(ticker: str, session_state: dict, pre_trace: list | 
     return {"answer": "\n".join(lines), "domain": "finance", "trace": trace,
             "retrieved_context": [str({k: v for k, v in row.items()
                                        if not k.startswith("_")})], "chart": None}
+
+
+_SUNSPOT_PATTERN = re.compile(r"\bsunspots?\b|\bsunspot\s+number\b|\bsolar\s+cycle\b",
+                              re.IGNORECASE)
+
+
+def _answer_sunspot_query(message: str, session_state: dict, pre_trace: list | None = None) -> dict:
+    """Daily sunspot number, from the saved forecast and its measured backtest.
+
+    Written from the numbers directly rather than through the LLM: every
+    figure here is a lookup, and there is nothing for prose generation to add
+    except the risk of a changed digit.
+    """
+    import json as _json
+
+    from solar.sunspots import LIVE_PATH, RESULTS_PATH
+
+    trace = list(pre_trace or []) + ["[solar] sunspot forecast (SILSO daily, saved backtest + live run)"]
+    if not LIVE_PATH.exists() or not RESULTS_PATH.exists():
+        return {"answer": "The sunspot forecast has not been built yet. Run "
+                          "`python -m solar.sunspots --backtest` and then `--forecast`.",
+                "domain": "solar", "trace": trace, "retrieved_context": [], "chart": None}
+    live = _json.loads(LIVE_PATH.read_text())
+    res = _json.loads(RESULTS_PATH.read_text())
+
+    days = min(_extract_horizon_hours(message, default=24 * 7) // 24, 27) or 1
+    best = {h: v["best_model"] for h, v in res["by_horizon"].items()}
+    # the best model at the nearest scored horizon at or above the asked one
+    scored = sorted(int(h) for h in best)
+    h_ref = next((h for h in scored if h >= days), scored[-1])
+    model_id = best[str(h_ref)]
+    path = live["paths"][model_id]
+    s = res["by_horizon"][str(h_ref)]["scores"]
+    target = live["targets"][days - 1]
+
+    lines = [
+        f"**Daily sunspot number, {days} day(s) after {live['origin']}: about "
+        f"{path[days - 1]:.0f}** (forecast for {target}, from the {model_id} model).",
+        "",
+        f"- Latest recorded value: {live['origin_value']:.0f} on {live['origin']} "
+        f"({live['origin_source']}; SILSO's quick-look values are revised later).",
+        f"- Persistence (\"same as the latest day\") would say {live['paths']['persistence'][days - 1]:.0f}.",
+        f"- Track record at {h_ref} days ahead, walk-forward 2010 onward: {model_id} MAE "
+        f"{s[model_id]['mae']:.1f} sunspots against {s['persistence']['mae']:.1f} for persistence "
+        f"({abs(s[model_id]['mae_skill_vs_persistence']):.1%} "
+        f"{'lower' if s[model_id]['mae_skill_vs_persistence'] >= 0 else 'higher'} error).",
+        "- The daily number swings a lot from one day to the next, so treat it as a typical level, "
+        "not an exact count.",
+    ]
+    session_state["last_domain"] = "solar"
+    chart = None
+    try:
+        import plotly.graph_objects as go
+
+        chart = go.Figure()
+        for m, color in (("persistence", "#94a3b8"), (model_id, "#2563eb")):
+            chart.add_trace(go.Scatter(x=[live["origin"]] + live["targets"],
+                                       y=[live["origin_value"]] + live["paths"][m],
+                                       name=m, line=dict(color=color)))
+        chart.update_layout(height=300, margin=dict(t=30, b=20), yaxis_title="sunspot number",
+                            title="Sunspot number forecast, next 27 days")
+    except Exception:
+        chart = None
+    return {"answer": "\n".join(lines), "domain": "solar", "trace": trace,
+            "retrieved_context": [_json.dumps({k: live[k] for k in ("origin", "origin_value")})],
+            "chart": chart}
 
 
 def _build_solar_chart(result: dict):
@@ -1592,6 +1659,11 @@ def _answer_query(message: str, session_state: dict, backend: str | None = None,
     if _looks_solar(message):
         pre = ["[chat] detected a solar/space-weather question -- "
                "routing to the solar domain (no entity id needed)"]
+        # Sunspot questions are a different target (a count per day, not a
+        # flare event), and "how many sunspots" would otherwise classify as
+        # an event-count question and reach the Hawkes flare-count model.
+        if _SUNSPOT_PATTERN.search(message) and not _BARE_FLARE.search(message):
+            return _answer_sunspot_query(message, session_state, pre_trace=pre)
         # Second axis: WHICH solar model. "will there be a flare" and "how
         # many flares" are different questions over the same data, and until
         # the selector existed only the first was reachable.

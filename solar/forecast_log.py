@@ -177,8 +177,16 @@ def gp_hindcast(frame: pd.DataFrame) -> pd.Series:
 
 def persistence_hindcast(frame: pd.DataFrame) -> pd.Series:
     """"Was there an M+ flare yesterday?" -- the one-line rule that beat
-    XGBoost in 2 of 4 walk-forward folds on the 1996-2020 data."""
-    return frame["occurred"].shift(1).fillna(0).astype(float)
+    XGBoost in 2 of 4 walk-forward folds on the 1996-2020 data.
+
+    Looked up by calendar date, not by the previous row: the archive has a
+    three-week hole (2026-09-21 to 10-12), and a row shift read 09-20's outcome
+    as "yesterday" for 10-13. A day whose yesterday is missing gets NaN, and
+    build_scores drops it so every forecaster is scored on the same days.
+    """
+    dates = pd.to_datetime(frame["date"])
+    by_date = dict(zip(dates, frame["occurred"].astype(float)))
+    return (dates - pd.Timedelta(days=1)).map(by_date).astype(float)
 
 
 def climatology_hindcast(frame: pd.DataFrame) -> pd.Series:
@@ -196,8 +204,9 @@ def build_scores() -> pd.DataFrame:
     frame = truth.merge(noaa[["date", "noaa_m_prob", "x_class_1_day"]], on="date", how="inner")
     frame = frame.sort_values("date").reset_index(drop=True)
 
-    frame["hawkes_prob"] = hawkes_hindcast(frame["date"])
     frame["persistence_prob"] = persistence_hindcast(frame)
+    frame = frame.dropna(subset=["persistence_prob"]).reset_index(drop=True)
+    frame["hawkes_prob"] = hawkes_hindcast(frame["date"])
     try:
         frame["gp_prob"] = gp_hindcast(frame)
     except Exception as e:

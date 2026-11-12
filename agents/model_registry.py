@@ -408,14 +408,18 @@ REGISTRY: list[ModelSpec] = [
         "name": "Hawkes self-exciting flare probability",
         "domain": "solar", "task": FORECAST_EVENT_PROBABILITY,
         "method_family": "statistical",
-        "description": "A marked Hawkes point process fitted on 1996-2020 GOES data, giving "
+        "description": "A marked Hawkes point process fitted on 1996-2026 GOES data, giving "
                        "P(M-class or larger flare in the next 24h) in closed form. Reports the "
                        "NOAA operational forecast alongside its own number.",
         "requires": [],           # there is only one Sun -- no entity to resolve
         "returns": "probability + NOAA baseline + drivers + caveats",
-        "skill": {"metric": "TSS", "value": 0.572,
-                  "note": "final block, threshold tuned in-sample -- an optimistic upper bound. "
-                          "Branching ratio 0.82, excitation half-life 27h."},
+        # From the served model's own record (data/cache/solar/hawkes_model.json,
+        # fitted 2026-09-18 on 1996-2026). 0.572 was the first, 1996-2020 fit.
+        "skill": {"metric": "TSS", "value": 0.493,
+                  "note": "final block, threshold tuned in-sample -- an optimistic upper bound "
+                          "(0.572 on the earlier 1996-2020 fit). Against NOAA's operational "
+                          "forecast on 89 days (2026-07-23 to 11-11, a hindcast) it loses: "
+                          "Brier 0.157 against NOAA's 0.123."},
         "when_to_use": "the user asks the chance of a solar flare, or about space weather risk",
         "when_not_to_use": "NEVER to state WHEN a flare will occur -- only a probability over a window",
         "cost": "fast",
@@ -449,10 +453,12 @@ REGISTRY: list[ModelSpec] = [
                        "beaten, and is surprisingly hard to beat.",
         "requires": [],
         "returns": "0 or 1",
-        "skill": {"metric": "TSS", "value": 0.43,
-                  "note": "0.394-0.464 across walk-forward folds -- BEATS XGBoost in 2 of 4. "
-                          "Most short-horizon flare skill is knowing whether the Sun was "
-                          "already flaring."},
+        "skill": {"metric": "TSS", "value": 0.38,
+                  "note": "0.283-0.464 across walk-forward folds (1996-2026 fit), mean 0.38. "
+                          "Beats XGBoost in 1 of 4 and ties it in another (0.464 vs 0.464); "
+                          "on the earlier 1996-2020 fit it beat XGBoost in 2 of 4. Most "
+                          "short-horizon flare skill is knowing whether the Sun was already "
+                          "flaring."},
         "when_to_use": "as a comparison baseline, or when the user asks how hard the problem is",
         "when_not_to_use": "as the headline forecast -- report it beside the model, not instead",
         "cost": "fast",
@@ -468,13 +474,46 @@ REGISTRY: list[ModelSpec] = [
                        "project's controlled cross-domain comparison.",
         "requires": [],
         "returns": "probability of an M+ flare",
-        "skill": {"metric": "TSS", "value": 0.42,
-                  "note": "0.193-0.576 across folds, highly variable with solar-cycle phase. "
-                          "Loses to the one-line persistence rule in 2 of 4 folds."},
+        "skill": {"metric": "TSS", "value": 0.43,
+                  "note": "0.270-0.499 across folds (1996-2026 fit), mean 0.43, variable with "
+                          "solar-cycle phase. Loses to the one-line persistence rule in the "
+                          "last fold (0.270 vs 0.395); 0.193-0.576 and 2 losses of 4 on the "
+                          "earlier 1996-2020 fit."},
         "when_to_use": "when comparing modelling approaches on the solar domain",
         "when_not_to_use": "as the live forecast -- the Hawkes model is the production path",
         "cost": "slow",
         "entry_point": "solar.flare_model.train_xgboost",
+    },
+    {
+        "id": "solar.sunspot_forecast",
+        "name": "Daily sunspot number forecast (XGBoost + LSTM ensemble)",
+        "domain": "solar", "task": FORECAST_VALUE,
+        "method_family": "machine_learning",
+        "description": "The SILSO daily sunspot number 1 to 27 days ahead. Seven forecasters "
+                       "compared walk-forward: persistence, 27-day recurrence, 27-day mean, "
+                       "ARIMA(2,1,2), XGBoost, an LSTM, and the mean of XGBoost and LSTM. The "
+                       "best one at each horizon is quoted, beside persistence.",
+        # A capability, not a formality, as with next_session on the price
+        # range: registered with no requirement it took "give me the flare
+        # forecast" (the word "forecast" makes it forecast_value), and
+        # selection accuracy fell from 95.04% to 94.33%. The chatbot supplies
+        # it only when the question names sunspots.
+        "requires": ["sunspot_question"],
+        "returns": "sunspot number for the asked day + persistence + measured MAE",
+        # evaluation/results/sunspot_forecast.json, 2010-01-01 to 2026-10-30
+        "skill": {"metric": "MAE", "value": 22.80,
+                  "note": "7 days ahead, walk-forward over 6,141 days from 2010 (9 two-year "
+                          "blocks). Ensemble MAE 22.8 sunspots against 29.6 for persistence "
+                          "(-22.9%) and 24.1 for the 27-day mean (DM p=7e-05). At 1 day ahead "
+                          "almost nothing beats persistence: XGBoost 9.34 against 9.61 (-2.9%). "
+                          "ARIMA is within about 2% of the ML models at every horizon, and the "
+                          "27-day recurrence is worse than a plain 27-day mean."},
+        "when_to_use": "the user asks how many sunspots there will be, or about the sunspot "
+                       "level over the next days or weeks",
+        "when_not_to_use": "for flare probability (a different target), or beyond 27 days -- "
+                           "solar-cycle forecasts need the smoothed monthly series",
+        "cost": "fast",
+        "entry_point": "solar.sunspots.live_forecast",
     },
     # ---------------------------------------------------------------- risk
     {

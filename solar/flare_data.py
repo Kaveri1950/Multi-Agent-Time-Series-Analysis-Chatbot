@@ -48,6 +48,7 @@ import requests
 CACHE_DIR = Path(__file__).parent.parent / "data" / "cache" / "solar"
 HISTORY_DIR = CACHE_DIR / "history"       # one parquet per year, from Hesperia
 ARCHIVE_DIR = CACHE_DIR / "archive"       # accumulated daily harvest snapshots
+CURRENT_YEAR_MAX_AGE_HOURS = 12           # refetch this year's catalogue after this long
 
 _SWPC = "https://services.swpc.noaa.gov"
 _HESPERIA = "https://hesperia.gsfc.nasa.gov/goes/goes_event_listings"
@@ -188,6 +189,14 @@ def fetch_historical_year(year: int, force_refetch: bool = False) -> pd.DataFram
     """
     HISTORY_DIR.mkdir(parents=True, exist_ok=True)
     cache_file = HISTORY_DIR / f"flares_{year}.parquet"
+
+    # The current year's list keeps growing, so its cache goes stale. A copy
+    # cached on 2026-09-18 stopped at 09-05, and the Hawkes hindcast then read
+    # every later day as flare-free.
+    now = datetime.now(timezone.utc)
+    if (cache_file.exists() and year == now.year
+            and now.timestamp() - cache_file.stat().st_mtime > CURRENT_YEAR_MAX_AGE_HOURS * 3600):
+        force_refetch = True
 
     if cache_file.exists() and not force_refetch:
         return pd.read_parquet(cache_file)

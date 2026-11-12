@@ -102,10 +102,10 @@ def train_and_save_gp(verbose: bool = True) -> dict:
     training days and the cost is cubic -- far too slow for a chat turn or a
     page load.
 
-    This is now the better-scoring solar model: over 57 days against NOAA it
-    reached Brier 0.148 and TSS 0.239, beating the Hawkes process on every
-    measure (0.158 / 0.163) and beating NOAA's own operational TSS of 0.231.
-    NOAA remains better calibrated.
+    This is now the better-scoring solar model: over 89 days against NOAA
+    (2026-07-23 to 11-11) it reached Brier 0.143 and TSS 0.221, beating the
+    Hawkes process on both (0.157 / 0.096) and NOAA's own operational TSS of
+    0.194 at a 0.5 threshold. NOAA remains better calibrated (Brier 0.123).
     """
     import joblib
 
@@ -300,8 +300,8 @@ def current_forecast(include_context: bool = True) -> dict:
         })
 
     # The GP classifier as a second opinion. Reported ALONGSIDE the Hawkes
-    # probability rather than replacing it: the GP scores better (Brier 0.148
-    # vs 0.158, TSS 0.239 vs 0.163) but says nothing about mechanism, while
+    # probability rather than replacing it: the GP scores better (Brier 0.143
+    # vs 0.157, TSS 0.221 vs 0.096, 89 days) but says nothing about mechanism, while
     # the Hawkes parameters are the interpretable result -- a branching ratio
     # of 0.84 and a 22-hour excitation half-life are the physics claim. Two
     # models disagreeing is information, not a problem to resolve.

@@ -29,7 +29,7 @@ The main idea is in how the model is picked. Every model is listed in a registry
 | Mutual Funds | Search about 38,000 Indian schemes; NAV history, returns and an ARIMA forecast |
 | Anomaly Benchmark | The detector comparison on both datasets, with a live demo |
 | Astronomy | Kepler light curve, anomaly detection and plain-language reasons |
-| Solar Weather | Chance of an M-class or larger flare in the next 24 h, next to NOAA's own forecast |
+| Solar Weather | Chance of an M-class or larger flare in the next 24 h, next to NOAA's own forecast; daily sunspot number forecast 1–27 days ahead, plotted against the recorded values |
 | Home | A dashboard you can rearrange by typing what you want |
 
 ## How a question is answered
@@ -37,7 +37,7 @@ The main idea is in how the model is picked. Every model is listed in a registry
 ```
 question
   -> task classifier (ordered regex rules)             agents/model_selector.py
-  -> capability filter + rank by held-out score        agents/model_registry.py  (22 models, 11 tasks)
+  -> capability filter + rank by held-out score        agents/model_registry.py  (23 models, 11 tasks)
   -> LangGraph agents: router, finance, sentiment,     agents/graph.py
      anomaly, astronomy, solar, explainer
   -> LLM writes the answer from the computed facts     agents/llm_backend.py
@@ -148,7 +148,8 @@ The exact p-values move with new data: after the 9 Oct refresh they are 0.831 an
 
 - A Lomb-Scargle check sorts series into periodic or one-off: 9 of 10 Kepler stars come out periodic and 10 of 10 stocks one-off.
 - Box Least Squares period search (`astronomy/transit_search.py`): All 440 downloaded targets (`bls_recovery.json`): period within 1% for **60.9%** (exact period 50.5%, the rest a harmonic such as P/2 or 2P); significant peak (SDE ≥ 7) for 91.4%. Reproduce: `python -m evaluation.bls_recovery`.
-- Solar flares: a Hawkes process (each flare raises the short-term chance of another) gets TSS 0.49 on the last test block. On a recent 61-day hindcast, NOAA's own forecast and simple persistence both did better.
+- Solar flares: a Hawkes process (each flare raises the short-term chance of another) gets TSS 0.49 on the last test block, with the threshold tuned on that block, so it is an upper bound. On an 89-day hindcast against NOAA's own forecast (2026-07-23 to 2026-11-11, 18 days with an M-class or larger flare; `python -m solar.forecast_log`), NOAA does better: Brier 0.123 against 0.157 for Hawkes and 0.143 for the GP classifier. At a 0.5 threshold, persistence has the highest TSS (0.23, against NOAA's 0.19). The archive is missing 2026-09-21 to 2026-10-12 because the harvester did not run.
+- Sunspot number (`solar/sunspots.py`, `sunspot_forecast.json`): the SILSO daily series from 1900, forecast walk-forward from 2010 to October 2026 (about 6,100 days per horizon, 9 two-year blocks). One day ahead, almost nothing beats "same as today": MAE 9.34 for XGBoost and ARIMA against 9.61 for persistence (2.9% better). Seven to 27 days ahead the XGBoost + LSTM ensemble is best, with MAE 22.80 / 23.54 / 24.24 at 7 / 14 / 27 days against 29.57 / 32.75 / 28.59 for persistence. The fairer bar is the 27-day mean (24.14 / 24.56 / 25.59), which the ensemble beats by about 4–6% (Diebold-Mariano p ≤ 0.0012). ARIMA is within about 2% of the machine-learning models at every horizon, and "same as one rotation ago" (MAE 28.5) is worse than a plain 27-day mean. Reproduce: `python -m solar.sunspots --backtest`.
 
 ### 7. Portfolio risk
 
